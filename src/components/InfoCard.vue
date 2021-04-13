@@ -13,7 +13,7 @@
     </v-avatar>
     <div :class="['info-card__content', open ? 'active' : '']">
       <v-card class="wrapper">
-        <v-card-title class="nickname">{{ nickname }}</v-card-title>
+        <v-card-title class="nickname primary--text">{{ nickname }}</v-card-title>
         <v-card-subtitle class="role">
           <v-chip small label color="primary" text-color="white">
             {{ role }}
@@ -87,7 +87,6 @@ export default {
 </script>
 
 <style lang="scss">
-$primary-color: #fb7299;
 $animate-during: 0.4s;
 
 .infocard-container {
@@ -117,7 +116,6 @@ $animate-during: 0.4s;
       .nickname {
         display: flex;
         justify-content: center;
-        color: $primary-color;
       }
 
       .role {
