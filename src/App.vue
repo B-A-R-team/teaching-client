@@ -1,11 +1,21 @@
 <template>
   <v-app id="app">
-    <v-app-bar app flat>
-      <div>教研活动中心</div>
-      <div id="login">
-        <router-link to="/login">
-          登录
-        </router-link>
+    <v-app-bar id="header" app flat>
+      <div class="header-logo"><a href="/"> 教研活动中心</a></div>
+      <div id="nav">
+        <info-card
+          v-if="isLogin"
+          avatar="https://cdn.jsdelivr.net/gh/Tuzilow/blog-image/img/teamlogo.jpg"
+          :nickname="userInfo.name"
+          :role="userInfo.role"
+          :list="list"
+          @exit="exit"
+        />
+
+        <div v-if="isLogin">hi，{{userInfo.name}}</div>
+        <div class="header-login" v-if="!isLogin">
+          <router-link to="/login"> 登录 </router-link>
+        </div>
       </div>
     </v-app-bar>
     <v-main>
@@ -13,38 +23,62 @@
         <router-view />
       </v-container>
     </v-main>
-    <v-footer absolute app>
-      <div>版权信息</div> 
-      <div id="footer-content">
-        <div id="footer_center">
-          <div id="about_website">
-            <p id="footer_title">关于网站</p>
-            <p>安阳师范学院软件学院-大学生创新创业孵化基地网站</p>
-            <p>学校地址-河南省安阳师文明大道265号</p>
-          </div>
-          <div id="antdivder"></div>
-          <div id="maintain">
-            <p id="footer_title">维护支持</p>
-            <p>版权所有：BAR团队</p>
-            <p>管理维护：BAR团队</p>
-            <p>技术支持：BAR团队</p>
-          </div>
-          <div id="antdivder"></div>
-          <div id="qrcod">
-            <div id="qrcod_content">
-              <img src="../image/weixin.350e35ef.jpg" alt="">
-              <p>安阳师范学院微信</p>
-            </div>
-          </div>
-          <div id="archival_information">
-            <span>Copyright © 备案信息：豫ICP备xxxxxx号-x</span>
-            <span id="ar_span2">联系我们邮箱：xxxxxxxx</span>
-          </div>
-        </div>
-      </div>
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
+
+<script>
+import Footer from "./components/Footer.vue";
+import InfoCard from "./components/InfoCard.vue";
+import { getToken } from "./utils/auth";
+export default {
+  components: { InfoCard, Footer },
+  data: () => ({
+    list: [
+      {
+        text: "个人信息",
+        icon: "mdi-account",
+        click: () => {
+          console.log("个人信息");
+        },
+      },
+      {
+        text: "我的空间",
+        icon: "mdi-clock",
+      },
+      {
+        text: "我的代办",
+        icon: "mdi-account",
+        click: () => {
+          console.log("我的代办");
+        },
+      },
+      {
+        text: "发布活动",
+        icon: "mdi-account",
+        click: () => {
+          console.log("发布活动");
+        },
+      },
+    ],
+    isLogin: false,
+    userInfo:{
+      name: '小李',
+      avatar: '',
+      role: '主任'
+    }
+  }),
+  methods: {
+    exit() {
+      console.log(1);
+    },
+  },
+  created() {
+    const token = getToken();
+    token && (this.isLogin = true);
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -54,84 +88,55 @@
   text-align: center;
   color: #2c3e50;
   overflow-y: hidden;
+  background-color: rgb(252, 252, 252);
+  #header {
+    .v-toolbar__content,
+    .v-toolbar__extension {
+      justify-content: space-between;
+    }
+    .header-logo {
+      a {
+        color: rgb(255, 248, 235);
+        text-decoration: none;
+      }
+    }
+    font-size: 25px;
+    color: rgb(255, 248, 235);
+    // background-color: #1fc8db;
+    background-image: linear-gradient(
+      141deg,
+      #1fc8db 0%,
+      #7acad3 50%,
+      pink 71%
+    );
+    .header-login a {
+      font-weight: normal;
+      color: rgb(255, 248, 235);
+    }
+  }
 }
 
 #nav {
+  display: block;
+  font-size: 23px;
   padding: 30px;
   a {
     text-decoration: none;
     font-weight: bold;
     color: #2c3e50;
-
     &.router-link-exact-active {
       color: #42b983;
     }
   }
-}
-#login{
-  position: absolute;
-  float: right;
-  right: 0;
-  padding: 30px;
-  a{
-    text-decoration: none;
-    font-weight: bold;
-    color: #2c3e50;
+
+  display: flex;
+  align-items: center;
+  > * {
+    margin: 0 0.5rem;
   }
 }
 .main-content {
   padding-left: 3rem !important;
   padding-right: 3rem !important;
-}
-#footer-content{
-  padding-top: 8px;
-  background-color: #fff;
-  width: 100%;
-  height: 250px;
-  #footer_center{
-    margin-top: 8px;
-    position: absolute;
-    width: 70%;
-    margin-left: 15%;
-    margin-right: 15%;
-    #about_website,#maintain,#qrcod{
-      width: 21%;
-      margin: 0 1%;
-      float: left;
-      font-size: 14px;
-      text-align: left;
-      #footer_title{
-        font-size: 18px;
-        font-weight: bold;
-      }
-      #qrcod_content{
-        width: 125px;
-        text-align: center;
-        img{
-          width: 123px;
-        }
-      }
-    }
-    #qrcod{
-      width: 50%;
-    }
-    #antdivder{
-      width: 0.2%;
-      height: 150px;
-      float: left;
-      margin: 0 0.4%;
-      background-color: rgb(245, 245, 245);
-    }
-    #archival_information{
-      float: left;
-      margin: 20px 0;
-      width: 100%;
-      text-align: left;
-      #ar_span2{
-        position: absolute;
-        left: 50%;
-      }
-    }
-  }
 }
 </style>

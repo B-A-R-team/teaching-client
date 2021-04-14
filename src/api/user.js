@@ -1,3 +1,9 @@
+/*
+ * @Author: lts
+ * @Date: 2021-04-08 09:26:37
+ * @LastEditTime: 2021-04-14 17:19:44
+ * @FilePath: \teaching-client\src\api\user.js
+ */
 import { request } from '../utils';
 
 /**
@@ -22,5 +28,17 @@ export function addUser(user) {
     url: '',
     method: 'post',
     data: { ...user },
+  });
+}
+/**
+ * 登录
+ * @param {*} user 用户信息
+ * @returns Promise
+ */
+ export function login(account) {
+  return request({
+    url: '/login',
+    method: 'post',
+    data: { ...account },
   });
 }
