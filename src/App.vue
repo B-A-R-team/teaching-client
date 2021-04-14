@@ -2,12 +2,8 @@
   <v-app id="app">
     <v-app-bar app flat>
       <div>教研活动中心</div>
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-      </div>
       <div id="login">
-        <router-link to="">
+        <router-link to="/login">
           登录
         </router-link>
       </div>
