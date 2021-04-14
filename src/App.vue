@@ -8,15 +8,29 @@
       </div>
     </v-app-bar>
     <v-main>
-      <v-container class="main-content" fluid>
+      <!-- <v-container class="main-content" fluid>
         <router-view />
-      </v-container>
+      </v-container> -->
+      <login/>
+      <!-- <Mod/> -->
     </v-main>
     <v-footer absolute app>
       版权信息
     </v-footer>
   </v-app>
 </template>
+
+<script>
+import login from './components/login.vue'
+// import Mod from './components/Modification.vue'
+
+export default {
+  components:{
+    login
+    // Mod
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
