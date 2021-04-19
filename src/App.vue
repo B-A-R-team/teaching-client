@@ -12,7 +12,7 @@
           @exit="exit"
         />
 
-        <div v-if="isLogin">hi，{{userInfo.name}}</div>
+        <div v-if="isLogin">Hi，{{ userInfo.name }}</div>
         <div class="header-login" v-if="!isLogin">
           <router-link to="/login"> 登录 </router-link>
         </div>
@@ -31,8 +31,14 @@
 import Footer from "./components/Footer.vue";
 import InfoCard from "./components/InfoCard.vue";
 import { getToken } from "./utils/auth";
+
 export default {
   components: { InfoCard, Footer },
+  provide() {
+    return {
+      changeLoginState: this.changeLoginState,
+    };
+  },
   data: () => ({
     list: [
       {
@@ -62,19 +68,33 @@ export default {
       },
     ],
     isLogin: false,
-    userInfo:{
-      name: '小李',
-      avatar: '',
-      role: '主任'
-    }
+    userInfo: {
+      name: "小李",
+      avatar: "",
+      role: "主任",
+    },
   }),
   methods: {
     exit() {
       console.log(1);
     },
+    changeLoginState() {
+      this.isLogin = true;
+      const myUserInfo = JSON.parse(
+        window.localStorage.getItem("userInfo") || "{}"
+      );
+      this.userInfo.name = myUserInfo.name;
+      this.userInfo.avatar = myUserInfo.avatar;
+    },
   },
-  created() {
+  mounted() {
+    console.log(11);
     const token = getToken();
+    const myUserInfo = JSON.parse(
+      window.localStorage.getItem("userInfo") || "{}"
+    );
+    this.userInfo.name = myUserInfo.name;
+    this.userInfo.avatar = myUserInfo.avatar;
     token && (this.isLogin = true);
   },
 };

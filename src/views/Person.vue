@@ -1,7 +1,7 @@
 <!--
  * @Author: lts
  * @Date: 2021-04-14 17:52:25
- * @LastEditTime: 2021-04-14 21:57:40
+ * @LastEditTime: 2021-04-15 09:47:05
  * @FilePath: \teaching-client\src\views\Person.vue
 -->
 <template>
@@ -23,7 +23,15 @@
         </div>
       </div>
     </div>
-    <div class="personal-tab">主页</div>
+    <div class="personal-wrapper">
+      <div class="personal-tabs">
+          <div class="tabs-item">
+              <v-icon >mdi-account</v-icon>
+              <span>主页</span>
+          </div>
+      </div>
+      <div class="personal-extra">123</div>
+    </div>
     <div class="personal-body">456</div>
   </div>
 </template>
@@ -36,14 +44,12 @@ export default {
 .personal {
   width: 100%;
   min-height: 300px;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   align-items: center;
   > * {
     width: 75%;
     min-height: 200px;
-    border: 1px solid red;
     &.personal-info {
       background-image: url("../../image/person.webp");
       background-size: 100% 100%;
@@ -72,8 +78,23 @@ export default {
     &.personal-body {
       margin-top: 20px;
     }
-    &.personal-tab {
-      min-height: 50px;
+    &.personal-wrapper {
+      min-height: 66px;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+      .personal-tabs {
+        flex: 0 0 70%;
+        .tabs-item {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+      }
+      .personal-extra {
+        flex: 0 0 30%;
+      }
     }
   }
 }
