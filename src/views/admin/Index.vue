@@ -3,6 +3,10 @@
     <sidebar :visible="visible" />
     <v-app-bar app dense>
       <v-app-bar-nav-icon @click="changeSidebar"></v-app-bar-nav-icon>
+      <v-spacer />
+      <v-app-bar-nav-icon @click="changeDark">
+        <v-icon>mdi-brightness-4</v-icon>
+      </v-app-bar-nav-icon>
     </v-app-bar>
     <v-main>
       <v-breadcrumbs :items="crumbs"></v-breadcrumbs>
@@ -36,6 +40,9 @@ export default {
   methods: {
     changeSidebar() {
       this.visible = !this.visible;
+    },
+    changeDark() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     renderCrumbs(routes) {
       this.crumbs = routes.map(({ name, href }, index) => ({

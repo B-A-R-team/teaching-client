@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app :mini-variant="visible">
+  <v-navigation-drawer app :mini-variant="visible" >
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="title">

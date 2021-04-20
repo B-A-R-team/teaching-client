@@ -9,6 +9,9 @@ export default new Vuetify({
       light: {
         primary: '#fb7299',
       },
+      dark: {
+        primary: '#fb7299',
+      },
     },
   },
 });

@@ -7,7 +7,6 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'Front',
     component: () => import('../views/front/Index.vue'),
     children: [
       {
@@ -34,6 +33,7 @@ const routes = [
     name: '后台管理',
     component: () => import('../views/admin/Index.vue'),
     children: [
+      { path: '/admin/', redirect: '/admin/active' },
       {
         path: '/admin/active',
         name: '活动',
