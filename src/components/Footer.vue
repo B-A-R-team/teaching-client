@@ -1,7 +1,7 @@
 <!--
  * @Author: lts
  * @Date: 2021-04-14 11:22:03
- * @LastEditTime: 2021-04-14 11:30:53
+ * @LastEditTime: 2021-04-20 17:49:34
  * @FilePath: \teaching-client\src\components\Footer.vue
 -->
 <template>
@@ -10,7 +10,7 @@
       <div id="footer_center">
         <div id="about_website">
           <p id="footer_title">关于网站</p>
-          <p>安阳师范学院软件学院-大学生创新创业孵化基地网站</p>
+          <p>安阳师范学院软件学院-教研活动网站</p>
           <p>学校地址-河南省安阳师文明大道265号</p>
         </div>
         <div id="antdivder"></div>

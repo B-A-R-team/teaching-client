@@ -1,14 +1,15 @@
 /*
  * @Author: lts
  * @Date: 2021-04-08 09:26:37
- * @LastEditTime: 2021-04-19 16:43:32
+ * @LastEditTime: 2021-04-20 17:10:28
  * @FilePath: \teaching-client\src\router\index.js
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Mod from '../components/Modification.vue'
-
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,6 +43,14 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+// eslint-disable-next-line no-unused-vars
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+  next()
+})
+router.afterEach(() => {
+  NProgress.done()
 })
 
 export default router

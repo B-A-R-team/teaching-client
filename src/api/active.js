@@ -1,44 +1,28 @@
+import { request } from '../utils';
+
 /**
- * 获取活动列表
- * 
- * 模拟数据
- * 
+ * 按照开始时间已发布获取活动
  * @returns Promise
  */
-export function fetchActiveList() {
-  return Promise.resolve([
-    { header: 'Today' },
-    {
-      avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-      title: 'Brunch this weekend?',
-      subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
+export async function fetchActiveListByType(type) {
+  const res = await request({
+    url: '/active/getActives',
+    method: 'get',
+    params: {
+      type
     },
-    { divider: true, inset: true },
-    {
-      avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-      title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-      subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-    },
-    { divider: true, inset: true },
-    {
-      avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-      title: 'Oui oui',
-      subtitle:
-        '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-    },
-    { divider: true, inset: true },
-    {
-      avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-      title: 'Birthday gift',
-      subtitle:
-        '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-    },
-    { divider: true, inset: true },
-    {
-      avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-      title: 'Recipe to try',
-      subtitle:
-        '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-    },
-  ]);
+  });
+  let arr = []
+  if (res.code === 200) {
+    res.data.forEach(item => {
+      const obj = {}
+      obj.avatar = item.leader.avatar
+      obj.action = item.room_id
+      obj.title = item.title
+      obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.` 
+      arr.push(obj)
+      arr.push({ divider: true, inset: true })
+    })
+  }
+  return Promise.resolve(arr);
 }

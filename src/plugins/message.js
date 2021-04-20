@@ -1,7 +1,7 @@
 /*
  * @Author: lts
  * @Date: 2021-04-08 09:26:37
- * @LastEditTime: 2021-04-19 18:29:32
+ * @LastEditTime: 2021-04-20 21:30:24
  * @FilePath: \teaching-client\src\plugins\message.js
  */
 /**
@@ -26,7 +26,6 @@ message.install = function(Vue) {
   instance.$vuetify = new Vuetify().framework;
   let vm = instance.$mount();
   document.body.appendChild(vm.$el);
-  console.log(instance)
   show = function({ type, message, duration }) {
     duration = duration ?? 5000;
     instance[type](message, duration);

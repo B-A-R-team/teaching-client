@@ -1,7 +1,9 @@
 <template>
   <v-app id="app">
     <v-app-bar id="header" app flat>
-      <div class="header-logo"><a href="/"> 教研活动中心</a></div>
+      <div class="header-logo">
+        <router-link to="/"> 教研活动中心 </router-link>
+      </div>
       <div id="nav">
         <info-card
           v-if="isLogin"
@@ -30,7 +32,7 @@
 <script>
 import Footer from "./components/Footer.vue";
 import InfoCard from "./components/InfoCard.vue";
-import { getToken } from "./utils/auth";
+import { getToken, removeToken } from "./utils/auth";
 
 export default {
   components: { InfoCard, Footer },
@@ -76,7 +78,9 @@ export default {
   }),
   methods: {
     exit() {
-      console.log(1);
+      window.localStorage.clear();
+      removeToken();
+      this.isLogin = false;
     },
     changeLoginState() {
       this.isLogin = true;
@@ -88,7 +92,6 @@ export default {
     },
   },
   mounted() {
-    console.log(11);
     const token = getToken();
     const myUserInfo = JSON.parse(
       window.localStorage.getItem("userInfo") || "{}"
