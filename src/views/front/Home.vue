@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import ActiveCalendar from '../components/ActiveCalendar.vue';
-import ActiveList from '../components/ActiveList.vue';
-import Today from '../components/Today.vue';
+import ActiveCalendar from '../../components/ActiveCalendar.vue';
+import ActiveList from '../../components/ActiveList.vue';
+import Today from '../../components/Today.vue';
 export default {
   name: 'Home',
   components: { ActiveCalendar, Today, ActiveList },

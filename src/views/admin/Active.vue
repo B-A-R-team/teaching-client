@@ -1,9 +1,9 @@
 <template>
-  <router-view></router-view>
+  <div>活动</div>
 </template>
 
 <script>
 export default {};
 </script>
 
-<style lang="scss"></style>
+<style></style>
