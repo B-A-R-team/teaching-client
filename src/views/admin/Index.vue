@@ -1,48 +1,58 @@
 <template>
-  <div>
-    <v-navigation-drawer permanent>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Application
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            subtext
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <div>
-      <router-view></router-view>
-    </div>
-  </div>
+  <v-app id="app">
+    <sidebar :visible="visible" />
+    <v-app-bar app dense>
+      <v-app-bar-nav-icon @click="changeSidebar"></v-app-bar-nav-icon>
+    </v-app-bar>
+    <v-main>
+      <v-breadcrumbs :items="crumbs"></v-breadcrumbs>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
+import Sidebar from './components/Sidebar.vue';
 export default {
+  components: { Sidebar },
   data() {
     return {
-      items: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-        { title: 'Photos', icon: 'mdi-image' },
-        { title: 'About', icon: 'mdi-help-box' },
+      visible: false,
+      crumbs: [
+        {
+          text: '后台管理',
+          disabled: true,
+          href: '/#/admin/',
+        },
+        {
+          text: '活动',
+          href: '/#/admin/active',
+        },
       ],
-      right: null,
     };
+  },
+  methods: {
+    changeSidebar() {
+      this.visible = !this.visible;
+    },
+    renderCrumbs(routes) {
+      this.crumbs = routes.map(({ name, href }, index) => ({
+        text: name,
+        disabled: index === 0,
+        href: href,
+      }));
+    },
+  },
+  watch: {
+    $route: function(val) {
+      const routes = val.matched.map((route) => ({
+        name: route.name,
+        href: route.path,
+      }));
+      this.renderCrumbs(routes);
+    },
   },
 };
 </script>
