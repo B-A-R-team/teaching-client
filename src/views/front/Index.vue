@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue';
-import InfoCard from '@/components/InfoCard.vue';
-import { getToken, removeToken } from '@/utils/auth';
+import Footer from "@/components/Footer.vue";
+import InfoCard from "@/components/InfoCard.vue";
+import { getToken, removeToken } from "@/utils/auth";
 
 export default {
   components: { InfoCard, Footer },
@@ -42,51 +42,57 @@ export default {
       changeLoginState: this.changeLoginState,
     };
   },
-  data: () => ({
-    list: [
-      {
-        text: '个人信息',
-        icon: 'mdi-account',
-        click: () => {
-          console.log('个人信息');
+  data() {
+    return {
+      list: [
+        {
+          text: "个人信息",
+          icon: "mdi-account",
+          click: () => {
+            console.log("个人信息");
+          },
         },
-      },
-      {
-        text: '我的空间',
-        icon: 'mdi-clock',
-      },
-      {
-        text: '我的代办',
-        icon: 'mdi-account',
-        click: () => {
-          console.log('我的代办');
+        {
+          text: "我的空间",
+          icon: "mdi-clock",
+          click: () => {
+            this.$router.push("/person");
+          },
         },
-      },
-      {
-        text: '发布活动',
-        icon: 'mdi-account',
-        click: () => {
-          console.log('发布活动');
+        {
+          text: "我的代办",
+          icon: "mdi-account",
+          click: () => {
+            console.log("我的代办");
+          },
         },
+        {
+          text: "发布活动",
+          icon: "mdi-account",
+          click: () => {
+            console.log("发布活动");
+          },
+        },
+      ],
+      isLogin: false,
+      userInfo: {
+        name: "小李",
+        avatar: "",
+        role: "主任",
       },
-    ],
-    isLogin: false,
-    userInfo: {
-      name: '小李',
-      avatar: '',
-      role: '主任',
-    },
-  }),
+    };
+  },
   methods: {
     exit() {
       window.localStorage.clear();
       removeToken();
       this.isLogin = false;
+      this.$router.replace('/login')
     },
     changeLoginState() {
       this.isLogin = true;
       const myUserInfo = JSON.parse(
-        window.localStorage.getItem('userInfo') || '{}'
+        window.localStorage.getItem("userInfo") || "{}"
       );
       this.userInfo.name = myUserInfo.name;
       this.userInfo.avatar = myUserInfo.avatar;
@@ -95,7 +101,7 @@ export default {
   mounted() {
     const token = getToken();
     const myUserInfo = JSON.parse(
-      window.localStorage.getItem('userInfo') || '{}'
+      window.localStorage.getItem("userInfo") || "{}"
     );
     this.userInfo.name = myUserInfo.name;
     this.userInfo.avatar = myUserInfo.avatar;

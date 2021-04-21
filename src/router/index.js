@@ -1,7 +1,7 @@
 /*
  * @Author: lts
  * @Date: 2021-04-08 09:26:37
- * @LastEditTime: 2021-04-20 17:10:28
+ * @LastEditTime: 2021-04-21 11:04:25
  * @FilePath: \teaching-client\src\router\index.js
  */
 import Vue from 'vue';
@@ -32,7 +32,7 @@ const routes = [
         path: '/person',
         name: 'Person',
 
-        component: () => import('../views/Person.vue'),
+        component: () => import('../views/front/Person.vue'),
       },
       {
         path: '/modification',

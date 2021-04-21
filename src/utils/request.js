@@ -1,17 +1,23 @@
+/*
+ * @Author: lts
+ * @Date: 2021-04-08 09:26:37
+ * @LastEditTime: 2021-04-21 11:27:13
+ * @FilePath: \teaching-client\src\utils\request.js
+ */
 import axios from 'axios';
 import { showMessage } from '../plugins/message';
 import { getToken } from './auth';
 
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
-  timeout: 5000,
+  timeout: 10000,
 });
 
 request.interceptors.request.use(
   (config) => {
     const token = getToken() ?? '';
 
-    if (!token) {
+    if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
 

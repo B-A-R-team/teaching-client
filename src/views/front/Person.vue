@@ -1,8 +1,8 @@
 <!--
  * @Author: lts
  * @Date: 2021-04-14 17:52:25
- * @LastEditTime: 2021-04-15 09:47:05
- * @FilePath: \teaching-client\src\views\Person.vue
+ * @LastEditTime: 2021-04-21 11:05:35
+ * @FilePath: \teaching-client\src\views\front\Person.vue
 -->
 <template>
   <div class="personal">
@@ -51,7 +51,7 @@ export default {
     width: 75%;
     min-height: 200px;
     &.personal-info {
-      background-image: url("../../image/person.webp");
+      background-image: url("../../../image/person.webp");
       background-size: 100% 100%;
       position: relative;
       > .person-msg {
