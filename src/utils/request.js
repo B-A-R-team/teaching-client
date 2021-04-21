@@ -4,15 +4,14 @@ import { getToken } from './auth';
 
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
-  timeout: 5000,
 });
 
 request.interceptors.request.use(
   (config) => {
     const token = getToken() ?? '';
 
-    if (!token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    if (token) {
+      config.headers['Authorization'] = token;
     }
 
     return config;
