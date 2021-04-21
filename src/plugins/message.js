@@ -15,24 +15,38 @@
 
 import Message from '@/components/Message.vue';
 import Vuetify from 'vuetify/lib';
+import Vue from 'vue';
 
 const message = {};
-let show = null;
 
-message.install = function(Vue) {
+// message.install = function(Vue) {
+//   const MessageConstructor = Vue.extend(Message);
+
+//   const instance = new MessageConstructor();
+//   instance.$vuetify = new Vuetify().framework;
+//   let vm = instance.$mount();
+//   document.body.appendChild(vm.$el);
+//   show = function({ type, message, duration }) {
+//     duration = duration ?? 5000;
+//     instance[type](message, duration);
+//   };
+
+//   Vue.prototype.$message = show;
+// };
+
+export function showMessage({ type, message, duration }) {
   const MessageConstructor = Vue.extend(Message);
 
   const instance = new MessageConstructor();
   instance.$vuetify = new Vuetify().framework;
   let vm = instance.$mount();
   document.body.appendChild(vm.$el);
-  show = function({ type, message, duration }) {
-    duration = duration ?? 5000;
-    instance[type](message, duration);
-  };
+  duration = duration ?? 5000;
+  instance[type](message, duration);
+}
 
-  Vue.prototype.$message = show;
+message.install = function(Vue) {
+  Vue.prototype.$message = showMessage;
 };
 
-export const showMessage = show;
 export default message;

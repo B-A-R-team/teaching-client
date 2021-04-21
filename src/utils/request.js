@@ -16,8 +16,9 @@ request.interceptors.request.use(
 
     return config;
   },
-  (err) => {
-    return Promise.reject(err);
+  (error) => {
+    showMessage({ type: 'error', message: error });
+    return Promise.reject(error);
   }
 );
 
@@ -32,6 +33,7 @@ request.interceptors.response.use(
     return result;
   },
   (error) => {
+    showMessage({ type: 'error', message: error });
     return Promise.reject(error);
   }
 );
