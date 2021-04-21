@@ -1,7 +1,7 @@
 <!--
  * @Author: lts
  * @Date: 2021-04-08 09:26:37
- * @LastEditTime: 2021-04-20 21:34:32
+ * @LastEditTime: 2021-04-21 09:59:36
  * @FilePath: \teaching-client\src\components\ActiveList.vue
 -->
 <template>
@@ -75,6 +75,11 @@
                     v-html="item.subtitle"
                   ></v-list-item-subtitle>
                 </v-list-item-content>
+                <v-list-item-action>
+                  <v-list-item-action-text
+                    v-text="item.action"
+                  ></v-list-item-action-text>
+                </v-list-item-action>
               </v-list-item>
             </template>
           </v-list>
@@ -96,8 +101,8 @@ export default {
   },
   methods: {
     async getActiveList() {
-      this.doingItems = await fetchActiveListByType('doing');
-      this.doneItems = await fetchActiveListByType('done');
+      this.doingItems = await fetchActiveListByType("doing");
+      this.doneItems = await fetchActiveListByType("done");
     },
   },
   mounted() {

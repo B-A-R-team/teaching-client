@@ -1,3 +1,9 @@
+<!--
+ * @Author: lts
+ * @Date: 2021-04-08 09:26:37
+ * @LastEditTime: 2021-04-21 10:05:15
+ * @FilePath: \teaching-client\src\components\Today.vue
+-->
 <template>
   <v-card class="doing">
     <v-card-title>
@@ -21,31 +27,6 @@
 export default {
   data: () => ({
     list: [
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: '党课思想汇报',
-        time: '2020.1.1',
-      },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: '教学大纲重订讨论会',
-        time: '2020.1.1',
-      },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: '如何处理挂科学生',
-        time: '2020.1.1',
-      },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: '党课思想汇报',
-        time: '2020.1.1',
-      },
-      {
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        title: '教学大纲重订讨论会',
-        time: '2020.1.1',
-      },
       {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
         title: '如何处理挂科学生',

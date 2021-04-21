@@ -17,9 +17,9 @@ export async function fetchActiveListByType(type) {
     res.data.forEach(item => {
       const obj = {}
       obj.avatar = item.leader.avatar
-      obj.action = item.room_id
+      obj.action = item.room.name
       obj.title = item.title
-      obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.` 
+      obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.`
       arr.push(obj)
       arr.push({ divider: true, inset: true })
     })
