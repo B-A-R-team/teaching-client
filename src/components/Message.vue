@@ -1,3 +1,9 @@
+<!--
+ * @Author: lts
+ * @Date: 2021-04-08 09:26:37
+ * @LastEditTime: 2021-04-19 18:20:51
+ * @FilePath: \teaching-client\src\components\Message.vue
+-->
 <template>
   <div>
     <v-snackbar

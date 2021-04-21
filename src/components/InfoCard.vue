@@ -90,6 +90,7 @@ export default {
 $animate-during: 0.4s;
 
 .infocard-container {
+  font-size: 16px;
   position: relative;
   .info-card__avatar {
     z-index: 9999;

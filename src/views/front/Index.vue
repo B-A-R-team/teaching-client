@@ -1,17 +1,24 @@
 <template>
   <v-app id="app">
-    <v-app-bar app flat>
-      <div>教研活动中心</div>
+    <v-app-bar id="header" app flat>
+      <div class="header-logo">
+        <router-link to="/"> 教研活动中心 </router-link>
+      </div>
+      <v-spacer />
       <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
         <info-card
+          v-if="isLogin"
           avatar="https://cdn.jsdelivr.net/gh/Tuzilow/blog-image/img/teamlogo.jpg"
-          nickname="某某人"
-          role="老板"
+          :nickname="userInfo.name"
+          :role="userInfo.role"
           :list="list"
           @exit="exit"
         />
+
+        <div v-if="isLogin">Hi，{{ userInfo.name }}</div>
+        <div class="header-login" v-if="!isLogin">
+          <router-link to="/login"> 登录 </router-link>
+        </div>
       </div>
     </v-app-bar>
     <v-main>
@@ -19,17 +26,22 @@
         <router-view />
       </v-container>
     </v-main>
-    <v-footer absolute app>
-      版权信息
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
 
 <script>
+import Footer from '@/components/Footer.vue';
 import InfoCard from '@/components/InfoCard.vue';
+import { getToken, removeToken } from '@/utils/auth';
 
 export default {
-  components: { InfoCard },
+  components: { InfoCard, Footer },
+  provide() {
+    return {
+      changeLoginState: this.changeLoginState,
+    };
+  },
   data: () => ({
     list: [
       {
@@ -43,17 +55,56 @@ export default {
         text: '我的空间',
         icon: 'mdi-clock',
       },
+      {
+        text: '我的代办',
+        icon: 'mdi-account',
+        click: () => {
+          console.log('我的代办');
+        },
+      },
+      {
+        text: '发布活动',
+        icon: 'mdi-account',
+        click: () => {
+          console.log('发布活动');
+        },
+      },
     ],
+    isLogin: false,
+    userInfo: {
+      name: '小李',
+      avatar: '',
+      role: '主任',
+    },
   }),
   methods: {
     exit() {
-      console.log(1);
+      window.localStorage.clear();
+      removeToken();
+      this.isLogin = false;
     },
+    changeLoginState() {
+      this.isLogin = true;
+      const myUserInfo = JSON.parse(
+        window.localStorage.getItem('userInfo') || '{}'
+      );
+      this.userInfo.name = myUserInfo.name;
+      this.userInfo.avatar = myUserInfo.avatar;
+    },
+  },
+  mounted() {
+    const token = getToken();
+    const myUserInfo = JSON.parse(
+      window.localStorage.getItem('userInfo') || '{}'
+    );
+    this.userInfo.name = myUserInfo.name;
+    this.userInfo.avatar = myUserInfo.avatar;
+    token && (this.isLogin = true);
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -61,15 +112,42 @@ export default {
   text-align: center;
   color: #2c3e50;
   overflow-y: hidden;
+  background-color: rgb(252, 252, 252);
+  #header {
+    .v-toolbar__content,
+    .v-toolbar__extension {
+      justify-content: space-between;
+    }
+    .header-logo {
+      a {
+        color: rgb(255, 248, 235);
+        text-decoration: none;
+      }
+    }
+    font-size: 25px;
+    color: rgb(255, 248, 235);
+    // background-color: #1fc8db;
+    background-image: linear-gradient(
+      141deg,
+      #1fc8db 0%,
+      #7acad3 50%,
+      pink 71%
+    );
+    .header-login a {
+      font-weight: normal;
+      color: rgb(255, 248, 235);
+    }
+  }
 }
 
 #nav {
+  display: block;
+  font-size: 23px;
   padding: 30px;
-
   a {
+    text-decoration: none;
     font-weight: bold;
     color: #2c3e50;
-
     &.router-link-exact-active {
       color: #42b983;
     }
@@ -81,7 +159,6 @@ export default {
     margin: 0 0.5rem;
   }
 }
-
 .main-content {
   padding-left: 3rem !important;
   padding-right: 3rem !important;

@@ -1,7 +1,15 @@
+/*
+ * @Author: lts
+ * @Date: 2021-04-08 09:26:37
+ * @LastEditTime: 2021-04-20 17:10:28
+ * @FilePath: \teaching-client\src\router\index.js
+ */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/front/Home.vue';
-
+import Mod from '../components/Modification.vue';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 Vue.use(VueRouter);
 
 const routes = [
@@ -16,18 +24,23 @@ const routes = [
         meta: { title: '首页 | 教研管理' },
       },
       {
-        path: '/about',
-        name: '关于',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "about" */ '../views/front/About.vue'),
-        meta: { title: '关于 | 教研管理' },
+        path: '/login',
+        name: 'Login',
+        component: () => import('../components/login.vue'),
+      },
+      {
+        path: '/person',
+        name: 'Person',
+
+        component: () => import('../views/Person.vue'),
+      },
+      {
+        path: '/modification',
+        name: 'modification',
+        component: Mod,
       },
     ],
   },
-
   {
     path: '/admin',
     name: '后台管理',
@@ -55,10 +68,14 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  NProgress.start();
   if (to.meta.title) {
     document.title = to.meta.title;
   }
   next();
+});
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
