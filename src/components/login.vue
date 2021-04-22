@@ -1,9 +1,3 @@
-<!--
- * @Author: lts
- * @Date: 2021-04-08 11:28:06
- * @LastEditTime: 2021-04-20 21:37:58
- * @FilePath: \teaching-client\src\components\login.vue
--->
 <template>
   <v-app>
     <div class="page">
@@ -22,16 +16,16 @@
               label="请输入密码"
               v-model="password"
             ></v-text-field>
-            <v-btn class="btn" elevation="2" large medium @click="postComment"
+            <v-btn class="btn" elevation="3" large medium @click="postCommit"
               >登录</v-btn
             >
-            <v-btn class="btn" elevation="2" large medium @click="remove"
+            <v-btn class="btn" elevation="3" large medium @click="remove"
               >重置</v-btn
             >
           </div>
-          <div class="bottom">
+          <!-- <div class="bottom">
             <span class="forget">忘记密码？</span>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -41,6 +35,7 @@
 <script>
 import { resLogin } from "../api/user";
 import { setToken } from "../utils/auth";
+import NProgress from 'nprogress';
 export default {
   data() {
     return {
@@ -48,9 +43,11 @@ export default {
       password: "",
     };
   },
+  //调用父组件的数据
   inject: ["changeLoginState"],
   methods: {
-    async postComment() {
+    async postCommit() {
+      NProgress.start()
       const { job_id, password } = this;
       if (job_id.length > 0 || password.length > 0) {
         const res = await resLogin({ job_id, password });
@@ -61,10 +58,12 @@ export default {
             duration: 2000,
           });
         }
+        //存储用户信息
         window.localStorage.setItem("userInfo", JSON.stringify(res.data));
         setToken(res.data.token);
         this.$message({ type: "success", message: "登录成功", duration: 2000 });
-        this.changeLoginState()
+        //改变登录状态
+        this.changeLoginState(); 
         this.$router.push("/");
       } else {
         this.$message({
@@ -73,6 +72,7 @@ export default {
           duration: 2000,
         });
       }
+      NProgress.done()
     },
     remove() {
       (this.job_id = ""), (this.password = "");
@@ -84,27 +84,36 @@ export default {
 <style lang="scss">
 .page {
   width: 100%;
-  // height: 100%;
+  height: 750px;
   overflow: hidden;
-  background-color: #eea8a6;
+  background-image: linear-gradient(
+      141deg,
+      #1fc8db 0%,
+      #7acad3 50%,
+      pink 71%
+    );
   .bgImg {
-    padding-top: 150px;
-    width: 1300px;
+    padding-top: 140px;
+    width: 600px;
     margin: 0 auto;
-    height: 750px;
-    background-image: url("../../public/images/girs2.png");
+    height: 500px;
+    // background-image: url("../../public/images/girs2.png");
     background-size: contain;
   }
 }
-
 .login {
-  width: 350px;
-  height: 500px;
+  width: 400px;
+  height: 360px;
   margin: 0 auto;
+  margin-top: 20px;
+  border-radius: 5px;
   display: block;
+  background-color: rgb(240,255,255,0.4);
   .median {
-    width: 100%;
+    width: 350px;
     height: 350px;
+    margin: 0 auto;
+    padding-top: 20px;
     h3 {
       padding-top: 10px;
       text-align: center;
@@ -118,7 +127,7 @@ export default {
     }
     .btn {
       width: 300px;
-      height: 50px;
+      height: 30px;
       margin: 15px 25px;
     }
   }

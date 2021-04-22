@@ -1,13 +1,6 @@
-/*
- * @Author: lts
- * @Date: 2021-04-08 09:26:37
- * @LastEditTime: 2021-04-21 11:04:25
- * @FilePath: \teaching-client\src\router\index.js
- */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/front/Home.vue';
-import Mod from '../components/Modification.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 Vue.use(VueRouter);
@@ -31,14 +24,19 @@ const routes = [
       {
         path: '/person',
         name: 'Person',
-
         component: () => import('../views/front/Person.vue'),
       },
       {
-        path: '/modification',
-        name: 'modification',
-        component: Mod,
+        path: '/activeDetail',
+        name: 'ActiveDetail',
+        component: () => import('../views/front/ActiveDetail.vue'),
       },
+      {
+        path: '/modification',
+        name: 'Modification',
+        component: () => import('../components/Modification.vue'),
+      },
+
     ],
   },
   {
