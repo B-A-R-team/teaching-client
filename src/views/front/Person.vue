@@ -1,5 +1,5 @@
 <template>
-  <div class="personal">
+  <div class="personal mb-8">
     <v-row>
       <v-col cols="3">
         <info />
