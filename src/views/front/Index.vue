@@ -115,7 +115,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   overflow-y: hidden;
   background-color: rgb(252, 252, 252);
@@ -132,12 +131,10 @@ export default {
     }
     font-size: 25px;
     color: rgb(255, 248, 235);
-    // background-color: #1fc8db;
     background-image: linear-gradient(
       141deg,
-      #1fc8db 0%,
-      #7acad3 50%,
-      pink 71%
+      #1F8DDA 0%,
+      #1F8DDA 71%
     );
     .header-login a {
       font-weight: normal;
@@ -168,5 +165,13 @@ export default {
 .main-content {
   padding-left: 3rem !important;
   padding-right: 3rem !important;
+}
+.container {
+  margin: 0!important;
+}
+@media (min-width: 700px){
+  .container {
+    max-width: 1900px!important;
+  }
 }
 </style>

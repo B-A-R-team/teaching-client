@@ -1,81 +1,188 @@
 <template>
-  <v-card class="overflow-hidden">
-    <v-app-bar
-      absolute
-      color="#6A76AB"
-      dark
-      shrink-on-scroll
-      prominent
-      src="https://picsum.photos/1920/1080?random"
-      fade-img-on-scroll
-      scroll-target="#scrolling-techniques-3"
-    >
-      <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
-        ></v-img>
-      </template>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-app-bar-title>活动详情</v-app-bar-title>
-      <v-spacer></v-spacer>
-      <template v-slot:extension>
-        <v-tabs align-with-title v-model="tab">
-          <v-tab>正文</v-tab>
-        </v-tabs>
-      </template>
-    </v-app-bar>
-    <!-- 导航条结束，标题内容 -->
+  <v-container class="active-detail">
+    <v-row justify="center">
+      <v-col :lg="10" :md="12" :sm="12">
+        <v-card>
+          <v-img
+            height="200px"
+            src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
+          >
+            <v-app-bar flat color="rgba(0, 0, 0, 0)">
+              <v-toolbar-title class="title white--text pl-0">
+                活动详情
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-app-bar>
 
-    <v-tabs-items v-model="tab" class="tap">
-      <v-tab-item v-for="item in list" :key="item.tab">
-        <v-card :loading="loading" max-width="800"> </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-    <v-sheet id="scrolling-techniques-3" class="" max-height="1600">
-      <v-container style="height: 300px"> </v-container>
-    </v-sheet>
-  </v-card>
+            <v-card-title class="white--text mt-5">
+              <v-avatar size="64">
+                <img
+                  alt="user"
+                  src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg"
+                />
+              </v-avatar>
+              <div class="leader-info">
+                <div class="ml-3 mb-1">小李</div>
+                <div class="ml-3 grey--text subtitle-2">教研室111</div>
+              </div>
+            </v-card-title>
+          </v-img>
+
+          <v-card-text>
+            <div class="font-weight-bold ml-1 mb-2 title">
+              主题：营造美丽安师
+              <span class="ml-3 grey--text subtitle-2"
+                >2021-04-11 ~ 2021-04-12</span
+              >
+            </div>
+            <v-divider></v-divider>
+            <div
+              class="font-weight-bold ml-1 mb-2 title mt-3"
+              :style="{ minHeight: '250px' }"
+            >
+              正文：
+              <span
+                >Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Beatae quidem magnam inventore nesciunt accusamus ducimus
+                assumenda eos facilis itaque ullam, quae, mollitia in dolore,
+                necessitatibus hic fugit minus nobis eius!</span
+              >
+            </div>
+            <v-divider></v-divider>
+
+            <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
+              参加教师：
+              <span>小李，小王，小张</span>
+            </div>
+            <v-divider></v-divider>
+            <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
+              记录图片：
+              <div class="record-imgs">
+                <v-img
+                  src="https://picsum.photos/350/165?random"
+                  lazy-src="https://picsum.photos/id/11/10/6"
+                  aspect-ratio="1"
+                  class="grey lighten-2"
+                  v-for="item in 7"
+                  :key="item"
+                >
+                  <template v-slot:placeholder>
+                    <v-row
+                      class="fill-height ma-0"
+                      align="center"
+                      justify="center"
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                      ></v-progress-circular>
+                    </v-row>
+                  </template>
+                </v-img>
+              </div>
+            </div>
+            <v-divider></v-divider>
+            <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
+              记录文件：
+              <div class="files-list">
+                <p class="ml-16" :style="{ textIndent: '1rem' }">
+                  <a>关于营造美丽安师.txt</a> --- 张三
+                </p>
+                <p class="ml-16" :style="{ textIndent: '1rem' }">
+                  <a>关于营造美丽安师.txt</a> --- 张三
+                </p>
+                <p class="ml-16" :style="{ textIndent: '1rem' }">
+                  <a>关于营造美丽安师.txt</a> --- 张三
+                </p>
+                <p class="ml-16" :style="{ textIndent: '1rem' }">
+                  <a>关于营造美丽安师.txt</a> --- 张三
+                </p>
+              </div>
+            </div>
+            <v-divider></v-divider>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col :lg="10" :md="12" :sm="12">
+        <v-card elevation="2" class="pt-2">
+          <div class="commit-record ml-2 mr-2">
+            <v-avatar size="50">
+              <img
+                alt="user"
+                src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg"
+              />
+            </v-avatar>
+            <div class="commit-editor ml-2">
+              <v-textarea
+                height="100"
+                no-resize
+                outlined
+                name="input-7-4"
+                label="请输入内容"
+                clearable
+                clear-icon="mdi-close-circle"
+              ></v-textarea>
+            </div>
+          </div>
+          <v-file-input class="ml-14 mr-4" chips small-chips truncate-length="15"></v-file-input>
+          <div style="text-align: right">
+            <v-btn class="mb-2 mr-2" depressed color="primary"> 提交 </v-btn>
+          </div>
+          <v-divider></v-divider>
+          <div v-for="item in 5" :key="item">
+            <div class="mt-2 mb-2">
+              <v-avatar class="ml-2" size="40">
+                <img
+                  alt="user"
+                  src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg"
+                />
+              </v-avatar>
+              <span class="ml-4">老王：</span>
+              <span class="ml-1">这次活动收获颇多~ </span>
+              <span class="ml-3 grey--text subtitle-2">2021-04-21</span>
+            </div>
+            <v-divider />
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
-
 <script>
 export default {
   data() {
-    return {
-      loading: false,
-      selection: 1,
-      tab: "",
-      list: [{ tab: "正文", content: "正文内容,发起者,开始，结束日期，" }],
-    };
-  },
-  methods: {
-    submit() {
-      this.loading = true;
-      setTimeout(() => (this.loading = false), 2000);
-    },
+    return {};
   },
 };
 </script>
-
-<style >
-.tap {
-  position: absolute;
-  top: 300px;
-  left: 100px;
-}
-.v-window-item {
-  height: 1600px;
-  width: 800px;
-}
-.v-card__title {
-  padding: 10px;
-}
-
-.text-area {
-  position: absolute;
-  top: 1000px;
-  left: 100px;
-  width: 300px;
-  height: 300px;
+<style lang="scss">
+.active-detail {
+  .leader-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    text-align: left;
+  }
+  .record-imgs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    // grid-template-rows: repeat(auto-fill, 100px);
+  }
+  // text-indent: 1rem;
+  .commit-record {
+    display: flex;
+    .commit-editor {
+      width: 100%;
+      .v-text-field__details {
+        display: none;
+      }
+    }
+  }
 }
 </style>

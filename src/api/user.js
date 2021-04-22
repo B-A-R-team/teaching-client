@@ -35,10 +35,13 @@ export function addUser(user) {
  * @param {*} user 用户信息
  * @returns Promise
  */
- export function resLogin(account) {
+export function resLogin(account) {
   return request({
     url: '/user/login',
     method: 'post',
     data: { ...account },
   });
 }
+// export function fetchRegister() {
+
+// }

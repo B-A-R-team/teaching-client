@@ -5,7 +5,7 @@
  * @FilePath: \teaching-client\src\components\Footer.vue
 -->
 <template>
-  <v-footer absolute app style="width:100%;border-top:2px solid #eee;">
+  <v-footer absolute app style="width:100%;border-top:2px solid #eee; padding:0">
     <div id="footer-content">
       <div id="footer_center">
         <div id="about_website">
