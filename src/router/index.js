@@ -20,23 +20,34 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: () => import('../components/login.vue'),
+        meta: { title: '登录 | 教研管理' },
       },
       {
         path: '/person',
         name: 'Person',
         component: () => import('../views/front/Person.vue'),
+        children: [
+          { path: '/', redirect: '/person/home' },
+          {
+            path: '/person/home',
+            name: 'PersonHome',
+            component: () => import('../views/front/PersonHome.vue'),
+            meta: { title: '个人空间 | 教研室管理' },
+          },
+          {
+            path: '/person/settings',
+            name: 'Modification',
+            component: () => import('../views/front/Modification.vue'),
+            meta: { title: '设置 | 教研管理' },
+          },
+        ],
       },
       {
         path: '/activeDetail',
         name: 'ActiveDetail',
         component: () => import('../views/front/ActiveDetail.vue'),
+        meta: { title: '活动详情 | 教研管理' },
       },
-      {
-        path: '/modification',
-        name: 'Modification',
-        component: () => import('../components/Modification.vue'),
-      },
-
     ],
   },
   {

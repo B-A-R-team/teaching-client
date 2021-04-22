@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import Footer from "@/components/Footer.vue";
-import InfoCard from "@/components/InfoCard.vue";
-import { getToken, removeToken } from "@/utils/auth";
+import Footer from '@/components/Footer.vue';
+import InfoCard from '@/components/InfoCard.vue';
+import { getToken, removeToken } from '@/utils/auth';
 
 export default {
   components: { InfoCard, Footer },
@@ -46,39 +46,39 @@ export default {
     return {
       list: [
         {
-          text: "个人信息",
-          icon: "mdi-account",
+          text: '个人信息',
+          icon: 'mdi-account',
           click: () => {
-            console.log("个人信息");
+            console.log('个人信息');
           },
         },
         {
-          text: "我的空间",
-          icon: "mdi-clock",
+          text: '我的空间',
+          icon: 'mdi-clock',
           click: () => {
-            this.$router.push("/person");
+            this.$router.push('/person');
           },
         },
         {
-          text: "我的代办",
-          icon: "mdi-account",
+          text: '我的代办',
+          icon: 'mdi-account',
           click: () => {
-            console.log("我的代办");
+            console.log('我的代办');
           },
         },
         {
-          text: "发布活动",
-          icon: "mdi-account",
+          text: '发布活动',
+          icon: 'mdi-account',
           click: () => {
-            console.log("发布活动");
+            console.log('发布活动');
           },
         },
       ],
       isLogin: false,
       userInfo: {
-        name: "小李",
-        avatar: "",
-        role: "主任",
+        name: '小李',
+        avatar: '',
+        role: '主任',
       },
     };
   },
@@ -87,12 +87,12 @@ export default {
       window.localStorage.clear();
       removeToken();
       this.isLogin = false;
-      this.$router.replace('/login')
+      this.$router.replace('/login');
     },
     changeLoginState() {
       this.isLogin = true;
       const myUserInfo = JSON.parse(
-        window.localStorage.getItem("userInfo") || "{}"
+        window.localStorage.getItem('userInfo') || '{}'
       );
       this.userInfo.name = myUserInfo.name;
       this.userInfo.avatar = myUserInfo.avatar;
@@ -101,7 +101,7 @@ export default {
   mounted() {
     const token = getToken();
     const myUserInfo = JSON.parse(
-      window.localStorage.getItem("userInfo") || "{}"
+      window.localStorage.getItem('userInfo') || '{}'
     );
     this.userInfo.name = myUserInfo.name;
     this.userInfo.avatar = myUserInfo.avatar;
