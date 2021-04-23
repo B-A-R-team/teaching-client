@@ -45,3 +45,6 @@ export function resLogin(account) {
     data: { ...account },
   });
 }
+// export function fetchRegister() {
+
+// }
