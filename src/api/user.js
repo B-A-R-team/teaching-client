@@ -10,11 +10,14 @@ import { request } from '../utils';
  * 获取用户列表
  * @returns Promise
  */
-export function fetchUserList() {
+export function fetchUserList(page = 0, pageSize = 10) {
   return request({
-    url: '',
+    url: '/user/getAllUsers',
     method: 'get',
-    params: {},
+    params: {
+      startNum: page * pageSize,
+      pageSize,
+    },
   });
 }
 
@@ -35,7 +38,7 @@ export function addUser(user) {
  * @param {*} user 用户信息
  * @returns Promise
  */
- export function resLogin(account) {
+export function resLogin(account) {
   return request({
     url: '/user/login',
     method: 'post',

@@ -9,7 +9,8 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import message from './plugins/message';
 import router from './router';
-import './reset.scss'
+import './reset.scss';
+
 Vue.config.productionTip = false;
 Vue.use(message);
 

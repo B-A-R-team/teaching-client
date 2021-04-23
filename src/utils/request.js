@@ -18,13 +18,14 @@ request.interceptors.request.use(
     const token = getToken() ?? '';
 
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['Authorization'] = token;
     }
 
     return config;
   },
-  (err) => {
-    return Promise.reject(err);
+  (error) => {
+    showMessage({ type: 'error', message: error });
+    return Promise.reject(error);
   }
 );
 
@@ -39,6 +40,7 @@ request.interceptors.response.use(
     return result;
   },
   (error) => {
+    showMessage({ type: 'error', message: error });
     return Promise.reject(error);
   }
 );
