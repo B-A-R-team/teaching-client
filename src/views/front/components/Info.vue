@@ -7,7 +7,7 @@
       </v-avatar>
       <v-spacer />
     </v-card-title>
-    <v-card-subtitle>
+    <v-card-subtitle style="text-align: center">
       <p class="text-h6 mt-2 mb-2">{{ name }}</p>
       <v-chip small label color="primary" text-color="white">
         {{ role }}
