@@ -1,10 +1,12 @@
 <template>
   <v-app>
     <div class="page">
-      <div class="bgImg">
-        <div class="login">
+        <div class="login mx-auto">
+          <div class="top_title">
+            <h2>教务管理系统</h2>
+          </div>
           <div class="median">
-            <h3>登录</h3>
+            <span class="subtitle mx-auto">工号密码登录</span>
             <v-text-field
               class="user"
               label="请输入工号"
@@ -16,18 +18,19 @@
               label="请输入密码"
               v-model="password"
             ></v-text-field>
+            <div class="other mx-auto">
+              <span>
+                <input type="checkbox" checked>
+                自动登录
+              </span>
+              <a class="forget">忘记密码？</a>
+            </div>
             <v-btn class="btn" elevation="3" large medium @click="postCommit"
-              >登录</v-btn
-            >
-            <v-btn class="btn" elevation="3" large medium @click="remove"
-              >重置</v-btn
-            >
+              >登录</v-btn>
+            <!-- <v-btn class="btn" elevation="3" large medium @click="register"
+              >注册</v-btn> -->
           </div>
-          <!-- <div class="bottom">
-            <span class="forget">忘记密码？</span>
-          </div> -->
         </div>
-      </div>
     </div>
   </v-app>
 </template>
@@ -74,8 +77,8 @@ export default {
       }
       NProgress.done()
     },
-    remove() {
-      (this.job_id = ""), (this.password = "");
+    register() {
+      // this.$router.push("/register");
     },
   },
 };
@@ -84,59 +87,69 @@ export default {
 <style lang="scss">
 .page {
   width: 100%;
-  height: 750px;
+  height: 480px;
   overflow: hidden;
-  background-image: linear-gradient(
-      141deg,
-      #1fc8db 0%,
-      #7acad3 50%,
-      pink 71%
-    );
-  .bgImg {
-    padding-top: 140px;
-    width: 600px;
-    margin: 0 auto;
-    height: 500px;
-    // background-image: url("../../public/images/girs2.png");
-    background-size: contain;
-  }
+  background: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
+  background-repeat: no-repeat;
+  margin-top: 20px;
 }
 .login {
   width: 400px;
   height: 360px;
-  margin: 0 auto;
   margin-top: 20px;
-  border-radius: 5px;
-  display: block;
-  background-color: rgb(240,255,255,0.4);
+  .top_title{
+    margin: 20px 0;
+  }
   .median {
+    .subtitle{
+      cursor:default;
+      display:block;
+      height: 40px;
+      width: 300px;
+      line-height: 40px;
+      color:#40a9ff;
+    }
     width: 350px;
-    height: 350px;
+    height: 380px;
     margin: 0 auto;
     padding-top: 20px;
-    h3 {
-      padding-top: 10px;
-      text-align: center;
+    input{
+      //取消输入框的背景
+      -webkit-box-shadow:none;
     }
     .user {
       outline: none;
       width: 300px;
       height: 50px;
-      // padding-left: 10px;
       margin: 15px 25px;
+      background:transparent;
+      }
+    .other{
+      display:inline-block;
+      width: 300px;
+      height: 50px;
+      line-height: 50px;
+      span{
+        float: left;
+      }
+      a{
+        float: right;
+      }
     }
     .btn {
       width: 300px;
       height: 30px;
       margin: 15px 25px;
-    }
+      background-color: #40a9ff;
+      color: #fff;
+      }
   }
   .bottom {
     width: 100%;
+    
     .forget {
       float: left;
       margin-left: 25px;
-      color: rgb(1, 1, 250);
       cursor: pointer;
     }
   }

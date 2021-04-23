@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <div class="mesBox">
+        <v-card class="mesBox">
             <div class="listBox">
                 <v-list class="meslist">
                     <h1>个人信息修改</h1>
@@ -10,11 +10,6 @@
                         <v-avatar color="primary" size="60">
                             <img src="https://cdn.vuetifyjs.com/images/john.jpg" >
                         </v-avatar>
-                        <!-- 上传头像 不能就删-->
-                        <v-file-input class="upCam" label="File input" hide-input filled
-                            prepend-icon="mdi-camera"> 
-                        </v-file-input>
-
                     </v-list-item>
                     <v-list-item>
                         <label>姓名：</label>
@@ -39,7 +34,7 @@
                 <v-btn class="btn" elevation="2" large medium >保存</v-btn>
                 <v-btn class="btn" elevation="2" large medium >重置</v-btn>
             </div>
-        </div>
+        </v-card>
     </v-app>
 </template>
 
@@ -69,10 +64,11 @@ export default {
 
 <style lang="scss">
 .mesBox{
-    width: 1200px;
+    width: 800px;
+    height: 540px;
     margin: 0 auto;
     .listBox{
-        width: 800px;
+        width: 400px;
         margin: 0 auto;
         .meslist{
             h1{

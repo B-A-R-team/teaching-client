@@ -34,7 +34,7 @@ const routes = [
       {
         path: '/modification',
         name: 'Modification',
-        component: () => import('../components/Modification.vue'),
+        component: () => import('../views/front/Modification.vue'),
       },
 
     ],
