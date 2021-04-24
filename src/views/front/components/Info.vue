@@ -21,7 +21,9 @@
         :key="index"
         :to="todo.link"
       >
-        <v-list-item-title style="text-align:left;">{{ todo.label }}</v-list-item-title>
+        <v-list-item-title style="text-align:left;">{{
+          todo.label
+        }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-card>
@@ -60,11 +62,9 @@ export default {
   mounted() {
     const userInfo = this.getUserInfo();
     if (userInfo) {
-      this.avatar =
-        userInfo.avatar ??
-        'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/20200914avatar.jpg';
+      this.avatar = process.env.VUE_APP_BASE_URL + userInfo.avatar;
       this.name = userInfo.name;
-      this.role = '主任';
+      this.role = userInfo.role.name;
     } else {
       this.avatar =
         'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/20200914avatar.jpg';
