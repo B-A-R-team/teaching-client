@@ -9,20 +9,36 @@ export async function fetchActiveListByType(type) {
     url: '/active/getActives',
     method: 'get',
     params: {
-      type
+      type,
     },
   });
-  let arr = []
+  let arr = [];
   if (res.code === 200) {
-    res.data.forEach(item => {
-      const obj = {}
-      obj.avatar = item.leader.avatar
-      obj.action = item.room.name
-      obj.title = item.title
-      obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.`
-      arr.push(obj)
-      arr.push({ divider: true, inset: true })
-    })
+    res.data.forEach((item) => {
+      const obj = {};
+      obj.avatar = item.leader.avatar;
+      obj.action = item.room.name;
+      obj.title = item.title;
+      obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.`;
+      arr.push(obj);
+      arr.push({ divider: true, inset: true });
+    });
   }
   return Promise.resolve(arr);
+}
+
+/**
+ * 获取用户参与的活动
+ * @param {Number} userId 用户ID
+ * @returns 用户参与的活动列表
+ */
+export async function fetchActiveByUserId(userId, roomId) {
+  return await request({
+    url: '/active/perActive',
+    method: 'get',
+    params: {
+      user_id: userId,
+      room_id: roomId,
+    },
+  });
 }
