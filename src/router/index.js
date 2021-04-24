@@ -19,8 +19,8 @@ const routes = [
       {
         path: '/login',
         name: 'Login',
-        component: () => import('../components/login.vue'),
-        meta: { title: '登录 | 教研管理' },
+        component: () => import('../views/front/login.vue'),
+        meta: { title: '登录 | 教研室管理' },
       },
       {
         path: '/person',
