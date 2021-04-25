@@ -27,6 +27,11 @@ const routes = [
         component: () => import('../views/front/Person.vue'),
       },
       {
+        path: '/perActive',
+        name: 'PerActive',
+        component: () => import('../components/ActivePer.vue'),
+      },
+      {
         path: '/activeDetail',
         name: 'ActiveDetail',
         component: () => import('../views/front/ActiveDetail.vue'),

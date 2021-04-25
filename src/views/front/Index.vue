@@ -63,7 +63,7 @@ export default {
           text: "我的代办",
           icon: "mdi-account",
           click: () => {
-            console.log("我的代办");
+            this.$router.push("/perActive");
           },
         },
         {
