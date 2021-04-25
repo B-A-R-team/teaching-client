@@ -16,24 +16,23 @@
 
             <v-card-title class="white--text mt-5">
               <v-avatar size="64">
-                <img
-                  alt="user"
-                  src="https://cdn.pixabay.com/photo/2020/06/24/19/12/cabbage-5337431_1280.jpg"
-                />
+                <img alt="user" :src="BASE_URL + activeDetail.leader.avatar" />
               </v-avatar>
               <div class="leader-info">
-                <div class="ml-3 mb-1">小李</div>
-                <div class="ml-3 grey--text subtitle-2">教研室111</div>
+                <div class="ml-3 mb-1">{{ activeDetail.leader.name }}</div>
+                <div class="ml-3 grey--text subtitle-2">
+                  {{ activeDetail.room_name }}
+                </div>
               </div>
             </v-card-title>
           </v-img>
 
           <v-card-text>
             <div class="font-weight-bold ml-1 mb-2 title">
-              主题：营造美丽安师
-              <span class="ml-3 grey--text subtitle-2"
-                >2021-04-11 ~ 2021-04-12</span
-              >
+              主题： {{ activeDetail.title }}
+              <span class="ml-3 grey--text subtitle-2">
+                {{ activeDetail.start_time }} ~ {{ activeDetail.end_time }}
+              </span>
             </div>
             <v-divider></v-divider>
             <div
@@ -41,18 +40,22 @@
               :style="{ minHeight: '250px' }"
             >
               正文：
-              <span
-                >Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Beatae quidem magnam inventore nesciunt accusamus ducimus
-                assumenda eos facilis itaque ullam, quae, mollitia in dolore,
-                necessitatibus hic fugit minus nobis eius!</span
-              >
+              <span>
+                {{ activeDetail.content }}
+              </span>
             </div>
             <v-divider></v-divider>
 
             <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
               参加教师：
-              <span>小李，小王，小张</span>
+              <span
+                v-for="(item, index) in activeDetail.join_users"
+                :key="index"
+                >{{ item }}
+                <span v-if="activeDetail.join_users.length - 1 > index">
+                  ,
+                </span>
+              </span>
             </div>
             <v-divider></v-divider>
             <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
@@ -126,7 +129,21 @@
               ></v-textarea>
             </div>
           </div>
-          <v-file-input class="ml-14 mr-4" chips small-chips truncate-length="15"></v-file-input>
+          <v-file-input
+            class="ml-14 mr-4"
+            label="点击选择文件"
+            placeholder="上传你的文件"
+            show-size
+            chips
+            multiple
+            prepend-icon="mdi-paperclip"
+          >
+            <template v-slot:selection="{ text }">
+              <v-chip small label color="primary">
+                {{ text }}
+              </v-chip>
+            </template>
+          </v-file-input>
           <div style="text-align: right">
             <v-btn class="mb-2 mr-2" depressed color="primary"> 提交 </v-btn>
           </div>
@@ -151,9 +168,59 @@
   </v-container>
 </template>
 <script>
+import { fetchActiveDetail } from "../../api/active";
+// eslint-disable-next-line no-unused-vars
+const imgWhitelist = [
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".gif",
+  ".wbmp",
+  ".webp",
+  ".svg",
+];
+import { BASE_URL } from "../../utils/constant";
 export default {
   data() {
-    return {};
+    return {
+      BASE_URL,
+      activeDetail: {
+        title: "",
+        content: "",
+        leader: {
+          name: "",
+          id: "",
+          avatar: "",
+        },
+        files: "",
+        record_files: "",
+        room_id: {},
+        start_time: "",
+        end_time: "",
+        join_users: "",
+        record_imgs: [],
+        record_txt: [],
+      },
+    };
+  },
+  methods: {
+    async getActiveDetail(id) {
+      const res = await fetchActiveDetail(id);
+      let join_users = JSON.parse(res.data.join_users);
+      const tempArr = [];
+      join_users.forEach((item) => {
+        tempArr.push(item.name);
+      });
+
+      if (res.code === 200) {
+        this.activeDetail = res.data;
+        this.activeDetail.join_users = tempArr;
+        console.log(this.activeDetail);
+      }
+    },
+  },
+  mounted() {
+    this.getActiveDetail(this.$route.query.act_id);
   },
 };
 </script>

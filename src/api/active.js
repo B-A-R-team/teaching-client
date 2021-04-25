@@ -42,3 +42,10 @@ export async function fetchActiveByUserId(userId, roomId) {
     },
   });
 }
+
+export const fetchActiveDetail = (id) => request.get('/active/getActiveById', {
+  params: {
+    type: 'act',
+    id
+  }
+})

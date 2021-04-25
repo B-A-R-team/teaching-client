@@ -1,0 +1,1 @@
+export const BASE_URL = 'http://www.zxyc.xyz:3450';
