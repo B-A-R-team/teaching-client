@@ -19,13 +19,13 @@
             <v-btn-toggle
               v-model="text"
               tile
-              color="deep-purple accent-3"
+              color="teal accent-4"
               group
             >
-              <v-btn value="yes" @click="getAgreeActive(item.active_id, true)">
+              <v-btn id="agree_btn" value="yes" @click="getAgreeActive(item.active_id, true)">
                 同意
               </v-btn>
-              <v-btn value="no" @click="getAgreeActive(item.active_id, false)">
+              <v-btn  id="agree_btn"  value="no" @click="getAgreeActive(item.active_id, false)">
                 不同意
               </v-btn>
             </v-btn-toggle>
@@ -76,6 +76,8 @@ export default {
   margin: 0;
   padding: 0;
   text-align: left;
-  
+  #card_title {
+    border-bottom: 0.0125rem solid rgba(0, 0, 0, 0.12);
+  }
 }
 </style>
