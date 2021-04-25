@@ -29,7 +29,7 @@
 
 <script>
 import ActiveCard from './components/ActiveCard.vue';
-import { fetchActiveByUserId } from '../../api/active';
+import { fetchActiveWithConcurrent } from '../../api/active';
 
 export default {
   components: { ActiveCard },
@@ -48,21 +48,16 @@ export default {
         return null;
       }
     },
+
     async getActiveList() {
       const user = this.getUserInfo();
-      const { data: activeList } = await fetchActiveByUserId(
-        user.id,
-        user.room.id
-      );
+      const [
+        { data: actives },
+        { data: preActives },
+      ] = await fetchActiveWithConcurrent(user.id, user.room.id);
 
-      activeList.forEach((active) => {
-        active.img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
-        if (active['advance'] === 0) {
-          this.preActives.push(active);
-        } else {
-          this.actives.push(active);
-        }
-      });
+      this.actives = actives;
+      this.preActives = preActives;
     },
   },
   mounted() {

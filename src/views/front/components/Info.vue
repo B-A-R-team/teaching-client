@@ -19,10 +19,10 @@
       <v-list-item
         v-for="(todo, index) in todoList"
         :key="index"
-        :to="todo.link"
+        :to="'/todo/' + todo.id"
       >
         <v-list-item-title style="text-align:left;">{{
-          todo.label
+          todo.title
         }}</v-list-item-title>
       </v-list-item>
     </v-list>
@@ -30,6 +30,9 @@
 </template>
 
 <script>
+import { fetchPrePublishedActive } from '../../../api/active';
+import getImgFullPath from '../../../utils/getImgFullPath';
+
 export default {
   data() {
     return {
@@ -58,17 +61,27 @@ export default {
         return null;
       }
     },
+    async getTodoList() {
+      const { data: todoList } = await fetchPrePublishedActive(
+        this.user.id,
+        this.user.room.id
+      );
+
+      this.todoList = todoList;
+    },
   },
   mounted() {
     const userInfo = this.getUserInfo();
     if (userInfo) {
-      this.avatar = process.env.VUE_APP_BASE_URL + userInfo.avatar;
+      this.avatar = getImgFullPath(userInfo.avatar);
       this.name = userInfo.name;
       this.role = userInfo.role.name;
+      this.user = userInfo;
     } else {
-      this.avatar =
-        'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/20200914avatar.jpg';
+      this.$message({ type: 'error', message: '用户数据读取失败' });
     }
+
+    this.getTodoList();
   },
 };
 </script>

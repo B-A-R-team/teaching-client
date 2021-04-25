@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-img :src="data.img" height="100px" />
+    <v-img :src="renderImg(data.img[0].filePath)" height="100px" />
     <v-card-title class="text-subtitle-1">
       {{ data.title }}
     </v-card-title>
@@ -16,9 +16,16 @@
 </template>
 
 <script>
+import getImgFullPath from '../../../utils/getImgFullPath';
+
 export default {
   props: {
     data: Object,
+  },
+  methods: {
+    renderImg(filePath) {
+      return getImgFullPath(filePath);
+    },
   },
 };
 </script>
