@@ -1,5 +1,5 @@
 <template>
-  <v-card tile>
+  <v-card tile :loading="loading">
     <v-card-title class="pt-8">
       <v-spacer />
       <v-avatar size="104" color="primary" rounded="circle">
@@ -19,11 +19,11 @@
       <v-list-item
         v-for="(todo, index) in todoList"
         :key="index"
-        :to="'/todo/' + todo.id"
+        :to="'/person/todo/' + todo.id"
       >
-        <v-list-item-title style="text-align:left;">{{
-          todo.title
-        }}</v-list-item-title>
+        <v-list-item-title style="text-align:left;">
+          {{ todo.title }}
+        </v-list-item-title>
       </v-list-item>
     </v-list>
   </v-card>
@@ -39,6 +39,7 @@ export default {
       avatar: '',
       role: '',
       name: '',
+      loading: true,
       todoList: [
         {
           label:
@@ -62,12 +63,14 @@ export default {
       }
     },
     async getTodoList() {
+      this.loading = true;
       const { data: todoList } = await fetchPrePublishedActive(
         this.user.id,
         this.user.room.id
       );
 
       this.todoList = todoList;
+      this.loading = false;
     },
   },
   mounted() {

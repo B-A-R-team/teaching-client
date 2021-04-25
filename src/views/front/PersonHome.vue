@@ -3,9 +3,6 @@
     <v-subheader>
       我的活动
       <v-spacer />
-      <v-btn color="primary" outlined small class="pr-1">
-        更多<v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
     </v-subheader>
     <v-row class="px-4 pb-4">
       <v-col v-for="(item, i) in actives" :key="i" cols="3">
@@ -15,9 +12,6 @@
     <v-subheader>
       预发布活动
       <v-spacer />
-      <v-btn color="primary" outlined small class="pr-1">
-        更多<v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
     </v-subheader>
     <v-row class="px-4 pb-4">
       <v-col v-for="(item, i) in preActives" :key="i" cols="3">
@@ -33,6 +27,7 @@ import { fetchActiveWithConcurrent } from '../../api/active';
 
 export default {
   components: { ActiveCard },
+  inject: ['changeLoading'],
   data() {
     return {
       actives: [],
@@ -50,6 +45,7 @@ export default {
     },
 
     async getActiveList() {
+      this.changeLoading(true);
       const user = this.getUserInfo();
       const [
         { data: actives },
@@ -58,6 +54,7 @@ export default {
 
       this.actives = actives;
       this.preActives = preActives;
+      this.changeLoading(false);
     },
   },
   mounted() {
