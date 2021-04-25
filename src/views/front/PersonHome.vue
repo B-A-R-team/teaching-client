@@ -3,9 +3,6 @@
     <v-subheader>
       我的活动
       <v-spacer />
-      <v-btn color="primary" outlined small class="pr-1">
-        更多<v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
     </v-subheader>
     <v-row class="px-4 pb-4">
       <v-col v-for="(item, i) in actives" :key="i" cols="3">
@@ -15,9 +12,6 @@
     <v-subheader>
       预发布活动
       <v-spacer />
-      <v-btn color="primary" outlined small class="pr-1">
-        更多<v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
     </v-subheader>
     <v-row class="px-4 pb-4">
       <v-col v-for="(item, i) in preActives" :key="i" cols="3">
@@ -29,10 +23,11 @@
 
 <script>
 import ActiveCard from './components/ActiveCard.vue';
-import { fetchActiveByUserId } from '../../api/active';
+import { fetchActiveWithConcurrent } from '../../api/active';
 
 export default {
   components: { ActiveCard },
+  inject: ['changeLoading'],
   data() {
     return {
       actives: [],
@@ -48,21 +43,18 @@ export default {
         return null;
       }
     },
-    async getActiveList() {
-      const user = this.getUserInfo();
-      const { data: activeList } = await fetchActiveByUserId(
-        user.id,
-        user.room.id
-      );
 
-      activeList.forEach((active) => {
-        active.img = 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg';
-        if (active['advance'] === 0) {
-          this.preActives.push(active);
-        } else {
-          this.actives.push(active);
-        }
-      });
+    async getActiveList() {
+      this.changeLoading(true);
+      const user = this.getUserInfo();
+      const [
+        { data: actives },
+        { data: preActives },
+      ] = await fetchActiveWithConcurrent(user.id, user.room.id);
+
+      this.actives = actives;
+      this.preActives = preActives;
+      this.changeLoading(false);
     },
   },
   mounted() {

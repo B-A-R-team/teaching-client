@@ -5,7 +5,7 @@
         <info />
       </v-col>
       <v-col cols="9">
-        <v-card tile>
+        <v-card tile :loading="loading">
           <v-tabs v-model="tab">
             <v-tab v-for="(item, index) in nav" :key="index" :to="item.link">
               {{ item.label }}
@@ -23,6 +23,11 @@ export default {
   components: {
     Info,
   },
+  provide() {
+    return {
+      changeLoading: this.changeLoading,
+    };
+  },
   data() {
     return {
       tab: null,
@@ -32,7 +37,13 @@ export default {
         { link: '/person/publish', label: '发布' },
         { link: '/person/settings', label: '设置' },
       ],
+      loading: true,
     };
+  },
+  methods: {
+    changeLoading(val) {
+      this.loading = val;
+    },
   },
 };
 </script>

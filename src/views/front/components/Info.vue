@@ -1,5 +1,5 @@
 <template>
-  <v-card tile>
+  <v-card tile :loading="loading">
     <v-card-title class="pt-8">
       <v-spacer />
       <v-avatar size="104" color="primary" rounded="circle">
@@ -19,23 +19,27 @@
       <v-list-item
         v-for="(todo, index) in todoList"
         :key="index"
-        :to="todo.link"
+        :to="'/person/todo/' + todo.id"
       >
-        <v-list-item-title style="text-align:left;">{{
-          todo.label
-        }}</v-list-item-title>
+        <v-list-item-title style="text-align:left;">
+          {{ todo.title }}
+        </v-list-item-title>
       </v-list-item>
     </v-list>
   </v-card>
 </template>
 
 <script>
+import { fetchPrePublishedActive } from '../../../api/active';
+import getImgFullPath from '../../../utils/getImgFullPath';
+
 export default {
   data() {
     return {
       avatar: '',
       role: '',
       name: '',
+      loading: true,
       todoList: [
         {
           label:
@@ -58,17 +62,29 @@ export default {
         return null;
       }
     },
+    async getTodoList() {
+      this.loading = true;
+      const { data: todoList } = await fetchPrePublishedActive(
+        this.user.id,
+        this.user.room.id
+      );
+
+      this.todoList = todoList;
+      this.loading = false;
+    },
   },
   mounted() {
     const userInfo = this.getUserInfo();
     if (userInfo) {
-      this.avatar = process.env.VUE_APP_BASE_URL + userInfo.avatar;
+      this.avatar = getImgFullPath(userInfo.avatar);
       this.name = userInfo.name;
       this.role = userInfo.role.name;
+      this.user = userInfo;
     } else {
-      this.avatar =
-        'https://cdn.jsdelivr.net/gh/xmy6364/blog-image/img/20200914avatar.jpg';
+      this.$message({ type: 'error', message: '用户数据读取失败' });
     }
+
+    this.getTodoList();
   },
 };
 </script>
