@@ -68,10 +68,10 @@ export default {
   methods: {
     async getUser(page, pageSize) {
       this.loading = true;
-      const { data: users } = await fetchUserList(page, pageSize);
+      const { data } = await fetchUserList(page, pageSize);
 
-      this.users = users;
-      this.totalUser = users.length;
+      this.users = data.users;
+      this.totalUser = data.length;
 
       this.loading = false;
     },

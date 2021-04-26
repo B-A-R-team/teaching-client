@@ -53,20 +53,20 @@ export default {
   },
   data() {
     return {
+      //  {
+      //     title: '教研室',
+      //     icon: 'mdi-home',
+      //     children: [
+      //       {
+      //         title: '增加教研室',
+      //         url: '/admin/room/add',
+      //       },
+      //     ],
+      //   },
       items: [
         { title: '活动', icon: 'mdi-view-dashboard', url: '/admin/active' },
         { title: '用户', icon: 'mdi-account', url: '/admin/user' },
-        { title: '测试', icon: 'mdi-account', url: '/admin/test' },
-        {
-          title: '教研室',
-          icon: 'mdi-home',
-          children: [
-            {
-              title: '增加教研室',
-              url: '/admin/room/add',
-            },
-          ],
-        },
+        { title: '教研室', icon: 'mdi-home', url: '/admin/room' },
       ],
       right: null,
     };
