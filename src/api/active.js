@@ -1,17 +1,41 @@
 import { request } from '../utils';
 
+export function fetchActiveList(type) {
+  return async () =>
+    await request({
+      url: '/active/getActives',
+      method: 'get',
+      params: {
+        type,
+      },
+    });
+}
+
+/**
+ * 获取正在进行的活动
+ */
+export const fetchActiveListWhenDoing = fetchActiveList('doing');
+/**
+ * 获取已经完成的活动
+ */
+export const fetchActiveListWhenDone = fetchActiveList('done');
+/**
+ * 获取未开始活动
+ */
+export const fetchActiveListWillDo = fetchActiveList('will');
+/**
+ * 同时获取进行中以及未开始的活动
+ */
+export function fetchActiveListBothDoingAndWillDo() {
+  return Promise.all([fetchActiveListWhenDoing(), fetchActiveListWillDo()]);
+}
+
 /**
  * 按照开始时间已发布获取活动
  * @returns Promise
  */
 export async function fetchActiveListByType(type) {
-  const res = await request({
-    url: '/active/getActives',
-    method: 'get',
-    params: {
-      type,
-    },
-  });
+  const res = await fetchActiveList(type)();
   let arr = [];
   if (res.code === 200) {
     res.data.forEach((item) => {
@@ -70,9 +94,10 @@ export function fetchActiveWithConcurrent(userId, roomId) {
   ]);
 }
 
-export const fetchActiveDetail = (id) => request.get('/active/getActiveById', {
-  params: {
-    type: 'act',
-    id
-  }
-})
+export const fetchActiveDetail = (id) =>
+  request.get('/active/getActiveById', {
+    params: {
+      type: 'act',
+      id,
+    },
+  });
