@@ -28,7 +28,7 @@
                     </v-list-item>
                     <v-list-item>
                         <label>性别：</label>
-                        <v-radio-group row v-model="gender" mandatory>
+                        <v-radio-group row v-model="gender">
                             <v-radio value="0" label="男" ></v-radio>
                             <v-radio value="1" label="女" ></v-radio>
                         </v-radio-group>
@@ -39,7 +39,7 @@
                     </v-list-item>
                 </v-list>
                 <v-btn class="btn" elevation="2" large medium @click='upDateMes'>保存</v-btn>
-                <v-btn class="btn" elevation="2" large medium >重置</v-btn>
+                <v-btn class="btn" elevation="2" large medium @click='reset'>重置</v-btn>
             </div>
         </v-card>
     </v-app>
@@ -56,7 +56,7 @@ export default {
             job_id:'',
             id:'',
             phone:'',
-            gender:'',
+            gender:0,
             token:'',
             myUserInfo:{}
         }
@@ -76,6 +76,7 @@ export default {
             this.job_id = myUserInfo.job_id;
             this.avatar = myUserInfo.avatar;
             this.phone = myUserInfo.phone;
+            // this.gender = myUserInfo.gender;
             this.id = myUserInfo.id;
 
         },
@@ -83,7 +84,7 @@ export default {
             const { id, phone,avatar,gender} = this;
             this.myUserInfo.phone = phone;
             this.myUserInfo.avatar = avatar;
-            this.myUserInfo.gender = gender;
+            // this.myUserInfo.gender = gender;
             
             const res = await request({
                 url: '/user/update',
@@ -94,9 +95,9 @@ export default {
             if (res.code === 200 && res.data.msg) {
 
                 //更新localStorage中数据
-                // window.localStorage.setItem("userInfo", JSON.stringify(this.myUserInfo));
+                window.localStorage.setItem("userInfo", JSON.stringify(this.myUserInfo));
                 //更新登录状态
-                // this.changeLoginState();
+                this.changeLoginState();
 
                 this.$router.push("/");
                 
@@ -134,7 +135,10 @@ export default {
             formData.append("imgFile", file);
             const ImgUrl = window.URL.createObjectURL(file);
             this.avatar = ImgUrl;
-            // console.log(this.avatar);
+            console.log(this.avatar);
+        },
+        reset(){
+            this.getUserMessage();
         }
     }
 }
