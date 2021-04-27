@@ -2,7 +2,7 @@
   <v-container class="active-detail">
     <v-row justify="center">
       <v-col :lg="10" :md="12" :sm="12">
-        <v-card>
+        <v-card :loading="detailLoading">
           <v-img
             height="200px"
             src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
@@ -110,7 +110,7 @@
     </v-row>
     <v-row justify="center">
       <v-col :lg="10" :md="12" :sm="12">
-        <v-card elevation="2" class="pt-2">
+        <v-card elevation="2" class="pt-2" :loading="commentsLoading">
           <template v-if="current_user_info">
             <div class="commit-record ml-2 mr-2">
               <v-avatar size="50">
@@ -204,6 +204,8 @@ import getImgFullPath from "../../utils/getImgFullPath";
 export default {
   data() {
     return {
+      detailLoading:true,
+      commentsLoading:true,
       file: null,
       activeDetail: {
         title: "",
@@ -246,12 +248,14 @@ export default {
       if (res.code === 200) {
         this.activeDetail = res.data;
         this.activeDetail.join_users = tempArr;
+        this.detailLoading = false;
       }
     },
     async getComments(id) {
       const res = await fetchCommentsByActiveId(id);
       if (res.code === 200) {
         this.comments = res.data;
+        this.commentsLoading = false;
       }
     },
     async submitComment() {

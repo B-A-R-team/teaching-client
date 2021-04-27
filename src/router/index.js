@@ -40,7 +40,17 @@ const routes = [
             component: () => import('../views/front/Modification.vue'),
             meta: { title: '设置 | 教研管理' },
           },
+          {
+            path: '/person/todo',
+            name: 'Todo',
+            component: () => import('../views/front/components/ActivePer.vue'),
+            meta: { title: '待办 | 教研管理' },
+          },
         ],
+      },
+      {
+        path: '/perActive',
+        redirect: '/person/todo',
       },
       {
         path: '/activeDetail',

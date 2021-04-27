@@ -8,8 +8,9 @@
       :class="['info-card__avatar', open ? 'active' : '']"
       color="primary"
       :size="36"
+      
     >
-      <v-img :src="avatar" />
+      <v-img style="background:#fff" alt="user" :src="avatar" />
     </v-avatar>
     <div :class="['info-card__content', open ? 'active' : '']">
       <v-card class="wrapper">
@@ -103,6 +104,7 @@ $animate-during: 0.4s;
   }
 
   .info-card__content {
+    text-align: center;
     visibility: hidden;
     opacity: 0;
     transition: all $animate-during;

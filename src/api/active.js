@@ -1,17 +1,42 @@
 import { request } from '../utils';
 
+// 获取首页活动列表
+export function fetchActiveList(type) {
+  return async () =>
+    await request({
+      url: '/active/getActives',
+      method: 'get',
+      params: {
+        type,
+      },
+    });
+}
+
+/**
+ * 获取正在进行的活动
+ */
+export const fetchActiveListWhenDoing = fetchActiveList('doing');
+/**
+ * 获取已经完成的活动
+ */
+export const fetchActiveListWhenDone = fetchActiveList('done');
+/**
+ * 获取未开始活动
+ */
+export const fetchActiveListWillDo = fetchActiveList('will');
+/**
+ * 同时获取进行中以及未开始的活动
+ */
+export function fetchActiveListBothDoingAndWillDo() {
+  return Promise.all([fetchActiveListWhenDoing(), fetchActiveListWillDo()]);
+}
+
 /**
  * 按照开始时间已发布获取活动
  * @returns Promise
  */
 export async function fetchActiveListByType(type) {
-  const res = await request({
-    url: '/active/getActives',
-    method: 'get',
-    params: {
-      type,
-    },
-  });
+  const res = await fetchActiveList(type)();
   let arr = [];
   if (res.code === 200) {
     res.data.forEach((item) => {
@@ -70,6 +95,7 @@ export function fetchActiveWithConcurrent(userId, roomId) {
   ]);
 }
 
+// 获取活动详情
 export const fetchActiveDetail = (id) => request.get('/active/getActiveById', {
   params: {
     type: 'act',
@@ -77,19 +103,34 @@ export const fetchActiveDetail = (id) => request.get('/active/getActiveById', {
   }
 })
 
+// 获取评论
 export const fetchCommentsByActiveId = (id) => request('/commit/getAllByActive', {
   params: {
     id,
   }
 })
+
+//添加评论
 export const fetchAddComment = ({ user_id, active_id, content }) => request.post('/commit/createCommit', {
   user_id,
   active_id,
   content
 });
 
+// 添加文件
 export const fetchAddRecordFile = (formData) => request({
   url: '/upload/record',
   method: 'post',
   data: formData
 })
+
+
+export function fetchActiveListToday(timestamp) {
+  return request({
+    url: '/active/getActivesByTime',
+    method: 'get',
+    params: {
+      time: timestamp,
+    },
+  });
+}
