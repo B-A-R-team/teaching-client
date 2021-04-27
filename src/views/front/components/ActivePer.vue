@@ -3,12 +3,12 @@
     <v-row justify="center">
       <v-col :lg="6" :md="12" :sm="12">
         <v-card :style="{ minHeight: '500px' }">
-          <v-card-title id="card_title">代办</v-card-title>
+          <v-card-title id="card_title">待办</v-card-title>
           <v-list-item three-line v-for="(item, i) in perItems" :key="i">
             <v-list-item-content>
-              <v-list-item-title v-text="item.title"
-                >活动标题</v-list-item-title
-              >
+              <v-list-item-title v-text="item.title">
+                活动标题
+              </v-list-item-title>
               <v-list-item-subtitle v-text="item.content">
                 活动内容
               </v-list-item-subtitle>
@@ -16,16 +16,19 @@
                 活动时间，地点
               </v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn-toggle
-              v-model="text"
-              tile
-              color="teal accent-4"
-              group
-            >
-              <v-btn id="agree_btn" value="yes" @click="getAgreeActive(item.active_id, true)">
+            <v-btn-toggle v-model="text" tile color="teal accent-4" group>
+              <v-btn
+                id="agree_btn"
+                value="yes"
+                @click="getAgreeActive(item.active_id, true)"
+              >
                 同意
               </v-btn>
-              <v-btn  id="agree_btn"  value="no" @click="getAgreeActive(item.active_id, false)">
+              <v-btn
+                id="agree_btn"
+                value="no"
+                @click="getAgreeActive(item.active_id, false)"
+              >
                 不同意
               </v-btn>
             </v-btn-toggle>
@@ -36,8 +39,8 @@
   </v-container>
 </template>
 <script>
-import { fetchPerActive } from "@/api/perActive";
-import { returnAgreeActive } from "@/api/perActive";
+import { fetchPerActive } from '@/api/perActive';
+import { returnAgreeActive } from '@/api/perActive';
 export default {
   data() {
     return {
@@ -48,7 +51,7 @@ export default {
   methods: {
     async getPerActiveList() {
       this.userInfo = JSON.parse(
-        window.localStorage.getItem("userInfo") || "{}"
+        window.localStorage.getItem('userInfo') || '{}'
       );
       const user_id = this.userInfo.id;
       const room_id = this.userInfo.room.id;
@@ -62,7 +65,7 @@ export default {
         is_agree
       );
       if (code === 200) {
-        this.$message({ type: "success", message: data.msg });
+        this.$message({ type: 'success', message: data.msg });
       }
     },
   },

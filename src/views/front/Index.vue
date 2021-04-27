@@ -60,7 +60,7 @@ export default {
           },
         },
         {
-          text: '我的代办',
+          text: '我的待办',
           icon: 'mdi-account',
           click: () => {
             this.$router.push("/perActive");
