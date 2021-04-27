@@ -27,7 +27,7 @@
 
               <v-list-item v-else :key="item.title" style="cursor: pointer">
                 <v-list-item-avatar>
-                  <v-img :src="item.avatar"></v-img>
+                  <v-img :src="BASE_URL + item.avatar"></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
@@ -66,7 +66,7 @@
 
               <v-list-item v-else :key="item.title">
                 <v-list-item-avatar>
-                  <v-img :src="item.avatar"></v-img>
+                  <v-img :src="BASE_URL + item.avatar"></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
@@ -91,10 +91,11 @@
 
 <script>
 import { fetchActiveListByType } from "@/api/active";
-
+import { BASE_URL } from "../utils/constant";
 export default {
   data() {
     return {
+      BASE_URL,
       doingItems: [],
       doneItems: [],
     };

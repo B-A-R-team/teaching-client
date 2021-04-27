@@ -10,7 +10,7 @@
               :src="baseUrl + item.swiper.filePath"
             >
               <router-link
-                :to="{ path: '/activeDetail', query: { act_id: item.id } }"
+                :to="{ name: 'ActiveDetail', query: { act_id: item.id } }"
                 class="swiper-title"
               >
                 <div class="active-info">主题：{{ item.title }}</div>
@@ -52,8 +52,6 @@ export default {
       const res = await fetchSwiper();
       if (res.code === 200) {
         this.items = res.data;
-        console.log(res.data[0]);
-        console.log(this.baseUrl + res.data[0].swiper.filePath);
       }
     },
   },
@@ -75,8 +73,9 @@ export default {
   text-decoration: none;
   .active-info {
     background: rgba(0, 0, 0, 0.3);
-    padding: 5px;
+    padding: 15px;
     color: white;
+    font-size: 18px;
   }
 }
 </style>

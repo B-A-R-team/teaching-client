@@ -76,3 +76,20 @@ export const fetchActiveDetail = (id) => request.get('/active/getActiveById', {
     id
   }
 })
+
+export const fetchCommentsByActiveId = (id) => request('/commit/getAllByActive', {
+  params: {
+    id,
+  }
+})
+export const fetchAddComment = ({ user_id, active_id, content }) => request.post('/commit/createCommit', {
+  user_id,
+  active_id,
+  content
+});
+
+export const fetchAddRecordFile = (formData) => request({
+  url: '/upload/record',
+  method: 'post',
+  data: formData
+})

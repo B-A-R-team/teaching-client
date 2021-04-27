@@ -26,8 +26,8 @@ const routes = [
         path: '/person',
         name: 'Person',
         component: () => import('../views/front/Person.vue'),
+        redirect: '/person/home',
         children: [
-          { path: '/', redirect: '/person/home' },
           {
             path: '/person/home',
             name: 'PersonHome',
