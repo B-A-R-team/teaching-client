@@ -29,6 +29,10 @@
       :loading="loading"
       :server-items-length="totalUser"
       :options.sync="options"
+      :footer-props="{
+        'items-per-page-text': '每页数据量',
+        'items-per-page-options': [5, 10, 15],
+      }"
     >
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small @click="deleteItem(item)">
@@ -64,10 +68,10 @@ export default {
   methods: {
     async getUser(page, pageSize) {
       this.loading = true;
-      const { data: users } = await fetchUserList(page, pageSize);
+      const { data } = await fetchUserList(page, pageSize);
 
-      this.users = users;
-      this.totalUser = users.length;
+      this.users = data.users;
+      this.totalUser = data.length;
 
       this.loading = false;
     },
