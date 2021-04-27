@@ -78,6 +78,12 @@ const routes = [
         component: () => import('../views/admin/User.vue'),
         meta: { title: '用户 | 后台管理' },
       },
+      {
+        path: '/admin/room',
+        name: '教研室',
+        component: () => import('../views/admin/Room.vue'),
+        meta: { title: '教研室 | 后台管理' },
+      },
     ],
   },
 ];

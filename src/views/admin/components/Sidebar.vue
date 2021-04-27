@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app :mini-variant="visible" permanent>
-    <v-list-item>
+    <v-list-item to="/">
       <v-list-item-content>
         <v-list-item-title class="title">
           教研管理
