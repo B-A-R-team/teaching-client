@@ -35,7 +35,7 @@
 <script>
 import ActiveCalendar from "./components/ActiveCalendar.vue";
 import ActiveList from "../../components/ActiveList.vue";
-import Today from "../../components/Today.vue";
+import Today from "./components/Today.vue";
 const baseUrl = "http://www.zxyc.xyz:3450";
 import { fetchSwiper } from "../../api/swiper";
 export default {
