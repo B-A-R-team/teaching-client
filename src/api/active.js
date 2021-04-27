@@ -101,3 +101,13 @@ export const fetchActiveDetail = (id) =>
       id,
     },
   });
+
+export function fetchActiveListToday(timestamp) {
+  return request({
+    url: '/active/getActivesByTime',
+    method: 'get',
+    params: {
+      time: timestamp,
+    },
+  });
+}

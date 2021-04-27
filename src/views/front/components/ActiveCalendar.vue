@@ -8,7 +8,7 @@
       :month-format="emptyFormat"
     >
       <template slot="day" slot-scope="info">
-        <v-tooltip v-model="showTooltip" bottom v-if="haveEvent(info)">
+        <v-tooltip left v-if="haveEvent(info)">
           <template v-slot:activator="{ on, attrs }">
             <div
               :class="[
@@ -18,13 +18,23 @@
               ]"
               v-bind="attrs"
               v-on="on"
+              @mouseover="getEventByTime(info)"
             >
               {{ info.day }}
             </div>
           </template>
           <v-list style="background: transparent;">
-            <v-list-item color="transparent">
+            <v-list-item color="transparent" v-if="showLoading">
               <span class="white--text">加载中...</span>
+            </v-list-item>
+            <v-list-item
+              v-else
+              v-for="(event, index) in showEvents"
+              :key="index"
+            >
+              <li class="white--text">
+                {{ event.title }} - {{ event.room_name }}
+              </li>
             </v-list-item>
           </v-list>
         </v-tooltip>
@@ -44,7 +54,10 @@
 </template>
 
 <script>
-import { fetchActiveListBothDoingAndWillDo } from '../../../api/active';
+import {
+  fetchActiveListBothDoingAndWillDo,
+  fetchActiveListToday,
+} from '../../../api/active';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
@@ -54,6 +67,8 @@ export default {
   data() {
     return {
       events: [],
+      showEvents: [],
+      showLoading: true,
     };
   },
   methods: {
@@ -83,6 +98,13 @@ export default {
       ] = await fetchActiveListBothDoingAndWillDo();
 
       this.events = [...doingActives, ...willDoActives];
+    },
+    async getEventByTime(cur) {
+      this.showLoading = true;
+      const time = new Date(cur.date);
+      const { data } = await fetchActiveListToday(time.getTime());
+      this.showEvents = data;
+      this.showLoading = false;
     },
   },
   mounted() {
