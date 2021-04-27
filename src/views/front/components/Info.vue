@@ -16,7 +16,11 @@
     <v-divider />
     <v-list>
       <v-subheader>待办事项</v-subheader>
+      <v-list-item v-if="todoList.length === 0">
+        <v-list-item-title>暂无数据</v-list-item-title>
+      </v-list-item>
       <v-list-item
+        v-else
         v-for="(todo, index) in todoList"
         :key="index"
         :to="'/person/todo/' + todo.id"
@@ -66,7 +70,7 @@ export default {
       this.loading = true;
       const { data: todoList } = await fetchPrePublishedActive(
         this.user.id,
-        this.user.room.id
+        this.user.room?.id ?? 0
       );
 
       this.todoList = todoList;
