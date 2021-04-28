@@ -48,3 +48,14 @@ export function resLogin(account) {
 // export function fetchRegister() {
 
 // }
+
+export function fetchUploadAvatar(avatar) {
+  return request({
+    url: '/upload',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: {
+      avatar,
+    },
+  });
+}
