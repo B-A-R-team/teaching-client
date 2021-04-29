@@ -1,9 +1,14 @@
 input:-internal-autofill-selected {
-    appearance: menulist-button;
+    appearance      : menulist-button;
     background-color: rgb(252, 252, 255) !important;
     background-image: none !important;
-    color: -internal-light-dark(black, white) !important;
+    color           : -internal-light-dark(black, white) !important;
 }
+
 input {
     -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+
+.v-application--wrap {
+    min-height: 0 !important;
 }

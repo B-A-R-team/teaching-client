@@ -48,3 +48,9 @@ export function resLogin(account) {
 // export function fetchRegister() {
 
 // }
+
+export const fetchUploadAvatar = (formData) => request({
+  method: 'post',
+  url: '/upload/avatar',
+  data: formData
+})

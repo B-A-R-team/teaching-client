@@ -111,13 +111,10 @@
     <v-row justify="center">
       <v-col :lg="10" :md="12" :sm="12">
         <v-card elevation="2" class="pt-2" :loading="commentsLoading">
-          <template v-if="current_user_info">
+          <template v-if="current_user_info && token">
             <div class="commit-record ml-2 mr-2">
               <v-avatar size="50">
-                <img
-                  alt="user"
-                  :src="renderImg(current_user_info.avatar)"
-                />
+                <img alt="user" :src="renderImg(current_user_info.avatar)" />
               </v-avatar>
               <div class="commit-editor ml-2">
                 <v-textarea
@@ -200,12 +197,13 @@ import {
   fetchCommentsByActiveId,
   fetchAddRecordFile,
 } from "../../api/active";
+import { getToken } from "../../utils/auth";
 import getImgFullPath from "../../utils/getImgFullPath";
 export default {
   data() {
     return {
-      detailLoading:true,
-      commentsLoading:true,
+      detailLoading: true,
+      commentsLoading: true,
       file: null,
       activeDetail: {
         title: "",
@@ -231,6 +229,7 @@ export default {
         content: "",
       },
       current_user_info: {},
+      token: null,
     };
   },
   methods: {
@@ -296,6 +295,7 @@ export default {
     this.getComments(this.$route.query.act_id);
     const userInfo = window.localStorage.getItem("userInfo");
     this.current_user_info = JSON.parse(userInfo);
+    this.token = getToken();
   },
 };
 </script>

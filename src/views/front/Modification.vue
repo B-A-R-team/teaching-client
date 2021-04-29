@@ -1,186 +1,169 @@
 <template>
-    <v-app>
-        <v-card class="mesBox" elevation="5">
-            <v-card-title>
-                <h2 class="mx-auto">个人信息修改</h2>
-            </v-card-title>
-            <div class="listBox mx-auto">
-                <v-list class="meslist">
-                    <v-list-item>
-                        <v-avatar class="avater mx-auto" color="primary" size="60" @click="updateAvt">
-                            <img :src="avatar" >
-                        </v-avatar>
-                    </v-list-item>
-                    <v-list-item>
-                        <p class="name mx-auto">{{name}}</p>
-                    </v-list-item>
-                    <v-list-item width="400px">
-                        <div class="unMod">
-                            <div class="fl">
-                                <label>工号：</label>
-                                <span>{{job_id}}</span>
-                            </div>
-                            <div class="fr">
-                                <label>ID：</label>
-                                <span>{{id}}</span>
-                            </div>
-                        </div>
-                    </v-list-item>
-                    <v-list-item>
-                        <label>性别：</label>
-                        <v-radio-group row v-model="gender">
-                            <v-radio value="0" label="男" ></v-radio>
-                            <v-radio value="1" label="女" ></v-radio>
-                        </v-radio-group>
-                    </v-list-item>
-                    <v-list-item>
-                        <label>电话：</label>
-                        <v-text-field label="PhoneNumber" v-model="phone"></v-text-field>
-                    </v-list-item>
-                </v-list>
-                <v-btn class="btn" elevation="2" large medium @click='upDateMes'>保存</v-btn>
-                <v-btn class="btn" elevation="2" large medium @click='reset'>重置</v-btn>
-            </div>
+  <v-container>
+    <v-row>
+      <v-col md="6" sm="12">
+        <v-card class="mesBox" elevation="2" style="padding: 15px">
+          <v-card-title>
+            <h3>个人信息修改</h3>
+          </v-card-title>
+          <div class="listBox mx-auto">
+            <v-list class="meslist">
+              <v-list-item>
+                <label>头像：</label>
+                <v-avatar
+                  style="border: 1px solid rgb(182 228 255) !important"
+                  rounded="circle"
+                  class="avater"
+                  color="primary"
+                  size="60"
+                  @click="updateAvt"
+                >
+                  <img :src="renderImg(myUserInfo.avatar)" />
+                </v-avatar>
+              </v-list-item>
+              <v-list-item>
+                <label>姓名：</label>
+                <span>{{ myUserInfo.name }}</span>
+              </v-list-item>
+              <v-list-item>
+                <div>
+                  <div class="fl">
+                    <label>工号：</label>
+                    <span>{{ myUserInfo.job_id }}</span>
+                  </div>
+                </div>
+              </v-list-item>
+              <v-list-item>
+                <label>性别：</label>
+
+                <v-radio-group row v-model="myUserInfo.gender">
+                  <v-radio :value="0" label="男"></v-radio>
+                  <v-radio :value="1" label="女"></v-radio>
+                </v-radio-group>
+              </v-list-item>
+              <v-list-item>
+                <label>电话：</label>
+                <v-text-field
+                  label="PhoneNumber"
+                  v-model="myUserInfo.phone"
+                ></v-text-field>
+              </v-list-item>
+              <v-list-item>
+                <v-btn class="btn" elevation="2" large medium @click="upDateMes"
+                  >修改</v-btn
+                >
+              </v-list-item>
+            </v-list>
+          </div>
         </v-card>
-    </v-app>
+      </v-col>
+      <v-col md="6" sm="12">
+        <v-card class="mesBox" elevation="2" style="padding: 15px">
+          <v-card-title>
+            <h3 >修改密码</h3>
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import { getToken } from "@/utils/auth";
-import { request } from '@/utils';
+import { request } from "@/utils";
+import { fetchUploadAvatar } from "../../api/user";
+import { getImgFullPath } from "../../utils";
 export default {
-    data(){
-        return {
-            name:'',
-            avatar:'',
-            job_id:'',
-            id:'',
-            phone:'',
-            gender:0,
-            token:'',
-            myUserInfo:{}
-        }
+  data() {
+    return {
+      myUserInfo: {},
+      avatarFile: null,
+    };
+  },
+  inject: ["changeLoginState"],
+  created() {
+    this.getUserMessage();
+  },
+  methods: {
+    getUserMessage() {
+      this.myUserInfo = JSON.parse(
+        window.localStorage.getItem("userInfo") || "{}"
+      );
     },
-    inject: ["changeLoginState"],
-    created(){
-        this.getUserMessage()
+    async upDateMes() {
+      const { id, phone, gender, avatar } = this.myUserInfo;
+      this.myUserInfo.phone = phone;
+      this.myUserInfo.gender = gender;
+      let avatarPath = avatar;
+      if (this.avatarFile) {
+        const formData = new FormData();
+        formData.append("file", this.avatarFile);
+        const avatarInfo = await fetchUploadAvatar(formData);
+        this.myUserInfo.avatar = avatarInfo.data.filePath;
+        avatarPath = avatarInfo.data.filePath;
+      }
+
+      const res = await request({
+        url: "/user/update",
+        method: "put",
+        data: { id, phone, gender, avatar: avatarPath },
+      });
+      if (res.code === 200 && res.data.msg) {
+        //更新localStorage中数据
+        window.localStorage.setItem(
+          "userInfo",
+          JSON.stringify(this.myUserInfo)
+        );
+        //更新登录状态
+        this.changeLoginState();
+        return this.$message({
+          type: "success",
+          message: res.data.msg,
+          duration: 2000,
+        });
+      } else {
+        return this.$message({
+          type: "error",
+          message: "更新失败",
+          duration: 2000,
+        });
+      }
     },
-    methods:{
-        getUserMessage(){
-            this.myUserInfo = JSON.parse(
-            window.localStorage.getItem("userInfo") || "{}"
-             );
-            const myUserInfo = this.myUserInfo;
-            this.token = getToken('vue_teaching_token');
-            this.name = myUserInfo.name;
-            this.job_id = myUserInfo.job_id;
-            this.avatar = myUserInfo.avatar;
-            this.phone = myUserInfo.phone;
-            // this.gender = myUserInfo.gender;
-            this.id = myUserInfo.id;
-
-        },
-        async upDateMes() {
-            const { id, phone,avatar,gender} = this;
-            this.myUserInfo.phone = phone;
-            this.myUserInfo.avatar = avatar;
-            // this.myUserInfo.gender = gender;
-            
-            const res = await request({
-                url: '/user/update',
-                method: 'put',
-                data: { id,phone,avatar,gender },
-            });
-            console.log(res);
-            if (res.code === 200 && res.data.msg) {
-
-                //更新localStorage中数据
-                window.localStorage.setItem("userInfo", JSON.stringify(this.myUserInfo));
-                //更新登录状态
-                this.changeLoginState();
-
-                this.$router.push("/");
-                
-                return this.$message({
-                    type: "success",
-                    message: res.data.msg,
-                    duration: 2000,
-                });
-            }else{
-                return this.$message({
-                    type: "error",
-                    message: "更新失败",
-                    duration: 2000,
-                });
-            }
-        },
-        updateAvt(){
-            //创建input
-            const upload = document.createElement("input");
-            //设置type为file
-            upload.type = "file";
-            //类型
-            upload.accept = "image/png, image/jpeg";
-            //添加onchange事件
-            upload.onchange = this.setFile;
-            //模拟点击
-            upload.click();
-            
-        },
-        setFile(e) {
-            //获取文件
-            const file = e.path[0].files[0];
-            //将其放入formdata中方便上传
-            const formData = new FormData();
-            formData.append("imgFile", file);
-            const ImgUrl = window.URL.createObjectURL(file);
-            this.avatar = ImgUrl;
-            console.log(this.avatar);
-        },
-        reset(){
-            this.getUserMessage();
-        }
-    }
-}
+    updateAvt() {
+      //创建input
+      const upload = document.createElement("input");
+      //设置type为file
+      upload.type = "file";
+      //类型
+      upload.accept = "image/png, image/jpeg,image/jpg,image/ico";
+      //添加onchange事件
+      upload.onchange = this.setFile;
+      //模拟点击
+      upload.click();
+    },
+    renderImg(filePath) {
+      return getImgFullPath(filePath);
+    },
+    setFile(e) {
+      //获取文件
+      const file = e.path[0].files[0];
+      this.avatarFile = file;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-.mesBox{
-    width: 800px;
-    height:600px;
-    margin: 0 auto;
-    background: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
-    background-size:100%;
-    .listBox{
-        width: 400px;
-        .avater{
-            margin-top: 10px;
-        }
-        .unMod{
-            width: 400px;
-            .fl{
-                float: left;
-            }
-            .fr{
-                float: right;
-            }
-        }
-        
-        .name{
-            line-height: 40px;
-            font-size: 20px;
-            // display: inline-block;
-            margin-left: 30px;
-            
-        }
-        .btn{
-            width: 370px;
-            height: 30px;
-            margin: 15px auto;
-            background-color: #40a9ff;
-            color: #fff;
-        }
-        
+.mesBox {
+  margin: 0 auto;
+  background: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
+  background-size: 100%;
+  .listBox {
+    .btn {
+      width: 100%;
+      margin: 15px auto;
+      background-color: #40a9ff;
+      color: #fff;
     }
+  }
 }
 </style>

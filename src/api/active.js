@@ -41,6 +41,7 @@ export async function fetchActiveListByType(type) {
   if (res.code === 200) {
     res.data.forEach((item) => {
       const obj = {};
+      obj.id = item.id;
       obj.avatar = item.leader.avatar;
       obj.action = item.room.name;
       obj.title = item.title;

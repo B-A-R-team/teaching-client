@@ -115,6 +115,7 @@ export default {
 
 <style lang="scss" scoped>
 #app {
+  min-height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -173,4 +174,5 @@ export default {
     max-width: 1900px !important;
   }
 }
+
 </style>
