@@ -10,7 +10,7 @@
           v-if="isLogin"
           :avatar="renderImg(userInfo.avatar)"
           :nickname="userInfo.name"
-          :role="userInfo.role"
+          :role="userInfo.role.name"
           :list="list"
           @exit="exit"
         />
@@ -106,8 +106,8 @@ export default {
     const myUserInfo = JSON.parse(
       window.localStorage.getItem("userInfo") || "{}"
     );
-    this.userInfo.name = myUserInfo.name;
-    this.userInfo.avatar = myUserInfo.avatar;
+    console.log(myUserInfo)
+    this.userInfo = myUserInfo;
     token && (this.isLogin = true);
   },
 };

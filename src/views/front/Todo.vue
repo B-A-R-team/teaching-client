@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-row justify="center">
+    <v-row class="todo-list" justify="center">
       <v-col :md="6" v-if="isLeader">
-        <v-card class="pa-4 pt-3 adv-act">
+        <v-card class="pa-4 pt-3 adv-act" elevation="0" outlined>
           <p class="text-subtitle-1">预发布活动代办</p>
           <v-divider></v-divider>
           <template v-for="(item, index) in advanceActives">
@@ -33,7 +33,7 @@
           </template> </v-card
       ></v-col>
       <v-col :md="isLeader ? 6 : 12">
-        <v-card class="pa-4 pt-3 adv-act">
+        <v-card class="pa-4 pt-3 adv-act" elevation="0" outlined>
           <p class="text-subtitle-1">评审活动</p>
           <v-divider></v-divider>
           <div v-if="review.length > 0">
@@ -188,16 +188,22 @@ export default {
 };
 </script>
 <style lang="scss">
-.adv-act {
-  min-height: 400px;
-  //   max-height: 500px;
-  //   overflow-y: scroll;
-}
-.my-ellipsis {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  //   white-space: nowrap !important;
-  -webkit-line-clamp: 1 !important;
+.todo-list {
+  .col-md-6,
+  .col-md-12 {
+    padding: 0 12px;
+  }
+  .adv-act {
+    min-height: 400px;
+    //   max-height: 500px;
+    //   overflow-y: scroll;
+  }
+  .my-ellipsis {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    //   white-space: nowrap !important;
+    -webkit-line-clamp: 1 !important;
+  }
 }
 </style>
