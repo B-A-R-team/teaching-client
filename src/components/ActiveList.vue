@@ -15,7 +15,7 @@
             <template v-for="(item, index) in doingItems">
               <v-subheader
                 v-if="item.header"
-                :key="item.header"
+                :key="index"
                 v-text="item.header"
               ></v-subheader>
               <v-divider
@@ -26,7 +26,7 @@
 
               <v-list-item
                 v-else
-                :key="item.title"
+                :key="index"
                 style="cursor: pointer"
                 @click="enterDetail(item)"
               >
@@ -57,7 +57,7 @@
             <template v-for="(item, index) in doneItems">
               <v-subheader
                 v-if="item.header"
-                :key="item.header"
+                :key="index"
                 v-text="item.header"
               ></v-subheader>
 
@@ -67,7 +67,7 @@
                 :inset="item.inset"
               ></v-divider>
 
-              <v-list-item v-else :key="item.title" @click="enterDetail(item)">
+              <v-list-item v-else :key="index" @click="enterDetail(item)">
                 <v-list-item-avatar>
                   <v-img :src="BASE_URL + item.avatar"></v-img>
                 </v-list-item-avatar>

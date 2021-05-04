@@ -76,6 +76,6 @@ export default {
 
 .doing .v-list {
   overflow-y: scroll;
-  height: 140px;
+  height: 93px;
 }
 </style>

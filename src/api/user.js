@@ -54,3 +54,11 @@ export const fetchUploadAvatar = (formData) => request({
   url: '/upload/avatar',
   data: formData
 })
+
+export const fetchAllUserByRommId = (room_id) => request({
+  method: 'get',
+  url: '/user/getUsersByRoomId',
+  params: {
+    id: room_id
+  }
+})

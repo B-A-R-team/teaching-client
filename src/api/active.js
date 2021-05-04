@@ -135,3 +135,32 @@ export function fetchActiveListToday(timestamp) {
     },
   });
 }
+
+// 预发布活动
+export const fetchAdvancePublish = (data) => request({
+  url: '/active/createActive',
+  method: 'post',
+  data,
+})
+
+// 获取活动发起者的预发布活动
+export const fetchAdvActivesByLeader = () => request({
+  url: '/active/advance',
+  method: 'get'
+})
+
+// 评审活动
+export const fetchAgress = (data) => request({
+  url: '/active/agreeActive',
+  method: 'put',
+  data,
+})
+
+// 发布预发布的活动
+export const fetchPublishAdvance = (id) => request({
+  url: '/active/issueAdvance',
+  method: 'post',
+  data: {
+    id
+  }
+})

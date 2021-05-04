@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col md="6" sm="12">
-        <v-card class="mesBox" elevation="2" style="padding: 15px">
+        <v-card class="mesBox" elevation="0" style="padding: 15px">
           <v-card-title>
             <h3>个人信息修改</h3>
           </v-card-title>
@@ -58,7 +58,7 @@
         </v-card>
       </v-col>
       <v-col md="6" sm="12">
-        <v-card class="mesBox" elevation="2" style="padding: 15px">
+        <v-card class="mesBox" elevation="0" style="padding: 15px">
           <v-card-title>
             <h3 >修改密码</h3>
           </v-card-title>

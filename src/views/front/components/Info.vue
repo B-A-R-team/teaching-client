@@ -23,7 +23,7 @@
         v-else
         v-for="(todo, index) in todoList"
         :key="index"
-        :to="'/person/todo/' + todo.id"
+        :to="'/person/todo'"
       >
         <v-list-item-title style="text-align:left;">
           {{ todo.title }}

@@ -43,8 +43,14 @@ const routes = [
           {
             path: '/person/todo',
             name: 'Todo',
-            component: () => import('../views/front/components/ActivePer.vue'),
+            component: () => import('../views/front/Todo.vue'),
             meta: { title: '待办 | 教研管理' },
+          },
+          {
+            path: '/person/publish',
+            name: 'Publish',
+            component: () => import('../views/front/Publish.vue'),
+            meta: { title: '发布 | 教研管理' },
           },
         ],
       },

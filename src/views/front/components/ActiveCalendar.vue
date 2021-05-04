@@ -129,7 +129,7 @@ export default {
   }
   .custom-day:hover {
     transition: all 0.3s;
-    background-color: rgba(0, 0, 0, 0.089);
+    // background-color: rgba(0, 0, 0, 0.089);
     cursor: pointer;
   }
   .custom-day.has-event::after {

@@ -2,9 +2,14 @@
   <v-card>
     <v-img :src="renderImg(data.img[0].filePath)" height="100px" />
     <v-card-title class="text-subtitle-1">
-      {{ data.title }}
+      <span
+      class="text-subtitle-1"
+        style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;height:30px;font-size:22px"
+      >
+        {{ data.title }}</span
+      >
     </v-card-title>
-    <v-card-subtitle class="pb-0 content" style="text-align:left">
+    <v-card-subtitle class="pb-0 content" style="text-align: left">
       <v-list-item-title class="text-body-2">
         {{ data.content }}
       </v-list-item-title>
@@ -18,7 +23,7 @@
 </template>
 
 <script>
-import getImgFullPath from '../../../utils/getImgFullPath';
+import getImgFullPath from "../../../utils/getImgFullPath";
 
 export default {
   props: {
