@@ -121,7 +121,7 @@ export default {
       }
     },
     async getLists() {
-      this.changeLoading(true)
+      this.changeLoading(true);
       const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
       this.userInfo = userInfo;
       if (userInfo.role.id === 3 || userInfo.role.id === 2) {
@@ -152,7 +152,6 @@ export default {
             });
           });
           this.advanceActives = myLists[0].data;
-          this.changeLoading(false)
         }
       }
       if (userInfo.role.id <= 1) {
@@ -171,6 +170,7 @@ export default {
           });
         }
       }
+      this.changeLoading(false);
     },
   },
   async mounted() {

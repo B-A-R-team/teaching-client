@@ -3,7 +3,6 @@
     <div class="page">
       <div class="login mx-auto">
         <div class="top_title">
-          <h2>教务管理系统</h2>
         </div>
         <div class="median">
           <span class="subtitle mx-auto">工号密码登录</span>
@@ -18,13 +17,6 @@
             label="请输入密码"
             v-model="password"
           ></v-text-field>
-          <div class="other mx-auto">
-            <span>
-              <input type="checkbox" checked />
-              自动登录
-            </span>
-            <a class="forget">忘记密码？</a>
-          </div>
           <v-btn class="btn" elevation="3" large medium @click="postCommit">
             登录
           </v-btn>
