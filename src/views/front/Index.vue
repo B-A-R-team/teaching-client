@@ -76,9 +76,9 @@ export default {
       ],
       isLogin: false,
       userInfo: {
-        name: "小李",
+        name: "",
         avatar: "",
-        role: "主任",
+        role: "",
       },
     };
   },
@@ -97,8 +97,7 @@ export default {
       const myUserInfo = JSON.parse(
         window.localStorage.getItem("userInfo") || "{}"
       );
-      this.userInfo.name = myUserInfo.name;
-      this.userInfo.avatar = myUserInfo.avatar;
+      this.userInfo = myUserInfo;
     },
   },
   mounted() {
@@ -106,7 +105,6 @@ export default {
     const myUserInfo = JSON.parse(
       window.localStorage.getItem("userInfo") || "{}"
     );
-    console.log(myUserInfo)
     this.userInfo = myUserInfo;
     token && (this.isLogin = true);
   },
@@ -174,5 +172,4 @@ export default {
     max-width: 100%;
   }
 }
-
 </style>

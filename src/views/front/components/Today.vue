@@ -47,7 +47,6 @@ export default {
   methods: {
     async getTodayEvents() {
       const { data } = await fetchActiveListToday(Date.now());
-      console.log(data);
       this.list = data.map((item) => {
         return {
           title: item.title,

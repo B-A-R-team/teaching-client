@@ -61,7 +61,7 @@ export default {
         this.$message({ type: 'success', message: '登录成功', duration: 2000 });
         //改变登录状态
         this.changeLoginState();
-        this.$router.push('/');
+        this.$router.replace('/');
       } else {
         this.$message({
           type: 'error',

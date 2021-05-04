@@ -3,7 +3,7 @@
     <v-card-title class="pt-8">
       <v-spacer />
       <v-avatar size="104" color="primary" rounded="circle">
-        <v-img :src="avatar" />
+        <v-img :src="renderImg(propsAvatar)" />
       </v-avatar>
       <v-spacer />
     </v-card-title>
@@ -25,7 +25,7 @@
         :key="index"
         :to="'/person/todo'"
       >
-        <v-list-item-title style="text-align:left;">
+        <v-list-item-title style="text-align: left">
           {{ todo.title }}
         </v-list-item-title>
       </v-list-item>
@@ -34,32 +34,33 @@
 </template>
 
 <script>
-import { fetchPrePublishedActive } from '../../../api/active';
-import getImgFullPath from '../../../utils/getImgFullPath';
+import { fetchPrePublishedActive } from "../../../api/active";
+import getImgFullPath from "../../../utils/getImgFullPath";
 
 export default {
   data() {
     return {
-      avatar: '',
-      role: '',
-      name: '',
+      avatar: "",
+      role: "",
+      name: "",
       loading: true,
       todoList: [
         {
           label:
-            '如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议',
-          link: '/todo/123',
+            "如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议",
+          link: "/todo/123",
         },
         {
-          label: '关于如何处理特朗普同志的内部会议',
-          link: '/todo/456',
+          label: "关于如何处理特朗普同志的内部会议",
+          link: "/todo/456",
         },
       ],
+      propsAvatar: null,
     };
   },
   methods: {
     getUserInfo() {
-      const userInfo = localStorage.getItem('userInfo');
+      const userInfo = localStorage.getItem("userInfo");
       if (userInfo) {
         return JSON.parse(userInfo);
       } else {
@@ -76,6 +77,14 @@ export default {
       this.todoList = todoList;
       this.loading = false;
     },
+    renderImg(filePath) {
+      return getImgFullPath(filePath)
+    }
+  },
+  props: {
+    childavatar: {
+      type: String,
+    },
   },
   mounted() {
     const userInfo = this.getUserInfo();
@@ -85,10 +94,15 @@ export default {
       this.role = userInfo.role.name;
       this.user = userInfo;
     } else {
-      this.$message({ type: 'error', message: '用户数据读取失败' });
+      this.$message({ type: "error", message: "用户数据读取失败" });
     }
 
     this.getTodoList();
+  },
+  watch: {
+    childavatar(newVal) {
+      this.propsAvatar = newVal;
+    },
   },
 };
 </script>

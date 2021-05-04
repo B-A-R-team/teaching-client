@@ -2,7 +2,7 @@
   <div class="personal mb-8">
     <v-row>
       <v-col cols="3">
-        <info />
+        <info :childavatar="userInfo.avatar" />
       </v-col>
       <v-col cols="9">
         <v-card tile :loading="loading">
@@ -28,6 +28,7 @@ export default {
   provide() {
     return {
       changeLoading: this.changeLoading,
+      getAvatar: this.getAvatar,
     };
   },
   data() {
@@ -56,10 +57,12 @@ export default {
       }
       return true;
     },
+    getAvatar(filePath) {
+      this.userInfo.avatar = filePath
+    }
   },
   mounted() {
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
-    console.log(userInfo)
     this.userInfo = userInfo;
   },
 };

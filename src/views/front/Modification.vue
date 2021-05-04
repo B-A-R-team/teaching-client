@@ -60,7 +60,7 @@
       <v-col md="6" sm="12">
         <v-card class="mesBox" elevation="0" style="padding: 15px">
           <v-card-title>
-            <h3 >修改密码</h3>
+            <h3>修改密码</h3>
           </v-card-title>
         </v-card>
       </v-col>
@@ -79,10 +79,10 @@ export default {
       avatarFile: null,
     };
   },
-  inject: ["changeLoginState","changeLoading"],
+  inject: ["changeLoginState", "changeLoading","getAvatar"],
   created() {
     this.getUserMessage();
-    this.changeLoading(false)
+    this.changeLoading(false);
   },
   methods: {
     getUserMessage() {
@@ -116,6 +116,7 @@ export default {
         );
         //更新登录状态
         this.changeLoginState();
+        this.getAvatar(avatarPath)
         return this.$message({
           type: "success",
           message: res.data.msg,
