@@ -33,37 +33,42 @@
           </template> </v-card
       ></v-col>
       <v-col :md="isLeader ? 6 : 12">
-        <v-card class="pa-4 pt-3">
+        <v-card class="pa-4 pt-3 adv-act">
           <p class="text-subtitle-1">评审活动</p>
           <v-divider></v-divider>
-          <template v-for="(item, index) in review">
-            <v-list-item
-              three-line
-              :key="item.id"
-              @click="handleDetail(item.id)"
-            >
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-                <v-list-item-subtitle class="my-ellipsis">
-                  {{ item.content }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-action>
-                <div>
-                  <v-btn color="primary" @click="handleVote(item.id, true)"
-                    >同意</v-btn
-                  >
-                  <v-btn
-                    color="primary"
-                    class="ml-3"
-                    @click="handleVote(item.id, false)"
-                    >反对</v-btn
-                  >
-                </div>
-              </v-list-item-action>
-            </v-list-item>
-            <v-divider :key="index"></v-divider>
-          </template>
+          <div v-if="review.length > 0">
+            <template v-for="(item, index) in review">
+              <v-list-item
+                three-line
+                :key="item.id"
+                @click="handleDetail(item.id)"
+              >
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-subtitle class="my-ellipsis">
+                    {{ item.content }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <div>
+                    <v-btn color="primary" @click="handleVote(item.id, true)"
+                      >同意</v-btn
+                    >
+                    <v-btn
+                      color="primary"
+                      class="ml-3"
+                      @click="handleVote(item.id, false)"
+                      >反对</v-btn
+                    >
+                  </div>
+                </v-list-item-action>
+              </v-list-item>
+              <v-divider :key="index"></v-divider>
+            </template>
+          </div>
+          <div class="mt-3 text-center" style="padding-top: 130px" v-else>
+            暂无评审
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -85,6 +90,7 @@ export default {
       review: [],
     };
   },
+  inject: ["changeLoading"],
   methods: {
     handleDetail() {},
     async publish(id) {
@@ -115,6 +121,7 @@ export default {
       }
     },
     async getLists() {
+      this.changeLoading(true)
       const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
       this.userInfo = userInfo;
       if (userInfo.role.id === 3 || userInfo.role.id === 2) {
@@ -145,6 +152,7 @@ export default {
             });
           });
           this.advanceActives = myLists[0].data;
+          this.changeLoading(false)
         }
       }
       if (userInfo.role.id <= 1) {
@@ -153,6 +161,7 @@ export default {
             userInfo.id,
             userInfo.room.id
           );
+          this.review = [];
           res.data.forEach((item) => {
             this.review.push({
               title: item.title,

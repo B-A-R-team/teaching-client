@@ -117,6 +117,7 @@ export default {
       leaderInfo: {},
     };
   },
+  inject: ["changeLoading"],
   computed: {
     dateRangeText() {
       const myDates = this.dates;
@@ -156,6 +157,7 @@ export default {
     },
   },
   mounted: async function () {
+    this.changeLoading(true);
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
     this.leaderInfo = userInfo;
     if (userInfo.room && userInfo.room.id) {
@@ -164,6 +166,7 @@ export default {
         this.all_users = res.data;
       }
     }
+    this.changeLoading(false);
   },
 };
 </script>

@@ -79,9 +79,10 @@ export default {
       avatarFile: null,
     };
   },
-  inject: ["changeLoginState"],
+  inject: ["changeLoginState","changeLoading"],
   created() {
     this.getUserMessage();
+    this.changeLoading(false)
   },
   methods: {
     getUserMessage() {
