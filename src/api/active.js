@@ -164,3 +164,10 @@ export const fetchPublishAdvance = (id) => request({
     id
   }
 })
+
+// 更新活动内容
+export const fetchUpdateActive = (data) => request({
+  url: '/active/updateActiveById',
+  method: 'put',
+  data,
+})

@@ -6,7 +6,7 @@
         <v-form ref="form" lazy-validation class="pa-5">
           <v-text-field
             v-model="active.title"
-            :counter="30"
+            :counter="40"
             :rules="titleRules"
             prepend-icon="mdi-format-title"
             label="主题"
@@ -74,8 +74,8 @@
               :value="
                 JSON.stringify({
                   user_id: item.id,
-                  is_ok: false,
                   name: item.name,
+                  is_ok: false,
                 })
               "
             ></v-checkbox>
@@ -91,7 +91,11 @@
 <script>
 import moment from "moment";
 import { fetchAllUserByRommId } from "../../api/user";
-import { fetchAdvancePublish } from "../../api/active";
+import {
+  fetchAdvancePublish,
+  fetchActiveDetail,
+  fetchUpdateActive,
+} from "../../api/active";
 export default {
   data() {
     return {
@@ -106,15 +110,17 @@ export default {
       },
       titleRules: [
         (v) => !!v || "标题不能为空",
-        (v) => (v && v.length <= 30) || "标题不能超过30个字符",
+        (v) => (v && v.length <= 40) || "标题不能超过40个字符",
       ],
       contentRules: [
         (v) => !!v || "内容不能为空",
-        (v) => (v && v.length <= 200) || "内容不能超过200个字符",
+        (v) => (v && v.length <= 300) || "内容不能超过300个字符",
       ],
 
       all_users: [],
       leaderInfo: {},
+      act_id: null,
+      oldJoinUsers: [],
     };
   },
   inject: ["changeLoading"],
@@ -131,7 +137,21 @@ export default {
         const room_id = this.leaderInfo.room.id;
         const leader_id = this.leaderInfo.id;
         const { title, content, selected } = this.active;
-        const join_users = [...selected].map((item) => JSON.parse(item));
+        let join_users;
+        if (!this.act_id) {
+          join_users = [...selected].map((item) => JSON.parse(item));
+        } else {
+          join_users = [...selected].map((item) => {
+            let temp = JSON.parse(item);
+            this.oldJoinUsers.forEach((oldItem) => {
+              if (oldItem.user_id === temp.user_id) {
+                temp.is_ok = oldItem.is_ok;
+              }
+            });
+            return temp;
+          });
+        }
+        console.log(join_users);
         const myDates = [...this.dates.sort()];
         myDates[0] += " 00:00:00";
         myDates[1] += " 23:59:59";
@@ -144,6 +164,21 @@ export default {
           end_time: moment(myDates[1])._d.getTime(),
           join_users: JSON.stringify(join_users),
         };
+        console.log(data);
+        if (this.act_id) {
+          data.id = this.act_id;
+          const res = await fetchUpdateActive(data);
+          console.log(res);
+          if (res.code === 200) {
+            this.$message({
+              type: "success",
+              message: res.data.msg,
+              duration: 2000,
+            });
+            this.$router.go(-1)
+          }
+          return;
+        }
         const res = await fetchAdvancePublish(data);
         if (res.code === 200 && res.data.id) {
           this.$message({
@@ -156,7 +191,9 @@ export default {
       }
     },
   },
-  mounted: async function () {
+  async created() {
+    const { act_id } = this.$route.query;
+    this.act_id = act_id;
     this.changeLoading(true);
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
     this.leaderInfo = userInfo;
@@ -164,6 +201,31 @@ export default {
       const res = await fetchAllUserByRommId(userInfo.room.id);
       if (res.code === 200) {
         this.all_users = res.data;
+      }
+    }
+    if (act_id) {
+      const res = await fetchActiveDetail(act_id);
+      if (res.code === 200) {
+        let { title, content, start_time, end_time, join_users } = res.data;
+        join_users = JSON.parse(join_users || '[]');
+        let oldJoinUsers = [];
+        join_users.forEach((item) => {
+          if (this.all_users.some((allItem) => allItem.id === item.user_id)) {
+            oldJoinUsers.push(item);
+          }
+        });
+        this.oldJoinUsers = oldJoinUsers;
+        console.log(oldJoinUsers);
+        this.active.content = content;
+        this.active.title = title;
+        this.dates = [start_time.substring(0, 10), end_time.substring(0, 10)];
+        this.active.selected = oldJoinUsers.map((item) =>
+          JSON.stringify({
+            user_id: item.user_id,
+            name: item.name,
+            is_ok: false,
+          })
+        );
       }
     }
     this.changeLoading(false);

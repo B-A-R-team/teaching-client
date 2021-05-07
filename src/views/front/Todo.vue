@@ -21,12 +21,18 @@
                 <v-list-item-action-text>
                   {{ item.okNum }}/{{ item.total }}
                 </v-list-item-action-text>
-                <v-btn
-                  color="primary"
-                  :disabled="!(item.okNum > item.total / 2)"
-                  @click="publish(item.id)"
-                  >发布</v-btn
-                >
+                <div>
+                  <v-btn color="primary" @click="editActive(item.id)"
+                    >编辑</v-btn
+                  >
+                  <v-btn
+                    class="ml-3"
+                    color="primary"
+                    :disabled="!(item.okNum > item.total / 2)"
+                    @click="publish(item.id)"
+                    >发布</v-btn
+                  >
+                </div>
               </v-list-item-action>
             </v-list-item>
             <v-divider :key="index"></v-divider>
@@ -92,6 +98,9 @@ export default {
   },
   inject: ["changeLoading"],
   methods: {
+    editActive(id) {
+      this.$router.push("/person/publish?act_id=" + id);
+    },
     handleDetail() {},
     async publish(id) {
       const res = await fetchPublishAdvance(id);
