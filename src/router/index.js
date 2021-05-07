@@ -87,8 +87,20 @@ const routes = [
       {
         path: '/admin/room',
         name: '教研室',
-        component: () => import('../views/admin/Room.vue'),
-        meta: { title: '教研室 | 后台管理' },
+        component: () => import('../views/admin/room/Index.vue'),
+        children: [
+          {
+            path: '/admin/room',
+            component: () => import('../views/admin/room/Room.vue'),
+            meta: { title: '教研室 | 后台管理' },
+          },
+          {
+            path: '/admin/room/detail/:id',
+            name: '详情',
+            component: () => import('../views/admin/room/RoomDetail.vue'),
+            meta: { title: '教研室详情 | 后台管理' },
+          },
+        ],
       },
     ],
   },
@@ -99,9 +111,9 @@ const router = new VueRouter({
   scrollBehavior() {
     return {
       x: 0,
-      y: 0
-    }
-  }
+      y: 0,
+    };
+  },
 });
 
 router.beforeEach((to, from, next) => {

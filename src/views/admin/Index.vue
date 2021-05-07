@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" class="admin-container">
     <sidebar :visible="visible" />
     <v-app-bar app dense>
       <v-app-bar-nav-icon @click="changeSidebar"></v-app-bar-nav-icon>
@@ -45,11 +45,17 @@ export default {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     renderCrumbs(routes) {
-      this.crumbs = routes.map(({ name, href }, index) => ({
-        text: name,
-        disabled: index === 0,
-        href: href,
-      }));
+      this.crumbs = routes
+        .map(({ name, href }, index) => {
+          if (name) {
+            return {
+              text: name,
+              disabled: index === 0,
+              href: '/#' + href,
+            };
+          }
+        })
+        .filter((item) => item !== undefined);
     },
   },
   watch: {
@@ -64,4 +70,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.admin-container {
+  min-height: 100vh;
+}
+</style>

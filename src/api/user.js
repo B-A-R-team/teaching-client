@@ -49,16 +49,28 @@ export function resLogin(account) {
 
 // }
 
-export const fetchUploadAvatar = (formData) => request({
-  method: 'post',
-  url: '/upload/avatar',
-  data: formData
-})
+export const fetchUploadAvatar = (formData) =>
+  request({
+    method: 'post',
+    url: '/upload/avatar',
+    data: formData,
+  });
 
-export const fetchAllUserByRommId = (room_id) => request({
-  method: 'get',
-  url: '/user/getUsersByRoomId',
-  params: {
-    id: room_id
-  }
-})
+export const fetchAllUserByRommId = (room_id) =>
+  request({
+    method: 'get',
+    url: '/user/getUsersByRoomId',
+    params: {
+      id: room_id,
+    },
+  });
+
+export function fetchUserFuzzyQuery(name) {
+  return request({
+    url: '/user/like',
+    method: 'get',
+    params: {
+      username: name,
+    },
+  });
+}

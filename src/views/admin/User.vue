@@ -1,22 +1,42 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="搜索"
-        single-line
-        hide-details
-        dense
-      ></v-text-field>
+      <v-row>
+        <v-col cols="11">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="搜索"
+            single-line
+            hide-details
+            dense
+            outlined
+          ></v-text-field>
+        </v-col>
+        <v-col cols="1">
+          <v-btn @click="handleSearch">搜索</v-btn>
+        </v-col>
+      </v-row>
     </v-card-title>
-    <v-dialog v-model="dialogDelete" max-width="500px">
+ 
+    <v-dialog v-model="dialogChangeRoom" max-width="500px">
       <v-card>
-        <v-card-title class="headline">你确定要删除这项数据吗？</v-card-title>
+        <v-card-title class="headline">修改所在教研室</v-card-title>
+        <v-card-text>
+          <v-select
+            :loading="selectLoading"
+            label="选择新的教研室"
+            v-model="selectedRoom"
+            :items="rooms"
+            item-value="id"
+            item-text="name"
+            :no-data-text="selectText"
+          ></v-select>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="closeDelete">取消</v-btn>
-          <v-btn color="red darken-1" text @click="deleteItemConfirm">
+          <v-btn color="primary" text @click="closeDialog">取消</v-btn>
+          <v-btn color="red darken-1" text @click="createConfirm">
             确定
           </v-btn>
         </v-card-actions>
@@ -25,7 +45,6 @@
     <v-data-table
       :headers="headers"
       :items="users"
-      :search="search"
       :loading="loading"
       :server-items-length="totalUser"
       :options.sync="options"
@@ -35,8 +54,8 @@
       }"
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small @click="deleteItem(item)">
-          mdi-delete
+        <v-icon small class="mr-2" @click="changeRoom(item)">
+          mdi-pencil
         </v-icon>
       </template>
     </v-data-table>
@@ -45,6 +64,8 @@
 
 <script>
 import { fetchUserList } from '@/api/user';
+import { fetchUserFuzzyQuery } from '../../api/user';
+import { fetchRoomList, fetchAddUser } from '../../api/room';
 
 export default {
   data() {
@@ -56,13 +77,19 @@ export default {
         { text: '电话', value: 'phone', sortable: false },
         { text: '职位', value: 'role_name', sortable: false },
         { text: '教研室', value: 'room_name', sortable: false },
-        { text: '操作', value: 'actions', sortable: false },
+        { text: '操作', value: 'actions', sortable: false, align: 'center' },
       ],
       totalUser: 0,
       users: [],
       dialogDelete: false,
       loading: false,
       options: {},
+      dialogChangeRoom: false,
+      rooms: [],
+      selectLoading: true,
+      selectText: '加载中...',
+      selectedRoom: -1,
+      selectedUser: -1,
     };
   },
   methods: {
@@ -75,13 +102,44 @@ export default {
 
       this.loading = false;
     },
-    closeDelete() {
-      this.dialogDelete = false;
+    async handleSearch() {
+      if (!this.search) {
+        const { page, itemsPerPage } = this.options;
+        this.getUser(page - 1, itemsPerPage);
+        return;
+      }
+      const { data } = await fetchUserFuzzyQuery(this.search);
+      this.totalUser = data.length;
+      this.users = data;
     },
-    deleteItem() {
-      this.dialogDelete = true;
+    async changeRoom(item) {
+      this.selectedUser = item.id;
+      this.dialogChangeRoom = true;
+      this.selectLoading = true;
+      this.selectText = '加载中...';
+      const { data } = await fetchRoomList(0, 9999);
+      this.rooms = data.rooms;
+      if (data.length === 0) {
+        this.selectText = '暂无数据';
+      }
+      this.selectLoading = false;
     },
-    deleteItemConfirm() {},
+    closeDialog() {
+      this.dialogChangeRoom = false;
+    },
+    async createConfirm() {
+      const { code } = await fetchAddUser(this.selectedRoom, this.selectedUser);
+      if (code === 200) {
+        this.$message({
+          type: 'success',
+          message: '修改成功',
+        });
+        this.closeDialog();
+
+        const { page, itemsPerPage } = this.options;
+        this.getUser(page - 1, itemsPerPage);
+      }
+    },
   },
   watch: {
     options: {

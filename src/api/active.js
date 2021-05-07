@@ -97,34 +97,37 @@ export function fetchActiveWithConcurrent(userId, roomId) {
 }
 
 // 获取活动详情
-export const fetchActiveDetail = (id) => request.get('/active/getActiveById', {
-  params: {
-    type: 'act',
-    id
-  }
-})
+export const fetchActiveDetail = (id) =>
+  request.get('/active/getActiveById', {
+    params: {
+      type: 'act',
+      id,
+    },
+  });
 
 // 获取评论
-export const fetchCommentsByActiveId = (id) => request('/commit/getAllByActive', {
-  params: {
-    id,
-  }
-})
+export const fetchCommentsByActiveId = (id) =>
+  request('/commit/getAllByActive', {
+    params: {
+      id,
+    },
+  });
 
 //添加评论
-export const fetchAddComment = ({ user_id, active_id, content }) => request.post('/commit/createCommit', {
-  user_id,
-  active_id,
-  content
-});
+export const fetchAddComment = ({ user_id, active_id, content }) =>
+  request.post('/commit/createCommit', {
+    user_id,
+    active_id,
+    content,
+  });
 
 // 添加文件
-export const fetchAddRecordFile = (formData) => request({
-  url: '/upload/record',
-  method: 'post',
-  data: formData
-})
-
+export const fetchAddRecordFile = (formData) =>
+  request({
+    url: '/upload/record',
+    method: 'post',
+    data: formData,
+  });
 
 export function fetchActiveListToday(timestamp) {
   return request({
@@ -137,37 +140,53 @@ export function fetchActiveListToday(timestamp) {
 }
 
 // 预发布活动
-export const fetchAdvancePublish = (data) => request({
-  url: '/active/createActive',
-  method: 'post',
-  data,
-})
+export const fetchAdvancePublish = (data) =>
+  request({
+    url: '/active/createActive',
+    method: 'post',
+    data,
+  });
 
 // 获取活动发起者的预发布活动
-export const fetchAdvActivesByLeader = () => request({
-  url: '/active/advance',
-  method: 'get'
-})
+export const fetchAdvActivesByLeader = () =>
+  request({
+    url: '/active/advance',
+    method: 'get',
+  });
 
 // 评审活动
-export const fetchAgress = (data) => request({
-  url: '/active/agreeActive',
-  method: 'put',
-  data,
-})
+export const fetchAgress = (data) =>
+  request({
+    url: '/active/agreeActive',
+    method: 'put',
+    data,
+  });
 
 // 发布预发布的活动
-export const fetchPublishAdvance = (id) => request({
-  url: '/active/issueAdvance',
-  method: 'post',
-  data: {
-    id
-  }
-})
+export const fetchPublishAdvance = (id) =>
+  request({
+    url: '/active/issueAdvance',
+    method: 'post',
+    data: {
+      id,
+    },
+  });
 
 // 更新活动内容
-export const fetchUpdateActive = (data) => request({
-  url: '/active/updateActiveById',
-  method: 'put',
-  data,
-})
+export const fetchUpdateActive = (data) =>
+  request({
+    url: '/active/updateActiveById',
+    method: 'put',
+    data,
+  });
+
+export function fetchActiveByRoomId(id) {
+  return request({
+    url: '/active/getActiveById',
+    method: 'get',
+    params: {
+      type: 'room',
+      id,
+    },
+  });
+}
