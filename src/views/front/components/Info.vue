@@ -15,18 +15,15 @@
     </v-card-subtitle>
     <v-divider />
     <v-list>
-      <v-subheader>待办事项</v-subheader>
-      <v-list-item v-if="todoList.length === 0">
-        <v-list-item-title>暂无数据</v-list-item-title>
-      </v-list-item>
-      <v-list-item
-        v-else
-        v-for="(todo, index) in todoList"
-        :key="index"
-        :to="'/person/todo'"
-      >
+      <v-subheader>个人信息</v-subheader>
+      <v-list-item>
         <v-list-item-title style="text-align: left">
-          {{ todo.title }}
+          教研室：{{ room }}
+        </v-list-item-title>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-title style="text-align: left">
+          工号：{{ jobId }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -34,25 +31,26 @@
 </template>
 
 <script>
-import { fetchPrePublishedActive } from "../../../api/active";
-import getImgFullPath from "../../../utils/getImgFullPath";
+import getImgFullPath from '../../../utils/getImgFullPath';
 
 export default {
   data() {
     return {
-      avatar: "",
-      role: "",
-      name: "",
+      avatar: '',
+      role: '',
+      name: '',
       loading: true,
+      room: '',
+      jobId: '',
       todoList: [
         {
           label:
-            "如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议",
-          link: "/todo/123",
+            '如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议',
+          link: '/todo/123',
         },
         {
-          label: "关于如何处理特朗普同志的内部会议",
-          link: "/todo/456",
+          label: '关于如何处理特朗普同志的内部会议',
+          link: '/todo/456',
         },
       ],
       propsAvatar: null,
@@ -60,26 +58,16 @@ export default {
   },
   methods: {
     getUserInfo() {
-      const userInfo = localStorage.getItem("userInfo");
+      const userInfo = localStorage.getItem('userInfo');
       if (userInfo) {
         return JSON.parse(userInfo);
       } else {
         return null;
       }
     },
-    async getTodoList() {
-      this.loading = true;
-      const { data: todoList } = await fetchPrePublishedActive(
-        this.user.id,
-        this.user.room?.id ?? 0
-      );
-
-      this.todoList = todoList;
-      this.loading = false;
-    },
     renderImg(filePath) {
-      return getImgFullPath(filePath)
-    }
+      return getImgFullPath(filePath);
+    },
   },
   props: {
     childavatar: {
@@ -93,11 +81,13 @@ export default {
       this.name = userInfo.name;
       this.role = userInfo.role.name;
       this.user = userInfo;
+      this.room = userInfo.room.name;
+      this.jobId = userInfo.job_id;
     } else {
-      this.$message({ type: "error", message: "用户数据读取失败" });
+      this.$message({ type: 'error', message: '用户数据读取失败' });
     }
 
-    this.getTodoList();
+    this.loading = false;
   },
   watch: {
     childavatar(newVal) {

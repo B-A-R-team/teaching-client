@@ -46,29 +46,22 @@ export default {
     return {
       list: [
         {
-          text: "个人信息",
-          icon: "mdi-account",
-          click: () => {
-            console.log("个人信息");
-          },
-        },
-        {
           text: "我的空间",
-          icon: "mdi-clock",
+          icon: "mdi-home",
           click: () => {
             this.$router.push("/person");
           },
         },
         {
           text: "我的待办",
-          icon: "mdi-account",
+          icon: "mdi-format-list-bulleted",
           click: () => {
             this.$router.push("/perActive");
           },
         },
         {
           text: "发布活动",
-          icon: "mdi-account",
+          icon: "mdi-clipboard-edit-outline",
           click: () => {
             console.log("发布活动");
           },

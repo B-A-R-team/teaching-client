@@ -43,7 +43,6 @@
             :items="users"
             :items-per-page="5"
             :footer-props="{
-              'items-per-page-text': '每页数据量',
               'items-per-page-options': [5, 10, 15],
             }"
           >
@@ -76,7 +75,6 @@
             :loading="active_loading"
             :items-per-page="5"
             :footer-props="{
-              'items-per-page-text': '每页数据量',
               'items-per-page-options': [5, 10, 15],
             }"
           >
