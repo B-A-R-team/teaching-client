@@ -1,12 +1,7 @@
 <template>
   <v-card class="active-calendar">
     <v-card-title>活动日历</v-card-title>
-    <v-calendar
-      short-months
-      locale="zh-CN"
-      :day-format="emptyFormat"
-      :month-format="emptyFormat"
-    >
+    <v-calendar short-months locale="zh-CN" :day-format="emptyFormat" :month-format="emptyFormat">
       <template slot="day" slot-scope="info">
         <v-tooltip left v-if="haveEvent(info)">
           <template v-slot:activator="{ on, attrs }">
@@ -19,22 +14,14 @@
               v-bind="attrs"
               v-on="on"
               @mouseover="getEventByTime(info)"
-            >
-              {{ info.day }}
-            </div>
+            >{{ info.day }}</div>
           </template>
           <v-list style="background: transparent;">
             <v-list-item color="transparent" v-if="showLoading">
               <span class="white--text">加载中...</span>
             </v-list-item>
-            <v-list-item
-              v-else
-              v-for="(event, index) in showEvents"
-              :key="index"
-            >
-              <li class="white--text">
-                {{ event.title }} - {{ event.room_name }}
-              </li>
+            <v-list-item v-else v-for="(event, index) in showEvents" :key="index">
+              <li class="white--text">{{ event.title }} - {{ event.room_name }}</li>
             </v-list-item>
           </v-list>
         </v-tooltip>
@@ -45,9 +32,7 @@
             info.outside ? 'grey--text darken-1' : 'black--text',
             haveEvent(info) ? 'has-event' : '',
           ]"
-        >
-          {{ info.day }}
-        </div>
+        >{{ info.day }}</div>
       </template>
     </v-calendar>
   </v-card>
@@ -93,11 +78,10 @@ export default {
     },
     async getEvent() {
       const [
-        { data: doingActives },
+        { data: doneActives },
         { data: willDoActives },
-      ] = await fetchActiveListBothDoingAndWillDo();
-
-      this.events = [...doingActives, ...willDoActives];
+      ] = await fetchActiveListBothDoingAndWillDo({ current_page: 1, page_size: 6 });
+      this.events = [...doneActives.act, ...willDoActives.act];
     },
     async getEventByTime(cur) {
       this.showLoading = true;
@@ -133,7 +117,7 @@ export default {
     cursor: pointer;
   }
   .custom-day.has-event::after {
-    content: '';
+    content: "";
     display: block;
     background-color: #186fad;
     width: 7px;

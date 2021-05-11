@@ -1,45 +1,52 @@
 import { request } from '../utils';
 
 // 获取首页活动列表
-export function fetchActiveList(type) {
+export function fetchActiveList({ type, current_page, page_size }) {
   return async () =>
     await request({
       url: '/active/getActives',
       method: 'get',
       params: {
         type,
+        current_page,
+        page_size
       },
     });
 }
 
 /**
- * 获取正在进行的活动
- */
-export const fetchActiveListWhenDoing = fetchActiveList('doing');
-/**
  * 获取已经完成的活动
  */
-export const fetchActiveListWhenDone = fetchActiveList('done');
+export const fetchActiveListWhenDone = ({ page_size, current_page }) => fetchActiveList({ type: 'done', page_size, current_page });
 /**
  * 获取未开始活动
  */
-export const fetchActiveListWillDo = fetchActiveList('will');
+export const fetchActiveListWillDo = ({ page_size, current_page }) => fetchActiveList({ type: 'will', page_size, current_page });
 /**
  * 同时获取进行中以及未开始的活动
  */
-export function fetchActiveListBothDoingAndWillDo() {
-  return Promise.all([fetchActiveListWhenDoing(), fetchActiveListWillDo()]);
+export function fetchActiveListBothDoingAndWillDo({ page_size, current_page }) {
+  return Promise.all([fetchActiveListWhenDone({ page_size, current_page })(), fetchActiveListWillDo({ page_size, current_page })()]);
+}
+
+export const fetchAllActiveList = ({ current_page, page_size }) => {
+  return Promise.all(
+    [
+      fetchActiveListByType({ type: 'will', current_page, page_size }),
+      fetchActiveListByType({ type: 'done', current_page, page_size }),
+    ]
+  )
 }
 
 /**
  * 按照开始时间已发布获取活动
  * @returns Promise
  */
-export async function fetchActiveListByType(type) {
-  const res = await fetchActiveList(type)();
+export async function fetchActiveListByType({ type, current_page, page_size }) {
+  const res = await fetchActiveList({ type, current_page, page_size })();
   let arr = [];
   if (res.code === 200) {
-    res.data.forEach((item) => {
+    res.data.act.forEach((item) => {
       const obj = {};
       obj.id = item.id;
       obj.avatar = item.leader.avatar;
@@ -50,7 +57,9 @@ export async function fetchActiveListByType(type) {
       arr.push({ divider: true, inset: true });
     });
   }
-  return Promise.resolve(arr);
+  res.data.act = arr
+  return Promise.resolve(res);
+
 }
 
 /**
