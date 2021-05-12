@@ -81,7 +81,6 @@
         :server-items-length="total"
         :options.sync="options"
         :footer-props="{
-          'items-per-page-text': '每页数据量',
           'items-per-page-options': [5, 10, 15],
         }"
       >

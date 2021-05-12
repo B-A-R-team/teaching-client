@@ -9,7 +9,7 @@ export function fetchActiveList({ type, current_page, page_size }) {
       params: {
         type,
         current_page,
-        page_size
+        page_size,
       },
     });
 }
@@ -17,26 +17,29 @@ export function fetchActiveList({ type, current_page, page_size }) {
 /**
  * 获取已经完成的活动
  */
-export const fetchActiveListWhenDone = ({ page_size, current_page }) => fetchActiveList({ type: 'done', page_size, current_page });
+export const fetchActiveListWhenDone = ({ page_size, current_page }) =>
+  fetchActiveList({ type: 'done', page_size, current_page });
 /**
  * 获取未开始活动
  */
-export const fetchActiveListWillDo = ({ page_size, current_page }) => fetchActiveList({ type: 'will', page_size, current_page });
+export const fetchActiveListWillDo = ({ page_size, current_page }) =>
+  fetchActiveList({ type: 'will', page_size, current_page });
 /**
  * 同时获取进行中以及未开始的活动
  */
 export function fetchActiveListBothDoingAndWillDo({ page_size, current_page }) {
-  return Promise.all([fetchActiveListWhenDone({ page_size, current_page })(), fetchActiveListWillDo({ page_size, current_page })()]);
+  return Promise.all([
+    fetchActiveListWhenDone({ page_size, current_page })(),
+    fetchActiveListWillDo({ page_size, current_page })(),
+  ]);
 }
 
 export const fetchAllActiveList = ({ current_page, page_size }) => {
-  return Promise.all(
-    [
-      fetchActiveListByType({ type: 'will', current_page, page_size }),
-      fetchActiveListByType({ type: 'done', current_page, page_size }),
-    ]
-  )
-}
+  return Promise.all([
+    fetchActiveListByType({ type: 'will', current_page, page_size }),
+    fetchActiveListByType({ type: 'done', current_page, page_size }),
+  ]);
+};
 
 /**
  * 按照开始时间已发布获取活动
@@ -57,53 +60,40 @@ export async function fetchActiveListByType({ type, current_page, page_size }) {
       arr.push({ divider: true, inset: true });
     });
   }
-  res.data.act = arr
+  res.data.act = arr;
   return Promise.resolve(res);
-
 }
 
 /**
  * 获取活动列表
- * @param {Number} advance 活动状态
+ * @param {Number} type 活动状态
  * @returns 获取两种状态的请求
  */
-export function fetchActive(advance) {
-  return async (userId, roomId) =>
+export function fetchActive(type) {
+  return async (userId, roomId, { current_page, page_size }) =>
     await request({
       url: '/active/perActive',
       method: 'get',
       params: {
-        advance,
+        type,
         user_id: userId,
         room_id: roomId,
+        current_page,
+        page_size,
       },
     });
 }
 /**
- * 获取预发布的活动
  * @param {Number} userId 用户ID
  * @param {Number} roomId 教研室ID
  */
-export const fetchPrePublishedActive = fetchActive(0);
+export const fetchDoneActive = fetchActive('done');
 /**
  * 获取已发布的活动
  * @param {Number} userId 用户ID
  * @param {Number} roomId 教研室ID
  */
-export const fetchPublishedActive = fetchActive(1);
-
-/**
- * 并发请求已发布和未发布的活动
- * @param {Number} userId 用户ID
- * @param {Number} roomId 教研室ID
- * @returns
- */
-export function fetchActiveWithConcurrent(userId, roomId) {
-  return Promise.all([
-    fetchPublishedActive(userId, roomId),
-    fetchPrePublishedActive(userId, roomId),
-  ]);
-}
+export const fetchWillActive = fetchActive('will');
 
 // 获取活动详情
 export const fetchActiveDetail = (id) =>

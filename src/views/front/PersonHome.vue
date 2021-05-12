@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-subheader>
-      我的活动
+      已参加
       <v-spacer />
     </v-subheader>
     <v-row v-if="actives.length === 0" class="px-4 py-14">
@@ -14,8 +14,16 @@
         <active-card :data="item" />
       </v-col>
     </v-row>
+    <v-row class="px-4 pb-4">
+      <v-col>
+        <v-pagination
+          v-model="donePage"
+          :length="Math.ceil(doneTotal / pageSize)"
+        ></v-pagination>
+      </v-col>
+    </v-row>
     <v-subheader>
-      预发布活动
+      待参加
       <v-spacer />
     </v-subheader>
     <v-row v-if="preActives.length === 0" class="px-4 py-14">
@@ -28,12 +36,20 @@
         <active-card :data="item" />
       </v-col>
     </v-row>
+    <v-row class="px-4 pb-4">
+      <v-col>
+        <v-pagination
+          v-model="willPage"
+          :length="Math.ceil(willTotal / pageSize)"
+        ></v-pagination>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import ActiveCard from './components/ActiveCard.vue';
-import { fetchActiveWithConcurrent } from '../../api/active';
+import { fetchDoneActive, fetchWillActive } from '../../api/active';
 
 export default {
   components: { ActiveCard },
@@ -42,6 +58,11 @@ export default {
     return {
       actives: [],
       preActives: [],
+      donePage: 1,
+      doneTotal: 1,
+      willPage: 1,
+      willTotal: 1,
+      pageSize: 8,
     };
   },
   methods: {
@@ -54,21 +75,42 @@ export default {
       }
     },
 
-    async getActiveList() {
+    async getDoneActiveList() {
       this.changeLoading(true);
       const user = this.getUserInfo();
-      const [
-        { data: actives },
-        { data: preActives },
-      ] = await fetchActiveWithConcurrent(user.id, user.room?.id ?? 0);
+      const { data } = await fetchDoneActive(user.id, user.room?.id ?? 0, {
+        current_page: this.donePage,
+        page_size: this.pageSize,
+      });
 
-      this.actives = actives;
-      this.preActives = preActives;
+      this.actives = data.act;
+      this.doneTotal = data.length;
+      this.changeLoading(false);
+    },
+    async getWillActiveList() {
+      this.changeLoading(true);
+      const user = this.getUserInfo();
+      const { data } = await fetchWillActive(user.id, user.room?.id ?? 0, {
+        current_page: this.donePage,
+        page_size: this.pageSize,
+      });
+
+      this.preActives = data.act;
+      this.willTotal = data.length;
       this.changeLoading(false);
     },
   },
+  watch: {
+    donePage() {
+      this.getDoneActiveList();
+    },
+    willPage() {
+      this.getWillActiveList();
+    },
+  },
   mounted() {
-    this.getActiveList();
+    this.getDoneActiveList();
+    this.getWillActiveList();
   },
 };
 </script>
