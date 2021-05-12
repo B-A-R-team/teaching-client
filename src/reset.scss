@@ -12,6 +12,12 @@ input {
 .v-application--wrap {
     min-height: 0 !important;
 }
+
 .col {
-    flex-basis: auto!important;
+    flex-basis: auto !important;
+}
+
+html,
+body {
+    height: 100%;
 }

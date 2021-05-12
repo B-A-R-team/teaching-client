@@ -46,12 +46,7 @@ const routes = [
             component: () => import('../views/front/Todo.vue'),
             meta: { title: '待办 | 教研管理' },
           },
-          {
-            path: '/person/publish',
-            name: 'Publish',
-            component: () => import('../views/front/Publish.vue'),
-            meta: { title: '发布 | 教研管理' },
-          },
+
         ],
       },
       {
@@ -71,18 +66,17 @@ const routes = [
     name: '后台管理',
     component: () => import('../views/admin/Index.vue'),
     children: [
-      { path: '/admin/', redirect: '/admin/active' },
-      {
-        path: '/admin/active',
-        name: '活动',
-        component: () => import('../views/admin/Active.vue'),
-        meta: { title: '活动 | 后台管理' },
-      },
       {
         path: '/admin/user',
         name: '用户',
         component: () => import('../views/admin/User.vue'),
         meta: { title: '用户 | 后台管理' },
+      },
+      {
+        path: '/admin/role',
+        name: '权限角色',
+        component: () => import('../views/admin/Role.vue'),
+        meta: { title: '用户 | 权限角色管理' },
       },
       {
         path: '/admin/room',
@@ -102,6 +96,7 @@ const routes = [
           },
         ],
       },
+
     ],
   },
 ];
@@ -126,5 +121,15 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   NProgress.done();
 });
+router.options.routes[0].children[2].children.push({
+  path: '/person/publish',
+  name: 'Publish',
+  component: resolve => require(['../views/front/Publish.vue'], resolve),
+  meta: { title: '发布 | 教研管理' },
+})
+console.log(router.options.routes[0].children[2].children)
+router.addRoutes(router.options.routes)
+
+
 
 export default router;

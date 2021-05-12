@@ -64,9 +64,9 @@ export default {
       //     ],
       //   },
       items: [
-        { title: '活动', icon: 'mdi-view-dashboard', url: '/admin/active' },
         { title: '用户', icon: 'mdi-account', url: '/admin/user' },
         { title: '教研室', icon: 'mdi-home', url: '/admin/room' },
+        { title: '权限角色管理', icon: 'mdi-home', url: '/admin/role' },
       ],
       right: null,
     };
