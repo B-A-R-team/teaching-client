@@ -1,7 +1,7 @@
 const routes = [
     {
         path: '/',
-        name:'zong',
+        name: 'zong',
         component: () => import('../views/front/Index.vue'),
         children: [
             {
@@ -62,6 +62,12 @@ const routes = [
         component: () => import('../views/admin/Index.vue'),
         children: [
             {
+                path: '/admin',
+                name: '主页',
+                component: () => import('../views/admin/Home.vue'),
+                meta: { title: '主页 | 后台管理' },
+            },
+            {
                 path: '/admin/user',
                 name: '用户',
                 component: () => import('../views/admin/User.vue'),
@@ -91,6 +97,12 @@ const routes = [
                     },
 
                 ],
+            },
+            {
+                path: '/admin/dRoom',
+                name: '详情',
+                component: () => import('../views/admin/DRoom.vue'),
+                meta: { title: '该教研室 | 后台管理' },
             },
 
         ],
@@ -130,7 +142,13 @@ export default (menu) => {
             path: '/admin',
             name: '后台管理',
             component: () => import('../views/admin/Index.vue'),
-            children: []
+            redirect: '/admin/home',
+            children: [{
+                path: '/admin/home',
+                name: '主页',
+                component: () => import('../views/admin/Home.vue'),
+                meta: { title: '主页 | 后台管理' },
+            },]
         })
         routes[1].children.forEach(item => {
             for (let i = 0; i < menu.length; i++) {

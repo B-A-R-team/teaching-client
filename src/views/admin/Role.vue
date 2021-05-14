@@ -125,6 +125,7 @@ export default {
     async submitUpdate() {
       if (this.$refs.form.validate()) {
         if (this.type === "update") {
+          console.log(this.treeInfo);
           const res = await fetchUpdateRole({
             id: this.curId,
             name: this.roleName,
@@ -148,7 +149,6 @@ export default {
           role_menu: JSON.stringify(treeInfo),
         });
         console.log(res);
-
         this.updateDialog = false;
       }
     },

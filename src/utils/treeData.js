@@ -60,7 +60,7 @@ const menuData = [
                 id: 9,
                 key: '/admin/role',
                 name: '权限角色',
-                icon: 'mdi-account'
+                icon: 'mdi-arrow-vertical-lock'
 
             },
             {
@@ -82,6 +82,12 @@ const menuData = [
                         icon: null
                     },
                 ],
+            },
+            {
+                id: 13,
+                key: '/admin/dRoom',
+                name: '该教研室',
+                icon: 'mdi-home-city'
             },
         ],
     },

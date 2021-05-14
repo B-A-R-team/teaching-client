@@ -8,7 +8,9 @@
         <v-card tile :loading="loading">
           <v-tabs v-model="tab">
             <template v-for="(item, index) in nav">
-              <v-tab :key="index" :to="item.link" v-if="isShowTabs(item)">{{ item.label }}</v-tab>
+              <v-tab :key="index" :to="item.link" v-if="isShowTabs(item)">{{
+                item.label
+              }}</v-tab>
             </template>
           </v-tabs>
           <router-view></router-view>
@@ -37,6 +39,7 @@ export default {
         { link: "/person/todo", label: "草稿箱" },
         { link: "/person/publish", label: "发布" },
         { link: "/person/settings", label: "设置" },
+        { link: "/admin", label: "进入后台" },
       ],
       loading: true,
       userInfo: { role: { id: null } },
@@ -52,8 +55,13 @@ export default {
           return true;
         }
         return false;
-      } else if (item.link === '/person/todo') {
+      } else if (item.link === "/person/todo") {
         if (this.userInfo.role.id >= 2 && this.userInfo.role.id <= 3) {
+          return true;
+        }
+        return false;
+      } else if (item.link === "/admin") {
+        if (this.userInfo.role.id >= 2) {
           return true;
         }
         return false;
@@ -62,8 +70,8 @@ export default {
       }
     },
     getAvatar(filePath) {
-      this.userInfo.avatar = filePath
-    }
+      this.userInfo.avatar = filePath;
+    },
   },
   mounted() {
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));

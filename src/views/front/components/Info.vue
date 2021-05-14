@@ -31,26 +31,26 @@
 </template>
 
 <script>
-import getImgFullPath from '../../../utils/getImgFullPath';
+import getImgFullPath from "../../../utils/getImgFullPath";
 
 export default {
   data() {
     return {
-      avatar: '',
-      role: '',
-      name: '',
+      avatar: "",
+      role: "",
+      name: "",
       loading: true,
-      room: '',
-      jobId: '',
+      room: "",
+      jobId: "",
       todoList: [
         {
           label:
-            '如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议',
-          link: '/todo/123',
+            "如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议",
+          link: "/todo/123",
         },
         {
-          label: '关于如何处理特朗普同志的内部会议',
-          link: '/todo/456',
+          label: "关于如何处理特朗普同志的内部会议",
+          link: "/todo/456",
         },
       ],
       propsAvatar: null,
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     getUserInfo() {
-      const userInfo = localStorage.getItem('userInfo');
+      const userInfo = localStorage.getItem("userInfo");
       if (userInfo) {
         return JSON.parse(userInfo);
       } else {
@@ -81,10 +81,11 @@ export default {
       this.name = userInfo.name;
       this.role = userInfo.role.name;
       this.user = userInfo;
-      this.room = userInfo.room.name;
+      userInfo.room && (this.room = userInfo.room.name);
+      this.room = '无'
       this.jobId = userInfo.job_id;
     } else {
-      this.$message({ type: 'error', message: '用户数据读取失败' });
+      this.$message({ type: "error", message: "用户数据读取失败" });
     }
 
     this.loading = false;

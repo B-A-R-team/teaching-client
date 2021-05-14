@@ -16,7 +16,6 @@
     </v-main>
   </v-app>
 </template>
-
 <script>
 import Sidebar from './components/Sidebar.vue';
 export default {
@@ -29,10 +28,6 @@ export default {
           text: '后台管理',
           disabled: true,
           href: '/#/admin/',
-        },
-        {
-          text: '活动',
-          href: '/#/admin/active',
         },
       ],
     };
