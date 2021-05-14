@@ -35,6 +35,8 @@ import Footer from "@/components/Footer.vue";
 import InfoCard from "@/components/InfoCard.vue";
 import { getToken, removeToken } from "@/utils/auth";
 import getImgFullPath from "../../utils/getImgFullPath";
+// eslint-disable-next-line no-unused-vars
+import getRoutes from "../../router/diff";
 export default {
   components: { InfoCard, Footer },
   provide() {
@@ -53,17 +55,10 @@ export default {
           },
         },
         {
-          text: "我的待办",
-          icon: "mdi-format-list-bulleted",
-          click: () => {
-            this.$router.push("/perActive");
-          },
-        },
-        {
-          text: "发布活动",
+          text: "设置",
           icon: "mdi-clipboard-edit-outline",
           click: () => {
-            console.log("发布活动");
+            this.$router.push("/person/settings");
           },
         },
       ],
@@ -100,13 +95,26 @@ export default {
     );
     this.userInfo = myUserInfo;
     token && (this.isLogin = true);
+    if (token && myUserInfo) {
+      // const myRoutes = getRoutes(JSON.parse(myUserInfo.role.role_menu));
+      // console.log(myRoutes);
+      // myRoutes.forEach((item, index) => {
+      //   if (index === 0) {
+      //     this.$router.addRoute("zong", item);
+      //   }
+      //   if (index === 1) {
+      //     this.$router.addRoute("admin", item);
+      //   }
+      // });
+      console.log(this.$router);
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 #app {
-  min-height:100%;
+  min-height: 100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
