@@ -2,8 +2,7 @@
   <v-app>
     <div class="page">
       <div class="login mx-auto">
-        <div class="top_title">
-        </div>
+        <div class="top_title"></div>
         <div class="median">
           <span class="subtitle mx-auto">工号密码登录</span>
           <v-text-field
@@ -29,19 +28,19 @@
 </template>
 
 <script>
-import { resLogin } from '../../api/user';
-import { setToken } from '../../utils/auth';
-import NProgress from 'nprogress';
-
+import { resLogin } from "../../api/user";
+import { setToken } from "../../utils/auth";
+import NProgress from "nprogress";
+import getRoutes from "../../router/diff";
 export default {
   data() {
     return {
-      job_id: '',
-      password: '',
+      job_id: "",
+      password: "",
     };
   },
   //调用父组件的数据
-  inject: ['changeLoginState'],
+  inject: ["changeLoginState"],
   methods: {
     async postCommit() {
       NProgress.start();
@@ -50,22 +49,33 @@ export default {
         const res = await resLogin({ job_id, password });
         if (res.code === 200 && res.data.msg) {
           return this.$message({
-            type: 'error',
+            type: "error",
             message: res.data.msg,
             duration: 2000,
           });
         }
         //存储用户信息
-        window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+        window.localStorage.setItem("userInfo", JSON.stringify(res.data));
         setToken(res.data.token);
-        this.$message({ type: 'success', message: '登录成功', duration: 2000 });
+        this.$message({ type: "success", message: "登录成功", duration: 2000 });
         //改变登录状态
         this.changeLoginState();
-        this.$router.replace('/');
+
+        const myRoutes = getRoutes(JSON.parse(res.data.role.role_menu));
+        console.log(myRoutes);
+        myRoutes.forEach((item, index) => {
+          if (index === 0) {
+            this.$router.addRoute("zong", item);
+          }
+          if (index === 1) {
+            this.$router.addRoute("admin", item);
+          }
+        });
+        this.$router.push("/");
       } else {
         this.$message({
-          type: 'error',
-          message: '帐号，密码不能为空',
+          type: "error",
+          message: "帐号，密码不能为空",
           duration: 2000,
         });
       }

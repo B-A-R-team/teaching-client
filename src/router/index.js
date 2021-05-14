@@ -3,11 +3,14 @@ import VueRouter from 'vue-router';
 import Home from '../views/front/Home.vue';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { getToken } from '../utils/auth';
+// import getRoutes from './diff'
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
+    name:'zong',
     component: () => import('../views/front/Index.vue'),
     children: [
       {
@@ -23,80 +26,11 @@ const routes = [
         meta: { title: '登录 | 教研室管理' },
       },
       {
-        path: '/person',
-        name: 'Person',
-        component: () => import('../views/front/Person.vue'),
-        redirect: '/person/home',
-        children: [
-          {
-            path: '/person/home',
-            name: 'PersonHome',
-            component: () => import('../views/front/PersonHome.vue'),
-            meta: { title: '个人空间 | 教研室管理' },
-          },
-          {
-            path: '/person/settings',
-            name: 'Modification',
-            component: () => import('../views/front/Modification.vue'),
-            meta: { title: '设置 | 教研管理' },
-          },
-          {
-            path: '/person/todo',
-            name: 'Todo',
-            component: () => import('../views/front/Todo.vue'),
-            meta: { title: '待办 | 教研管理' },
-          },
-
-        ],
-      },
-      {
-        path: '/perActive',
-        redirect: '/person/todo',
-      },
-      {
         path: '/activeDetail',
         name: 'ActiveDetail',
         component: () => import('../views/front/ActiveDetail.vue'),
         meta: { title: '活动详情 | 教研管理' },
       },
-    ],
-  },
-  {
-    path: '/admin',
-    name: '后台管理',
-    component: () => import('../views/admin/Index.vue'),
-    children: [
-      {
-        path: '/admin/user',
-        name: '用户',
-        component: () => import('../views/admin/User.vue'),
-        meta: { title: '用户 | 后台管理' },
-      },
-      {
-        path: '/admin/role',
-        name: '权限角色',
-        component: () => import('../views/admin/Role.vue'),
-        meta: { title: '用户 | 权限角色管理' },
-      },
-      {
-        path: '/admin/room',
-        name: '教研室',
-        component: () => import('../views/admin/room/Index.vue'),
-        children: [
-          {
-            path: '/admin/room',
-            component: () => import('../views/admin/room/Room.vue'),
-            meta: { title: '教研室 | 后台管理' },
-          },
-          {
-            path: '/admin/room/detail/:id',
-            name: '详情',
-            component: () => import('../views/admin/room/RoomDetail.vue'),
-            meta: { title: '教研室详情 | 后台管理' },
-          },
-        ],
-      },
-
     ],
   },
 ];
@@ -116,20 +50,44 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   }
+  const token = getToken()
+  if (to.name === 'Login' && token) {
+    return next({ name: '首页' });
+  }
+  if (to.name !== 'Login' && !token && to.name !== '首页' && to.name !== 'ActiveDetail' && to.name !== 'Register') next({ name: 'Login' });
+  // 如果用户未能验证身份，则 `next` 会被调用两次
+  // if (from.name === 'Login') {
+  //   if (window.localStorage.getItem('userInfo')) {
+  //     const menu = JSON.parse(JSON.parse(window.localStorage.getItem('userInfo')).role.role_menu)
+  //     // eslint-disable-next-line no-unused-vars
+  //     const myRoutes = getRoutes(menu)
+  //     // console.log(myRoutes)
+  //     // for (let i = 0; i < myRoutes.length; i++) {
+  //     //   router.addRoute(myRoutes[i].path, myRoutes[i])
+  //     // }
+  //     router.options.routes = myRoutes
+  //     router.addRoutes(router.options.routes)
+  //   }
+
+  // }
   next();
 });
 router.afterEach(() => {
   NProgress.done();
 });
-router.options.routes[0].children[2].children.push({
-  path: '/person/publish',
-  name: 'Publish',
-  component: resolve => require(['../views/front/Publish.vue'], resolve),
-  meta: { title: '发布 | 教研管理' },
-})
-console.log(router.options.routes[0].children[2].children)
-router.addRoutes(router.options.routes)
-
+// router.options.routes[0].children[2].children.push({
+//   path: '/person/publish',
+//   name: 'Publish',
+//   component: resolve => require(['../views/front/Publish.vue'], resolve),
+//   meta: { title: '发布 | 教研管理' },
+// })
+// router.addRoutes(router.options.routes)
+// router.addRoute('person', {
+//   path: '/person/publish',
+//   name: 'Publish',
+//   component: resolve => require(['../views/front/Publish.vue'], resolve),
+//   meta: { title: '发布 | 教研管理' },
+// })
 
 
 export default router;

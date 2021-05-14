@@ -15,14 +15,14 @@ const menuData = [
                 id: 2,
                 key: '/person/home',
                 name: '个人主页',
-                icon: null
+                icon: null,
+
             },
             {
                 id: 3,
                 key: '/person/settings',
                 name: '设置',
-                icon: null
-
+                icon: null,
             },
             {
                 id: 4,
@@ -42,7 +42,7 @@ const menuData = [
         id: 6,
         key: '/activeDetail',
         name: '活动详情',
-        icon: null
+        icon: null,
     },
     {
         id: 7,
@@ -87,4 +87,19 @@ const menuData = [
     },
 
 ]
+// const arr = []
+// menuData.forEach(item => {
+//     dfs(item, arr)
+// })
+// function dfs(node, arr) {
+//     if (!node.children && node.locked) {
+//         arr.push(node)
+//     }
+//     if (node.children) {
+//         dfs(node.children, arr)
+//     }
+// }
+// console.log(arr)
+
+
 export default menuData
