@@ -7,7 +7,6 @@ export default {
   name: "App",
   created() {
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
-    console.log(userInfo)
     if (userInfo) {
       const myRoutes = getRoutes(JSON.parse(userInfo.role.role_menu));
       myRoutes.forEach((item, index) => {

@@ -95,19 +95,6 @@ export default {
     );
     this.userInfo = myUserInfo;
     token && (this.isLogin = true);
-    if (token && myUserInfo) {
-      // const myRoutes = getRoutes(JSON.parse(myUserInfo.role.role_menu));
-      // console.log(myRoutes);
-      // myRoutes.forEach((item, index) => {
-      //   if (index === 0) {
-      //     this.$router.addRoute("zong", item);
-      //   }
-      //   if (index === 1) {
-      //     this.$router.addRoute("admin", item);
-      //   }
-      // });
-      console.log(this.$router);
-    }
   },
 };
 </script>

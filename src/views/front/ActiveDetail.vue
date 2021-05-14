@@ -8,7 +8,9 @@
             src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
           >
             <v-app-bar flat color="rgba(0, 0, 0, 0)">
-              <v-toolbar-title class="title white--text pl-0">活动详情</v-toolbar-title>
+              <v-toolbar-title class="title white--text pl-0"
+                >活动详情</v-toolbar-title
+              >
               <v-spacer></v-spacer>
             </v-app-bar>
 
@@ -18,7 +20,9 @@
               </v-avatar>
               <div class="leader-info">
                 <div class="ml-3 mb-1">{{ activeDetail.leader.name }}</div>
-                <div class="ml-3 grey--text subtitle-2">{{ activeDetail.room_name }}</div>
+                <div class="ml-3 grey--text subtitle-2">
+                  {{ activeDetail.room_name }}
+                </div>
               </div>
             </v-card-title>
           </v-img>
@@ -29,12 +33,14 @@
                 <v-card class="pa-5">
                   <div class="font-weight-bold ml-1 mb-2 title">
                     主题： {{ activeDetail.title }}
-                    <span
-                      class="ml-3 grey--text subtitle-2"
-                    >{{ activeDetail.start_time.substring(0, 16) }}</span>
+                    <span class="ml-3 grey--text subtitle-2">{{
+                      activeDetail.start_time.substring(0, 16)
+                    }}</span>
                   </div>
                   <v-divider></v-divider>
-                  <div class="font-weight-bold ml-1 mb-2 title mt-3">地点： {{ activeDetail.place }}</div>
+                  <div class="font-weight-bold ml-1 mb-2 title mt-3">
+                    地点： {{ activeDetail.place }}
+                  </div>
                   <v-divider></v-divider>
                   <div
                     class="font-weight-bold ml-1 mb-2 title mt-3"
@@ -46,9 +52,14 @@
 
                   <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
                     参加教师：
-                    <span v-for="(item, index) in activeDetail.join_users" :key="index">
+                    <span
+                      v-for="(item, index) in activeDetail.join_users"
+                      :key="index"
+                    >
                       {{ item.name }}
-                      <span v-if="activeDetail.join_users.length - 1 > index">,</span>
+                      <span v-if="activeDetail.join_users.length - 1 > index"
+                        >,</span
+                      >
                     </span>
                   </div>
                   <v-divider></v-divider>
@@ -64,8 +75,15 @@
                         :key="index"
                       >
                         <template v-slot:placeholder>
-                          <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                          <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                          >
+                            <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                            ></v-progress-circular>
                           </v-row>
                         </template>
                       </v-img>
@@ -84,7 +102,8 @@
                         <a
                           :href="renderImg(item.filePath)"
                           :download="item.oldFilename"
-                        >{{ item.oldFilename }}</a>
+                          >{{ item.oldFilename }}</a
+                        >
                         --- {{ item.username }}
                       </p>
                     </div>
@@ -93,27 +112,40 @@
                 </v-card>
               </v-col>
               <v-col md="6">
-                <v-card class="pa-5" style="height:100%">
+                <v-card class="pa-5" style="height: 100%">
                   <div class="font-weight-bold mb-2 title mb-2">活动记录</div>
                   <v-divider />
                   <div
                     v-if="comments.length <= 0"
-                    :style="{ display: 'flex', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }"
+                    :style="{
+                      display: 'flex',
+                      width: '100%',
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }"
                   >
                     <span class="mb-5 subtitle-1">暂无活动记录</span>
                   </div>
                   <div v-for="(item, index) in comments" :key="index">
                     <div class="mt-3 mb-3">
-                      <v-avatar class="ml-3" size="40">
-                        <img alt="user" :src="renderImg(item.user.avatar)" />
-                      </v-avatar>
-                      <span class="ml-4">{{ item.user.name }}：</span>
-                      <span class="ml-1">{{ item.content }}</span>
-                      <span class="ml-3 grey--text subtitle-2">
-                        {{
-                          item.create_time
-                        }}
-                      </span>
+                      <div class="commit-head">
+                        <div>
+                          <v-avatar class="ml-3" size="40">
+                            <img
+                              alt="user"
+                              :src="renderImg(item.user.avatar)"
+                            />
+                          </v-avatar>
+                          <span class="ml-4">{{ item.user.name }}</span>
+                        </div>
+                        <span class="ml-3 grey--text subtitle-2">
+                          {{ item.create_time }}
+                        </span>
+                      </div>
+                      <div class="px-5">
+                        <span class="ml-1" v-html="item.content"></span>
+                      </div>
                     </div>
                     <v-divider />
                   </div>
@@ -126,15 +158,16 @@
     </v-row>
     <v-row justify="center">
       <v-col :lg="10" :md="12" :sm="12">
-        <v-card elevation="2"  :loading="commentsLoading">
+        <v-card elevation="2" :loading="commentsLoading">
           <template v-if="current_user_info && token">
             <template v-if="isInCurrentAct">
-              <div class="commit-record ml-2 mr-2">
+              <div class="commit-record ml-2">
                 <v-avatar size="50">
                   <img alt="user" :src="renderImg(current_user_info.avatar)" />
                 </v-avatar>
-                <div class="commit-editor ml-2">
-                  <v-textarea
+                <div class="commit-editor ml-2 mb-2">
+                  <editor @change="editorChange" :isClear="isClear" />
+                  <!-- <v-textarea
                     v-model="commit.content"
                     height="100"
                     no-resize
@@ -143,11 +176,17 @@
                     label="请输入内容"
                     clearable
                     clear-icon="mdi-close-circle"
-                  ></v-textarea>
+                  ></v-textarea> -->
                 </div>
               </div>
               <div style="text-align: right">
-                <v-btn class="mb-2 mr-2" depressed color="primary" @click="submitComment">提交</v-btn>
+                <v-btn
+                  class="mb-2 mr-2"
+                  depressed
+                  color="primary"
+                  @click="submitComment"
+                  >提交</v-btn
+                >
               </div>
               <v-divider></v-divider>
               <div class="submit-files mt-2">
@@ -165,12 +204,20 @@
                     <v-chip small label color="primary">{{ text }}</v-chip>
                   </template>
                 </v-file-input>
-                <v-btn class="mr-2 mb-2" depressed color="primary" @click="submitFile">上传</v-btn>
+                <v-btn
+                  class="mr-2 mb-2"
+                  depressed
+                  color="primary"
+                  @click="submitFile"
+                  >上传</v-btn
+                >
               </div>
               <v-divider></v-divider>
             </template>
             <template v-else>
-              <div class="detail-login">您不是参加这个活动的老师，不能发表记录</div>
+              <div class="detail-login">
+                您不是参加这个活动的老师，不能发表记录
+              </div>
             </template>
           </template>
           <div v-else class="detail-login">
@@ -191,9 +238,11 @@ import {
 } from "../../api/active";
 import { getToken } from "../../utils/auth";
 import getImgFullPath from "../../utils/getImgFullPath";
+import Editor from "../../components/Editor.vue";
 export default {
   data() {
     return {
+      isClear: false,
       detailLoading: true,
       commentsLoading: true,
       file: null,
@@ -224,7 +273,13 @@ export default {
       token: null,
     };
   },
+  components: {
+    Editor,
+  },
   methods: {
+    editorChange(e) {
+      this.commit.content = e;
+    },
     renderImg(filePath) {
       return getImgFullPath(filePath);
     },
@@ -275,6 +330,7 @@ export default {
       this.commit.active_id = "";
       this.commit.user_id = "";
       this.commit.content = "";
+      this.isClear = true;
     },
   },
   mounted() {
@@ -286,14 +342,17 @@ export default {
   },
   computed: {
     isInCurrentAct() {
-      console.log(this.activeDetail.join_users, this.current_user_info.id)
-      console.log(this.activeDetail.join_users.some(item => this.current_user_info.id === item.id))
-      return this.activeDetail.join_users.some(item => this.current_user_info.id === item.user_id);
-    }
-  }
+      return this.activeDetail.join_users.some(
+        (item) => this.current_user_info.id === item.user_id
+      );
+    },
+  },
 };
 </script>
 <style lang="scss">
+p {
+  margin: 0 !important;
+}
 .active-detail {
   .leader-info {
     display: flex;
@@ -301,6 +360,11 @@ export default {
     justify-content: center;
     // align-items: center;
     text-align: left;
+  }
+  .commit-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .record-imgs {
     width: 100%;

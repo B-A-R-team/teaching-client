@@ -118,7 +118,6 @@ const myRoutes = [{
     ],
 },]
 export default (menu) => {
-    console.log(menu, routes[0].children[2].children)
     routes[0].children[2].children.forEach(item => {
         for (let i = 0; i < menu.length; i++) {
             if (menu[i].key === item.path) {
@@ -141,6 +140,5 @@ export default (menu) => {
             }
         })
     }
-    console.log(myRoutes)
     return myRoutes
 }
