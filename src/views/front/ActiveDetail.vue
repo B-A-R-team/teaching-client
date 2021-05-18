@@ -30,7 +30,7 @@
           <v-card-text>
             <v-row>
               <v-col md="6">
-                <v-card class="pa-5">
+                <v-card class="pa-5 content-max-height">
                   <div class="font-weight-bold ml-1 mb-2 title">
                     主题： {{ activeDetail.title }}
                     <span class="ml-3 grey--text subtitle-2">{{
@@ -70,7 +70,7 @@
                         :src="renderImg(item.filePath)"
                         lazy-src="https://picsum.photos/id/11/10/6"
                         aspect-ratio="1"
-                        class="grey lighten-2"
+                        class="grey lighten-2 img-item"
                         v-for="(item, index) in activeDetail.record_imgs"
                         :key="index"
                       >
@@ -112,7 +112,7 @@
                 </v-card>
               </v-col>
               <v-col md="6">
-                <v-card class="pa-5" style="height: 100%">
+                <v-card class="pa-5 content-max-height">
                   <div class="font-weight-bold mb-2 title mb-2">活动记录</div>
                   <v-divider />
                   <div
@@ -350,6 +350,33 @@ export default {
 };
 </script>
 <style lang="scss">
+.content-max-height {
+  height: 100%;
+  max-height: 800px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  &::-webkit-scrollbar:hover {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 6px rgb(104, 104, 104);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 6px rgb(216, 211, 211);
+    border-radius: 0;
+  }
+}
 p {
   margin: 0 !important;
 }
@@ -373,7 +400,13 @@ p {
     grid-row-gap: 20px;
     grid-column-gap: 20px;
     // grid-template-rows: repeat(auto-fill, 100px);
+    .img-item {
+      max-height: 200px;
+      max-width: 200px;
+      cursor: pointer;
+    }
   }
+
   // text-indent: 1rem;
   .commit-record {
     display: flex;

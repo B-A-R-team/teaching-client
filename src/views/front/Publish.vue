@@ -46,8 +46,15 @@
                   </template>
                   <v-date-picker v-model="date" no-title scrollable>
                     <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="dateMenu = false">取消</v-btn>
-                    <v-btn text color="primary" @click="$refs.dateMenu.save(date)">确定</v-btn>
+                    <v-btn text color="primary" @click="dateMenu = false"
+                      >取消</v-btn
+                    >
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.dateMenu.save(date)"
+                      >确定</v-btn
+                    >
                   </v-date-picker>
                 </v-menu>
               </v-col>
@@ -121,8 +128,12 @@
       </v-card>
     </v-col>
     <div>
-      <v-btn @click="saveToDraft" color="primary" class="mr-4 mb-3 ml-6">保存草稿</v-btn>
-      <v-btn @click="saveAndPublish" color="primary" class="mr-4 mb-3">发布</v-btn>
+      <v-btn @click="saveToDraft" color="primary" class="mr-4 mb-3 ml-6"
+        >保存草稿</v-btn
+      >
+      <v-btn @click="saveAndPublish" color="primary" class="mr-4 mb-3"
+        >发布</v-btn
+      >
     </div>
   </v-row>
 </template>
@@ -133,12 +144,12 @@ import {
   fetchAdvancePublish,
   fetchActiveDetail,
   fetchUpdateActive,
-  fetchPublishAdvance
+  fetchPublishAdvance,
 } from "../../api/active";
 export default {
   data() {
     return {
-      date: '',
+      date: "",
       dateMenu: false,
       time: null,
       timeMenu: false,
@@ -146,7 +157,7 @@ export default {
         title: "",
         content: "",
         selected: [],
-        place: '',
+        place: "",
       },
       titleRules: [
         (v) => !!v || "标题不能为空",
@@ -168,7 +179,7 @@ export default {
   inject: ["changeLoading"],
   computed: {
     dateRangeText() {
-      return this.date
+      return this.date;
     },
   },
   methods: {
@@ -198,7 +209,7 @@ export default {
               message: res.data.msg,
               duration: 2000,
             });
-            this.$router.go(-1)
+            this.$router.go(-1);
           }
           return;
         }
@@ -206,10 +217,10 @@ export default {
         if (res.code === 200 && res.data.id) {
           this.$message({
             type: "success",
-            message: "发布成功",
+            message: "保存成功",
             duration: 2000,
           });
-          this.$router.go(-1);
+          this.$router.replace("/person/todo");
         }
       }
     },
@@ -239,7 +250,7 @@ export default {
               message: res.data.msg,
               duration: 2000,
             });
-            this.$router.go(-1)
+            this.$router.replace('/person');
           }
           return;
         }
@@ -271,7 +282,7 @@ export default {
       const res = await fetchActiveDetail(act_id);
       if (res.code === 200) {
         let { title, content, start_time, join_users, place } = res.data;
-        join_users = JSON.parse(join_users || '[]');
+        join_users = JSON.parse(join_users || "[]");
         let oldJoinUsers = [];
         join_users.forEach((item) => {
           if (this.all_users.some((allItem) => allItem.id === item.user_id)) {
@@ -281,9 +292,9 @@ export default {
         this.active.content = content;
         this.active.place = place;
         this.active.title = title;
-        const dateArr = start_time.split(' ')
+        const dateArr = start_time.split(" ");
         this.date = dateArr[0];
-        this.time = dateArr[1].substring(0,5);
+        this.time = dateArr[1].substring(0, 5);
         this.active.selected = oldJoinUsers.map((item) =>
           JSON.stringify({
             user_id: item.user_id,

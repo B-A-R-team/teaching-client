@@ -8,28 +8,53 @@
   <v-container id="index_list_container" fluid>
     <v-row justify="center">
       <v-col :lg="6" :md="12" :sm="12">
-        <v-card :style="{ minHeight: '600px', height: '100%' }" :loading="willLoading">
+        <v-card
+          :style="{ minHeight: '600px', height: '100%' }"
+          :loading="willLoading"
+        >
           <v-card-title>近期开展活动</v-card-title>
           <!-- 以下为vuetify list组件官方示例 -->
-          <v-list three-line v-if="willTotal > 1">
+          <v-list three-line v-if="willTotal > 0">
             <template v-for="(item, index) in willItems">
-              <v-subheader v-if="item.header" :key="index" v-text="item.header"></v-subheader>
-              <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
-              <v-list-item v-else :key="index" style="cursor: pointer" @click="enterDetail(item)">
+              <v-subheader
+                v-if="item.header"
+                :key="index"
+                v-text="item.header"
+              ></v-subheader>
+              <v-divider
+                v-else-if="item.divider"
+                :key="index"
+                :inset="item.inset"
+              ></v-divider>
+              <v-list-item
+                v-else
+                :key="index"
+                style="cursor: pointer"
+                @click="enterDetail(item)"
+              >
                 <v-list-item-avatar>
                   <v-img :src="BASE_URL + item.avatar"></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title v-html="item.title"></v-list-item-title>
-                  <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    v-html="item.subtitle"
+                  ></v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                  <v-list-item-action-text
+                    v-text="item.action"
+                  ></v-list-item-action-text>
                 </v-list-item-action>
               </v-list-item>
             </template>
           </v-list>
-          <div v-else style="height:461px;line-height:461px;text-align:center">暂无数据</div>
+          <div
+            v-else
+            style="height: 461px; line-height: 461px; text-align: center"
+          >
+            暂无数据
+          </div>
           <div class="px-3 py-1">
             <v-pagination
               v-model="willPage"
@@ -41,14 +66,25 @@
         </v-card>
       </v-col>
       <v-col :lg="6" :md="12" :sm="12">
-        <v-card :style="{ minHeight: '500px', height: '100%' }" :loading="doneLoading">
+        <v-card
+          :style="{ minHeight: '500px', height: '100%' }"
+          :loading="doneLoading"
+        >
           <v-card-title>已结束活动</v-card-title>
           <!-- 以下为vuetify list组件官方示例 -->
-          <v-list three-line v-if="doneTotal > 1">
+          <v-list three-line v-if="doneTotal > 0">
             <template v-for="(item, index) in doneItems">
-              <v-subheader v-if="item.header" :key="index" v-text="item.header"></v-subheader>
+              <v-subheader
+                v-if="item.header"
+                :key="index"
+                v-text="item.header"
+              ></v-subheader>
 
-              <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
+              <v-divider
+                v-else-if="item.divider"
+                :key="index"
+                :inset="item.inset"
+              ></v-divider>
 
               <v-list-item v-else :key="index" @click="enterDetail(item)">
                 <v-list-item-avatar>
@@ -57,15 +93,24 @@
 
                 <v-list-item-content>
                   <v-list-item-title v-html="item.title"></v-list-item-title>
-                  <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    v-html="item.subtitle"
+                  ></v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                  <v-list-item-action-text v-text="item.action"></v-list-item-action-text>
+                  <v-list-item-action-text
+                    v-text="item.action"
+                  ></v-list-item-action-text>
                 </v-list-item-action>
               </v-list-item>
             </template>
           </v-list>
-          <div v-else style="height:461px;line-height:461px;text-align:center">暂无数据</div>
+          <div
+            v-else
+            style="height: 461px; line-height: 461px; text-align: center"
+          >
+            暂无数据
+          </div>
           <div class="px-3 py-1">
             <v-pagination
               v-model="donePage"
@@ -102,41 +147,48 @@ export default {
     async getActiveList() {
       const [
         { data: willActive },
-        { data: doneActive }
-      ] = await fetchAllActiveList({ current_page: 1, page_size: this.page_size })
-      this.willItems = willActive.act
-      this.doneItems = doneActive.act
-      this.willTotal = willActive.total || 1
-      this.doneTotal = doneActive.total || 1
+        { data: doneActive },
+      ] = await fetchAllActiveList({
+        current_page: 1,
+        page_size: this.page_size,
+      });
+      this.willItems = willActive.act;
+      this.doneItems = doneActive.act;
+      this.willTotal = willActive.total || 0;
+      this.doneTotal = doneActive.total || 0;
     },
     enterDetail(item) {
       this.$router.push("/activeDetail?act_id=" + item.id);
     },
     async changePage(e, type) {
       const { page_size } = this;
-      console.log(e, type)
       switch (type) {
-        case 'will':
+        case "will":
           {
             this.willLoading = true;
-            const res = await fetchActiveListByType({ type, page_size, current_page: e })
-            console.log(res)
+            const res = await fetchActiveListByType({
+              type,
+              page_size,
+              current_page: e,
+            });
             if (res.code === 200) {
-              this.willItems = res.data.act
-              this.willTotal = res.data.total
+              this.willItems = res.data.act;
+              this.willTotal = res.data.total;
               this.willLoading = false;
-
             }
           }
           break;
-        case 'done':
+        case "done":
           {
             this.doneLoading = true;
-            const res = await fetchActiveListByType({ type, page_size, current_page: e })
-            console.log(res)
+            const res = await fetchActiveListByType({
+              type,
+              page_size,
+              current_page: e,
+            });
             if (res.code === 200) {
-              this.doneItems = res.data.act
-              this.doneTotal = res.data.total
+              this.doneItems = res.data.act;
+              this.doneTotal = res.data.total;
               this.doneLoading = false;
             }
           }
@@ -144,7 +196,7 @@ export default {
         default:
           break;
       }
-    }
+    },
   },
   mounted() {
     this.getActiveList();
@@ -154,10 +206,18 @@ export default {
   computed: {
     totalPage() {
       return (type) => {
-        return type === 'done' ? Math.ceil(this.doneTotal / 5) : Math.ceil(this.willTotal / 5)
-      }
-    }
-  }
+        if (this.willTotal === 0) {
+          this.willTotal = 1;
+        }
+        if (this.doneTotal === 0) {
+          this.doneTotal = 1;
+        }
+        return type === "done"
+          ? Math.ceil(this.doneTotal / 5)
+          : Math.ceil(this.willTotal / 5);
+      };
+    },
+  },
 };
 </script>
 

@@ -40,17 +40,13 @@ export default {
       role: "",
       name: "",
       loading: true,
-      room: "",
+      room: "无",
       jobId: "",
       todoList: [
         {
           label:
             "如何处理考试中只花10分钟写完卷子之后拿出手机打游戏的学生的会议",
           link: "/todo/123",
-        },
-        {
-          label: "关于如何处理特朗普同志的内部会议",
-          link: "/todo/456",
         },
       ],
       propsAvatar: null,
@@ -82,7 +78,6 @@ export default {
       this.role = userInfo.role.name;
       this.user = userInfo;
       userInfo.room && (this.room = userInfo.room.name);
-      this.room = '无'
       this.jobId = userInfo.job_id;
     } else {
       this.$message({ type: "error", message: "用户数据读取失败" });

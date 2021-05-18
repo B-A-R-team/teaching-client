@@ -6,8 +6,10 @@ import getRoutes from "./router/diff.js";
 export default {
   name: "App",
   created() {
-    const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
-    if (userInfo) {
+    const userInfo = JSON.parse(
+      window.localStorage.getItem("userInfo") || "{}"
+    );
+    if (userInfo.role) {
       const myRoutes = getRoutes(JSON.parse(userInfo.role.role_menu));
       myRoutes.forEach((item, index) => {
         if (index === 0) {
