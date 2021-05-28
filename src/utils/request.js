@@ -34,7 +34,8 @@ request.interceptors.response.use(
     const { data: result } = response;
 
     if (result.code !== 200) {
-      showMessage({ type: 'error', message: result.message });
+      console.log(result)
+      showMessage({ type: 'error', message: result.data.msg });
     }
 
     return result;

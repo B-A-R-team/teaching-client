@@ -206,12 +206,6 @@ export default {
   computed: {
     totalPage() {
       return (type) => {
-        if (this.willTotal === 0) {
-          this.willTotal = 1;
-        }
-        if (this.doneTotal === 0) {
-          this.doneTotal = 1;
-        }
         return type === "done"
           ? Math.ceil(this.doneTotal / 5)
           : Math.ceil(this.willTotal / 5);

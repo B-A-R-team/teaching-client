@@ -45,9 +45,11 @@ export function resLogin(account) {
     data: { ...account },
   });
 }
-// export function fetchRegister() {
-
-// }
+export const fetchRegister = (data) => request({
+  url: '/user/register',
+  method: 'post',
+  data,
+})
 
 export const fetchUploadAvatar = (formData) =>
   request({
@@ -74,3 +76,9 @@ export function fetchUserFuzzyQuery(name) {
     },
   });
 }
+
+// 获取所有没有在教研室的用户
+export const  fetchAllNoRoomUsers = () => request({
+  url: '/user/noroom',
+  method: 'get',
+})

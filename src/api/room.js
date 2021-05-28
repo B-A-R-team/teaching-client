@@ -58,3 +58,10 @@ export function fetchDeleteUser(room_id, user_id) {
     },
   });
 }
+
+// 添加用户
+export const  fetchAddNoRoomUsers = (data) => request({
+  url: '/room/addUsers',
+  method: 'post',
+  data
+})

@@ -7,7 +7,7 @@
         </h2>
       </v-col>
       <v-col cols="6" class="text-end">
-        <v-btn color="primary">添加新成员</v-btn>
+        <v-btn color="primary" @click="addUsers">添加新成员</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -93,18 +93,46 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogAdd" max-width="500px">
+      <v-card>
+        <v-card-title class="headline"> 添加成员 </v-card-title>
+        <v-card-text>
+          <div class="pa-5 my-checkbox" style="min-height: 250px">
+            <template v-for="item in noroom_users">
+              <v-checkbox
+                :key="item.id"
+                v-model="selected"
+                :label="item.name"
+                :value="item.id"
+              ></v-checkbox>
+            </template>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closeAdd">取消</v-btn>
+          <v-btn color="red darken-1" text @click="addConfirm"> 确定 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
-import { fetchDeleteUser, fetchRoomById } from "../../api/room";
-import { fetchAllUserByRommId } from "../../api/user";
+import {
+  fetchAddNoRoomUsers,
+  fetchDeleteUser,
+  fetchRoomById,
+} from "../../api/room";
+import { fetchAllNoRoomUsers, fetchAllUserByRommId } from "../../api/user";
 import { fetchActiveByRoomId } from "../../api/active";
 import getImgFullPath from "../../utils/getImgFullPath";
 
 export default {
   data() {
     return {
+      selected: [],
+      noroom_users: [],
       id: -1,
       info: {},
       users: [],
@@ -127,6 +155,7 @@ export default {
         { text: "结束时间", value: "end_time" },
       ],
       dialogDelete: false,
+      dialogAdd: false,
       selectedUser: -1,
     };
   },
@@ -155,9 +184,16 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
     },
+    closeAdd() {
+      this.dialogAdd = false;
+    },
     deleteItem(item) {
       this.dialogDelete = true;
       this.selectedUser = item.id;
+    },
+    addUsers() {
+      console.log(111);
+      this.dialogAdd = true;
     },
     async deleteConfirm() {
       const { code } = await fetchDeleteUser(this.id, this.selectedUser);
@@ -170,8 +206,24 @@ export default {
         this.getUsers();
       }
     },
+    async addConfirm() {
+      // console.log(this.selected, this.info.id);
+      const res = await fetchAddNoRoomUsers({
+        room_id: this.info.id,
+        users: JSON.stringify(this.selected),
+      });
+      // console.log(res);
+      if (res.code === 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg,
+        });
+        this.getUsers();
+      }
+      this.dialogAdd = false;
+    },
   },
-  mounted() {
+  async mounted() {
     const myUserInfo = JSON.parse(window.localStorage.getItem("userInfo"));
     if (myUserInfo.room) {
       this.id = myUserInfo.room.id;
@@ -181,6 +233,9 @@ export default {
     this.getRoomInfo();
     this.getUsers();
     this.getActives();
+    const res = await fetchAllNoRoomUsers();
+    console.log(res);
+    this.noroom_users = res.data;
   },
 };
 </script>
@@ -194,5 +249,12 @@ input {
     display: flex;
     align-items: center;
   }
+}
+.my-checkbox {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-template-rows: repeat(auto-fill, 50px);
+  grid-row-gap: 20px;
+  grid-column-gap: 50px;
 }
 </style>

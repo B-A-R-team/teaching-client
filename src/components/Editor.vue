@@ -32,6 +32,17 @@ export default {
   emits: ["change"],
   mounted() {
     this.editor = new E(this.$refs.editorRef);
+    this.editor.config.menus = [
+      "bold",
+      "head",
+      "link",
+      "italic",
+      "underline",
+      "indent",
+      "lineHeight",
+      "foreColor",
+      "backColor",
+    ];
     this.editor.create();
     this.editor.config.onchange = (html) => {
       this.content = html;

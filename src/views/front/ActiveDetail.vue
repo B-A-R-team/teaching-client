@@ -3,153 +3,100 @@
     <v-row justify="center">
       <v-col :lg="10" :md="12" :sm="12">
         <v-card :loading="detailLoading">
-          <v-img
-            height="200px"
-            src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
-          >
-            <v-app-bar flat color="rgba(0, 0, 0, 0)">
-              <v-toolbar-title class="title white--text pl-0"
-                >活动详情</v-toolbar-title
-              >
-              <v-spacer></v-spacer>
-            </v-app-bar>
-
-            <v-card-title class="white--text mt-5">
-              <v-avatar size="64">
-                <img alt="user" :src="renderImg(activeDetail.leader.avatar)" />
-              </v-avatar>
-              <div class="leader-info">
-                <div class="ml-3 mb-1">{{ activeDetail.leader.name }}</div>
-                <div class="ml-3 grey--text subtitle-2">
-                  {{ activeDetail.room_name }}
-                </div>
+          <v-card-title class="white--text mt-5">
+            <div class="leader-info">
+              <div class="font-weight-bold ml-1 mb-2 title active-title">
+                主题： {{ activeDetail.title }}
               </div>
-            </v-card-title>
-          </v-img>
+              <div class="room-info">
+                <div class="ml-4 grey--text subtitle-2">
+                  教研室：{{ activeDetail.room_name }}
+                </div>
+                  <div class="ml-4 mb-1 grey--text subtitle-2">
+                  主任：{{ activeDetail.leader.name }}
+                </div>
+                <span class="ml-4 grey--text subtitle-2">开始时间：{{
+                  activeDetail.start_time.substring(0, 16)
+                }}</span>
+              </div>
+            </div>
+          </v-card-title>
 
           <v-card-text>
             <v-row>
-              <v-col md="6">
-                <v-card class="pa-5 content-max-height">
-                  <div class="font-weight-bold ml-1 mb-2 title">
-                    主题： {{ activeDetail.title }}
-                    <span class="ml-3 grey--text subtitle-2">{{
-                      activeDetail.start_time.substring(0, 16)
-                    }}</span>
-                  </div>
-                  <v-divider></v-divider>
-                  <div class="font-weight-bold ml-1 mb-2 title mt-3">
-                    地点： {{ activeDetail.place }}
-                  </div>
-                  <v-divider></v-divider>
-                  <div
-                    class="font-weight-bold ml-1 mb-2 title mt-3"
-                    :style="{ minHeight: '250px' }"
-                  >
-                    <span>活动说明：{{ activeDetail.content }}</span>
-                  </div>
-                  <v-divider></v-divider>
+              <v-col :lg="12" :md="12" :sm="12">
+                <v-divider></v-divider>
+                <div class="font-weight-bold ml-1 mb-2 title mt-3">
+                  地点： {{ activeDetail.place }}
+                </div>
+                <v-divider></v-divider>
+                <div
+                  class="font-weight-bold ml-1 mb-2 title mt-3"
+                  :style="{ minHeight: '250px' }"
+                >
+                  <span>活动说明：{{ activeDetail.content }}</span>
+                </div>
+                <v-divider></v-divider>
 
-                  <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
-                    参加教师：
-                    <span
-                      v-for="(item, index) in activeDetail.join_users"
+                <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
+                  参加教师：
+                  <span
+                    v-for="(item, index) in activeDetail.join_users"
+                    :key="index"
+                  >
+                    {{ item.name }}
+                    <span v-if="activeDetail.join_users.length - 1 > index"
+                      >,</span
+                    >
+                  </span>
+                </div>
+                <v-divider></v-divider>
+                <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
+                  记录图片：
+                  <div class="record-imgs">
+                    <v-img
+                      :src="renderImg(item.filePath)"
+                      lazy-src="https://picsum.photos/id/11/10/6"
+                      aspect-ratio="1"
+                      class="grey lighten-2 img-item"
+                      v-for="(item, index) in activeDetail.record_imgs"
                       :key="index"
                     >
-                      {{ item.name }}
-                      <span v-if="activeDetail.join_users.length - 1 > index"
-                        >,</span
-                      >
-                    </span>
-                  </div>
-                  <v-divider></v-divider>
-                  <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
-                    记录图片：
-                    <div class="record-imgs">
-                      <v-img
-                        :src="renderImg(item.filePath)"
-                        lazy-src="https://picsum.photos/id/11/10/6"
-                        aspect-ratio="1"
-                        class="grey lighten-2 img-item"
-                        v-for="(item, index) in activeDetail.record_imgs"
-                        :key="index"
-                      >
-                        <template v-slot:placeholder>
-                          <v-row
-                            class="fill-height ma-0"
-                            align="center"
-                            justify="center"
-                          >
-                            <v-progress-circular
-                              indeterminate
-                              color="grey lighten-5"
-                            ></v-progress-circular>
-                          </v-row>
-                        </template>
-                      </v-img>
-                    </div>
-                  </div>
-                  <v-divider></v-divider>
-                  <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
-                    记录文件：
-                    <div class="files-list">
-                      <p
-                        class="ml-16"
-                        :style="{ textIndent: '1rem' }"
-                        v-for="(item, index) in activeDetail.record_other"
-                        :key="index"
-                      >
-                        <a
-                          :href="renderImg(item.filePath)"
-                          :download="item.oldFilename"
-                          >{{ item.oldFilename }}</a
+                      <template v-slot:placeholder>
+                        <v-row
+                          class="fill-height ma-0"
+                          align="center"
+                          justify="center"
                         >
-                        --- {{ item.username }}
-                      </p>
-                    </div>
+                          <v-progress-circular
+                            indeterminate
+                            color="grey lighten-5"
+                          ></v-progress-circular>
+                        </v-row>
+                      </template>
+                    </v-img>
                   </div>
-                  <v-divider></v-divider>
-                </v-card>
-              </v-col>
-              <v-col md="6">
-                <v-card class="pa-5 content-max-height">
-                  <div class="font-weight-bold mb-2 title mb-2">活动记录</div>
-                  <v-divider />
-                  <div
-                    v-if="comments.length <= 0"
-                    :style="{
-                      display: 'flex',
-                      width: '100%',
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }"
-                  >
-                    <span class="mb-5 subtitle-1">暂无活动记录</span>
+                </div>
+                <v-divider></v-divider>
+                <div class="font-weight-bold ml-1 mb-2 subtitle mt-3">
+                  记录文件：
+                  <div class="files-list">
+                    <p
+                      class="ml-16"
+                      :style="{ textIndent: '1rem' }"
+                      v-for="(item, index) in activeDetail.record_other"
+                      :key="index"
+                    >
+                      <a
+                        :href="renderImg(item.filePath)"
+                        :download="item.oldFilename"
+                        >{{ item.oldFilename }}</a
+                      >
+                      --- {{ item.username }}
+                    </p>
                   </div>
-                  <div v-for="(item, index) in comments" :key="index">
-                    <div class="mt-3 mb-3">
-                      <div class="commit-head">
-                        <div>
-                          <v-avatar class="ml-3" size="40">
-                            <img
-                              alt="user"
-                              :src="renderImg(item.user.avatar)"
-                            />
-                          </v-avatar>
-                          <span class="ml-4">{{ item.user.name }}</span>
-                        </div>
-                        <span class="ml-3 grey--text subtitle-2">
-                          {{ item.create_time }}
-                        </span>
-                      </div>
-                      <div class="px-5">
-                        <span class="ml-1" v-html="item.content"></span>
-                      </div>
-                    </div>
-                    <v-divider />
-                  </div>
-                </v-card>
+                </div>
+                <v-divider></v-divider>
               </v-col>
             </v-row>
           </v-card-text>
@@ -157,6 +104,43 @@
       </v-col>
     </v-row>
     <v-row justify="center">
+      <v-col :lg="10" :md="12" :sm="12">
+        <v-card class="pa-5 content-max-height">
+          <div class="font-weight-bold mb-2 title mb-2">活动记录</div>
+          <v-divider />
+          <div
+            v-if="comments.length <= 0"
+            :style="{
+              display: 'flex',
+              width: '100%',
+              height: '80%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }"
+          >
+            <span class="mb-5 subtitle-1">暂无活动记录</span>
+          </div>
+          <div v-for="(item, index) in comments" :key="index">
+            <div class="mt-3 mb-3">
+              <div class="commit-head">
+                <div>
+                  <v-avatar class="ml-3" size="40">
+                    <img alt="user" :src="renderImg(item.user.avatar)" />
+                  </v-avatar>
+                  <span class="ml-4">{{ item.user.name }}</span>
+                </div>
+                <span class="ml-3 grey--text subtitle-2">
+                  {{ item.create_time }}
+                </span>
+              </div>
+              <div class="px-8 py-2">
+                <span class="ml-9" v-html="item.content"></span>
+              </div>
+            </div>
+            <v-divider />
+          </div>
+        </v-card>
+      </v-col>
       <v-col :lg="10" :md="12" :sm="12">
         <v-card elevation="2" :loading="commentsLoading">
           <template v-if="current_user_info && token">
@@ -167,16 +151,6 @@
                 </v-avatar>
                 <div class="commit-editor ml-2 mb-2">
                   <editor @change="editorChange" :isClear="isClear" />
-                  <!-- <v-textarea
-                    v-model="commit.content"
-                    height="100"
-                    no-resize
-                    outlined
-                    name="input-7-4"
-                    label="请输入内容"
-                    clearable
-                    clear-icon="mdi-close-circle"
-                  ></v-textarea> -->
                 </div>
               </div>
               <div style="text-align: right">
@@ -352,7 +326,8 @@ export default {
 <style lang="scss">
 .content-max-height {
   height: 100%;
-  max-height: 800px;
+   min-height: 300px;
+  max-height: 900px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     /*滚动条整体样式*/
@@ -382,11 +357,19 @@ p {
 }
 .active-detail {
   .leader-info {
+    width: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    // align-items: center;
+    flex-direction: column;
+    align-items: center;
     text-align: left;
+    .room-info {
+      display: flex;
+    }
+  }
+  .active-title {
+    font-size: 24px !important;
+    color: #000;
   }
   .commit-head {
     display: flex;

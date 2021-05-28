@@ -44,7 +44,12 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="date" no-title scrollable>
+                  <v-date-picker
+                    v-model="date"
+                    no-title
+                    scrollable
+                    :allowed-dates="allowedDate"
+                  >
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="dateMenu = false"
                       >取消</v-btn
@@ -183,6 +188,9 @@ export default {
     },
   },
   methods: {
+    allowedDate: (val) => {
+      return Date.parse(val) > Date.now() - 8.64e7
+    },
     async saveToDraft() {
       this.$refs.form.validate();
       if (this.$refs.form.validate() && this.date.length > 0) {
@@ -250,7 +258,7 @@ export default {
               message: res.data.msg,
               duration: 2000,
             });
-            this.$router.replace('/person');
+            this.$router.replace("/person");
           }
           return;
         }

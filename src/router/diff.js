@@ -17,6 +17,12 @@ const routes = [
                 meta: { title: '登录 | 教研室管理' },
             },
             {
+                path: '/register',
+                name: 'Register',
+                component: () => import('../views/front/Register.vue'),
+                meta: { title: '注册 | 教研室管理' },
+            },
+            {
                 path: '/person',
                 name: 'Person',
                 component: () => import('../views/front/Person.vue'),
@@ -130,7 +136,7 @@ const myRoutes = [{
     ],
 },]
 export default (menu) => {
-    routes[0].children[2].children.forEach(item => {
+    routes[0].children[3].children.forEach(item => {
         for (let i = 0; i < menu.length; i++) {
             if (menu[i].key === item.path) {
                 myRoutes[0].children.push(item)

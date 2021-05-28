@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name:'zong',
+    name: 'zong',
     component: () => import('../views/front/Index.vue'),
     children: [
       {
@@ -24,6 +24,12 @@ const routes = [
         name: 'Login',
         component: () => import('../views/front/login.vue'),
         meta: { title: '登录 | 教研室管理' },
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: () => import('../views/front/Register.vue'),
+        meta: { title: '注册 | 教研室管理' },
       },
       {
         path: '/activeDetail',

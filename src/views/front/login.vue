@@ -16,6 +16,7 @@
             label="请输入密码"
             v-model="password"
           ></v-text-field>
+          <router-link class="subtitle mx-auto" to="/register">暂无用户？点击注册</router-link> 
           <v-btn class="btn" elevation="3" large medium @click="postCommit">
             登录
           </v-btn>

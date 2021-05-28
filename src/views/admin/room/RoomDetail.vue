@@ -7,12 +7,12 @@
         </h2>
       </v-col>
       <v-col cols="6" class="text-end">
-        <v-btn color="primary">添加新成员</v-btn>
+        <v-btn color="primary" @click="addUsers">添加新成员</v-btn>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="4">主任：{{ info.director_name || '暂无' }}</v-col>
-      <v-col cols="4">副主任：{{ info.f_director_name || '暂无' }}</v-col>
+      <v-col cols="4">主任：{{ info.director_name || "暂无" }}</v-col>
+      <v-col cols="4">副主任：{{ info.f_director_name || "暂无" }}</v-col>
       <v-col cols="4">人数：{{ info.people_count || 0 }}</v-col>
     </v-row>
     <v-row>
@@ -57,9 +57,7 @@
               </v-avatar>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-icon small @click="deleteItem(item)">
-                mdi-delete
-              </v-icon>
+              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>
@@ -91,9 +89,29 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="closeDelete">取消</v-btn>
-          <v-btn color="red darken-1" text @click="deleteConfirm">
-            确定
-          </v-btn>
+          <v-btn color="red darken-1" text @click="deleteConfirm"> 确定 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogAdd" max-width="500px">
+      <v-card>
+        <v-card-title class="headline"> 添加成员 </v-card-title>
+        <v-card-text>
+          <div class="pa-5 my-checkbox" style="min-height: 250px">
+            <template v-for="item in noroom_users">
+              <v-checkbox
+                :key="item.id"
+                v-model="selected"
+                :label="item.name"
+                :value="item.id"
+              ></v-checkbox>
+            </template>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closeAdd">取消</v-btn>
+          <v-btn color="red darken-1" text @click="addConfirm"> 确定 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -101,36 +119,43 @@
 </template>
 
 <script>
-import { fetchDeleteUser, fetchRoomById } from '../../../api/room';
-import { fetchAllUserByRommId } from '../../../api/user';
-import { fetchActiveByRoomId } from '../../../api/active';
-import getImgFullPath from '../../../utils/getImgFullPath';
+import {
+  fetchAddNoRoomUsers,
+  fetchDeleteUser,
+  fetchRoomById,
+} from "../../../api/room";
+import { fetchAllNoRoomUsers, fetchAllUserByRommId } from "../../../api/user";
+import { fetchActiveByRoomId } from "../../../api/active";
+import getImgFullPath from "../../../utils/getImgFullPath";
 
 export default {
   data() {
     return {
+      selected: [],
+      noroom_users: [],
       id: -1,
       info: {},
       users: [],
       actives: [],
-      search: '',
+      search: "",
       user_loading: true,
       active_loading: true,
       headers: [
-        { text: '头像', value: 'avatar', align: 'start', sortable: false },
-        { text: '工号', value: 'job_id', align: 'start' },
-        { text: '姓名', value: 'name', sortable: false },
-        { text: '电话', value: 'phone', sortable: false },
-        { text: '职位', value: 'role_name', sortable: false },
-        { text: '教研室', value: 'room_name', sortable: false },
-        { text: '操作', value: 'actions', sortable: false },
+        { text: "头像", value: "avatar", align: "start", sortable: false },
+        { text: "工号", value: "job_id", align: "start" },
+        { text: "姓名", value: "name", sortable: false },
+        { text: "电话", value: "phone", sortable: false },
+        { text: "职位", value: "role_name", sortable: false },
+        { text: "教研室", value: "room_name", sortable: false },
+        { text: "操作", value: "actions", sortable: false },
       ],
       actives_header: [
-        { text: '活动名称', value: 'title', sortable: false },
-        { text: '开始时间', value: 'start_time' },
-        { text: '结束时间', value: 'end_time' },
+        { text: "活动名称", value: "title", sortable: false },
+        { text: "开始时间", value: "start_time" },
+        { text: "结束时间", value: "end_time" },
       ],
       dialogDelete: false,
+      dialogAdd: false,
       selectedUser: -1,
     };
   },
@@ -159,27 +184,52 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
     },
+    closeAdd() {
+      this.dialogAdd = false;
+    },
     deleteItem(item) {
       this.dialogDelete = true;
       this.selectedUser = item.id;
+    },
+    addUsers() {
+      console.log(111);
+      this.dialogAdd = true;
     },
     async deleteConfirm() {
       const { code } = await fetchDeleteUser(this.id, this.selectedUser);
       if (code === 200) {
         this.$message({
-          type: 'success',
-          message: '移除成功',
+          type: "success",
+          message: "移除成功",
         });
         this.closeDelete();
         this.getUsers();
       }
     },
+    async addConfirm() {
+      // console.log(this.selected, this.info.id);
+      const res = await fetchAddNoRoomUsers({
+        room_id: this.info.id,
+        users: JSON.stringify(this.selected),
+      });
+      // console.log(res);
+      if (res.code === 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg,
+        });
+        this.getUsers();
+      }
+      this.dialogAdd = false;
+    },
   },
-  mounted() {
+  async mounted() {
     this.id = this.$route.params.id || -1;
     this.getRoomInfo();
     this.getUsers();
     this.getActives();
+    const res = await fetchAllNoRoomUsers();
+    this.noroom_users = res.data;
   },
 };
 </script>
@@ -193,5 +243,12 @@ input {
     display: flex;
     align-items: center;
   }
+}
+.my-checkbox {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-template-rows: repeat(auto-fill, 50px);
+  grid-row-gap: 20px;
+  grid-column-gap: 50px;
 }
 </style>
