@@ -6,16 +6,23 @@
       </div>
       <v-spacer />
       <div id="nav">
-        <info-card
-          v-if="isLogin"
-          :avatar="renderImg(userInfo.avatar)"
-          :nickname="userInfo.name"
-          :role="userInfo.role.name"
-          :list="list"
-          @exit="exit"
-        />
-
-        <div v-if="isLogin">Hi，{{ userInfo.name }}</div>
+        <div
+         class="my-pointer"
+          @click="
+            () => {
+              $router.push('/person');
+            }
+          "
+        >
+          <v-icon style="font-size: 27px" color="white">mdi-home</v-icon>
+          <span class="ml-2 my-pointer">个人空间</span>
+        </div>
+        <span style="height:25px" class="my-divider"></span>
+        <div v-if="isLogin" class="header-login-info">
+          <span> Hi，{{ userInfo.name }}</span>
+          <span class="my-divider"></span>
+          <span @click="exit" class="my-pointer">退出</span>
+        </div>
         <div class="header-login" v-if="!isLogin">
           <router-link to="/login"> 登录 </router-link>
         </div>
@@ -32,13 +39,12 @@
 
 <script>
 import Footer from "@/components/Footer.vue";
-import InfoCard from "@/components/InfoCard.vue";
 import { getToken, removeToken } from "@/utils/auth";
 import getImgFullPath from "../../utils/getImgFullPath";
 // eslint-disable-next-line no-unused-vars
 import getRoutes from "../../router/diff";
 export default {
-  components: { InfoCard, Footer },
+  components: { Footer },
   provide() {
     return {
       changeLoginState: this.changeLoginState,
@@ -130,8 +136,7 @@ export default {
 }
 
 #nav {
-  display: block;
-  font-size: 23px;
+  font-size: 22px;
   padding: 30px;
   a {
     text-decoration: none;
@@ -147,6 +152,9 @@ export default {
   > * {
     margin: 0 0.5rem;
   }
+  .header-login-info > * {
+    margin: 0 0.5rem;
+  }
 }
 .main-content {
   padding-left: 3rem !important;
@@ -159,5 +167,14 @@ export default {
   .container {
     max-width: 100%;
   }
+ 
+}
+.my-divider {
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+  min-height: 100%;
+  max-height: 100%;
+}
+.my-pointer {
+  cursor: pointer;
 }
 </style>

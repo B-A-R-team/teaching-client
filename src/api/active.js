@@ -47,13 +47,14 @@ export const fetchAllActiveList = ({ current_page, page_size }) => {
  */
 export async function fetchActiveListByType({ type, current_page, page_size }) {
   const res = await fetchActiveList({ type, current_page, page_size })();
+  // console.log(res)
   let arr = [];
   if (res.code === 200) {
     res.data.act.forEach((item) => {
       const obj = {};
       obj.id = item.id;
       obj.avatar = item.leader.avatar;
-      obj.action = item.room.name;
+      obj.action = item.start_time.substring(0,10) +`\xa0\xa0|\xa0\xa0`+ item.room.name;
       obj.title = item.title;
       obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.`;
       arr.push(obj);

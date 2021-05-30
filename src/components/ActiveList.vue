@@ -152,6 +152,7 @@ export default {
         current_page: 1,
         page_size: this.page_size,
       });
+      console.log(doneActive)
       this.willItems = willActive.act;
       this.doneItems = doneActive.act;
       this.willTotal = willActive.total || 0;
