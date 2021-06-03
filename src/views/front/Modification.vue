@@ -62,6 +62,68 @@
           <v-card-title>
             <h3>修改密码</h3>
           </v-card-title>
+          <v-list class="listBox">
+            <v-list-item
+              style="display: flex; flex-direction: column; min-height: 0"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                "
+              >
+                <label>原密码：</label>
+                <v-text-field
+                  :loading="pwdLoading"
+                  type="password"
+                  label="请输入旧密码"
+                  v-model="allPwd.oldPwd"
+                  @change="comparePwd"
+                ></v-text-field>
+              </div>
+              <div v-if="isNotOk" style="width: 100%; color: red">
+                与旧密码不一致
+              </div>
+            </v-list-item>
+            <v-list-item>
+              <label>新密码：</label>
+              <v-text-field
+                type="password"
+                label="请输入新密码"
+                v-model="allPwd.newPwd"
+              ></v-text-field>
+            </v-list-item>
+            <v-list-item
+              style="display: flex; flex-direction: column; min-height: 0"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                "
+              >
+                <label>确认密码：</label>
+                <v-text-field
+                  type="password"
+                  label="请输入确认密码"
+                  v-model="allPwd.okPwd"
+                  @input="handleOkPwd"
+                ></v-text-field>
+              </div>
+              <div v-if="compareOkPwd" style="width: 100%; color: red">
+                两次密码不一致
+              </div>
+            </v-list-item>
+            <v-list-item>
+              <v-btn class="btn" elevation="2" style="margin-top:96px" large medium @click="updatePwd"
+                >修改</v-btn
+              >
+            </v-list-item>
+          </v-list>
         </v-card>
       </v-col>
     </v-row>
@@ -70,21 +132,86 @@
 
 <script>
 import { request } from "@/utils";
-import { fetchUploadAvatar } from "../../api/user";
+import {
+  fetchComparePwd,
+  fetchUpdatePwd,
+  fetchUploadAvatar,
+} from "../../api/user";
 import { getImgFullPath } from "../../utils";
 export default {
   data() {
     return {
+      pwdLoading: false,
       myUserInfo: {},
       avatarFile: null,
+      allPwd: {
+        oldPwd: "",
+        newPwd: "",
+        okPwd: "",
+      },
+      isNotOk: false,
+      compareOkPwd: false,
     };
   },
-  inject: ["changeLoginState", "changeLoading","getAvatar"],
+  inject: ["changeLoginState", "changeLoading", "getAvatar"],
   created() {
     this.getUserMessage();
     this.changeLoading(false);
   },
   methods: {
+    handleOkPwd() {
+      const { allPwd } = this;
+      if (allPwd.okPwd) {
+        this.compareOkPwd = !(allPwd.newPwd === allPwd.okPwd);
+      }
+      return false;
+    },
+    async comparePwd() {
+      this.pwdLoading = true;
+      const { myUserInfo, allPwd } = this;
+      if (allPwd.oldPwd) {
+        const res = await fetchComparePwd({
+          id: myUserInfo.id,
+          password: allPwd.oldPwd,
+        });
+        if (res.code === 200) {
+          this.isNotOk = !res.data.flag;
+        }
+      } else {
+        this.isNotOk = false;
+      }
+      this.pwdLoading = false;
+    },
+    resetPwd() {
+      this.allPwd.oldPwd = "";
+      this.allPwd.newPwd = "";
+      this.allPwd.okPwd = "";
+    },
+    async updatePwd() {
+      const { allPwd, isNotOk, compareOkPwd, myUserInfo } = this;
+      if (!isNotOk && allPwd.oldPwd && !compareOkPwd) {
+        if (allPwd.newPwd === allPwd.okPwd && allPwd.newPwd.length > 0) {
+          const res = await fetchUpdatePwd({
+            id: myUserInfo.id,
+            password: allPwd.okPwd,
+          });
+          if (res.code === 200) {
+            this.resetPwd();
+            this.$message({
+              type: "success",
+              message: res.data.msg,
+              duration: 2000,
+            });
+          }
+        }
+      } else {
+        this.$message({
+          type: "error",
+          message: "请完成上面每一步",
+          duration: 2000,
+        });
+      }
+    },
     getUserMessage() {
       this.myUserInfo = JSON.parse(
         window.localStorage.getItem("userInfo") || "{}"
@@ -116,7 +243,7 @@ export default {
         );
         //更新登录状态
         this.changeLoginState();
-        this.getAvatar(avatarPath)
+        this.getAvatar(avatarPath);
         return this.$message({
           type: "success",
           message: res.data.msg,
@@ -149,6 +276,7 @@ export default {
       //获取文件
       const file = e.path[0].files[0];
       this.avatarFile = file;
+      // [1,2].forEach(()=>{})
     },
   },
 };
@@ -159,6 +287,7 @@ export default {
   margin: 0 auto;
   background: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
   background-size: 100%;
+  transition: all 0.2s;
   .listBox {
     .btn {
       width: 100%;

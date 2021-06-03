@@ -65,7 +65,6 @@ export default {
         this.changeLoginState();
 
         const myRoutes = getRoutes(JSON.parse(res.data.role.role_menu));
-        console.log(myRoutes);
         myRoutes.forEach((item, index) => {
           if (index === 0) {
             this.$router.addRoute("zong", item);
@@ -87,8 +86,7 @@ export default {
     register() {
       // this.$router.push("/register");
     },
-    enterKey(e) {
-      console.log(e);
+    enterKey() {
     },
   },
   mounted() {

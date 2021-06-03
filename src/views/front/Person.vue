@@ -37,8 +37,8 @@ export default {
       nav: [
         { link: "/person/home", label: "主页" },
         { link: "/person/todo", label: "草稿箱" },
-        { link: "/person/publish", label: "发布" },
-        { link: "/person/settings", label: "设置" },
+        { link: "/person/publish", label: "发布活动" },
+        { link: "/person/settings", label: "个人信息" },
         { link: "/admin", label: "进入后台" },
       ],
       loading: true,

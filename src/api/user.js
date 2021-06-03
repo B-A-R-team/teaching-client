@@ -82,3 +82,16 @@ export const  fetchAllNoRoomUsers = () => request({
   url: '/user/noroom',
   method: 'get',
 })
+
+// 
+export const fetchComparePwd = (data) => request({
+  url: '/user/pwd',
+  method: 'post',
+  data
+})
+
+export const fetchUpdatePwd = (data) => request({
+  url: '/user/pwd',
+  method: 'put',
+  data
+})

@@ -7,6 +7,7 @@
       <v-spacer />
       <div id="nav">
         <div
+         v-if="isLogin"
          class="my-pointer"
           @click="
             () => {
@@ -17,7 +18,7 @@
           <v-icon style="font-size: 27px" color="white">mdi-home</v-icon>
           <span class="ml-2 my-pointer">个人空间</span>
         </div>
-        <span style="height:25px" class="my-divider"></span>
+        <span  v-if="isLogin" style="height:25px" class="my-divider"></span>
         <div v-if="isLogin" class="header-login-info">
           <span> Hi，{{ userInfo.name }}</span>
           <span class="my-divider"></span>
