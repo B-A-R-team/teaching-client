@@ -18,7 +18,7 @@
             v-model="active.place"
             :counter="20"
             :rules="placeRules"
-            prepend-icon="mdi-format-title"
+            prepend-icon="mdi-home-city"
             label="活动地点"
             required
           ></v-text-field>
