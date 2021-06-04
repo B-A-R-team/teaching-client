@@ -36,6 +36,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
+                      :disabled="isDisabled"
                       v-model="dateRangeText"
                       label="活动日期"
                       prepend-icon="mdi-calendar"
@@ -77,6 +78,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
+                      :disabled="isDisabled"
                       v-model="time"
                       label="选择时间"
                       prepend-icon="mdi-clock-time-four-outline"
@@ -133,10 +135,17 @@
       </v-card>
     </v-col>
     <div>
-      <v-btn @click="saveToDraft" color="primary" class="mr-4 mb-3 ml-6"
+      <v-btn
+        @click="saveToDraft"
+        color="primary"
+        class="mr-4 mb-3 ml-6"
+        v-if="isNotDone"
         >保存草稿</v-btn
       >
-      <v-btn @click="saveAndPublish" color="primary" class="mr-4 mb-3"
+      <v-btn
+        @click="saveAndPublish"
+        color="primary"
+        :class="['mr-4', 'mb-3', isNotDone ? '' : 'ml-10']"
         >发布</v-btn
       >
     </div>
@@ -149,11 +158,12 @@ import {
   fetchAdvancePublish,
   fetchActiveDetail,
   fetchUpdateActive,
-  fetchPublishAdvance,
 } from "../../api/active";
 export default {
   data() {
     return {
+      isDisabled: false,
+      isNotDone: true,
       date: "",
       dateMenu: false,
       time: null,
@@ -189,7 +199,7 @@ export default {
   },
   methods: {
     allowedDate: (val) => {
-      return Date.parse(val) > Date.now() - 8.64e7
+      return Date.parse(val) > Date.now() - 8.64e7;
     },
     async saveToDraft() {
       this.$refs.form.validate();
@@ -250,8 +260,8 @@ export default {
           join_users: JSON.stringify(join_users),
         };
         if (this.act_id) {
-          // data.id = this.act_id;
-          const res = await fetchPublishAdvance(this.act_id);
+          data.id = this.act_id;
+          const res = await fetchUpdateActive(data);
           if (res.code === 200) {
             this.$message({
               type: "success",
@@ -275,7 +285,10 @@ export default {
     },
   },
   async created() {
-    const { act_id } = this.$route.query;
+    const { act_id, type } = this.$route.query;
+    if (type) {
+      this.isNotDone = false;
+    }
     this.act_id = act_id;
     this.changeLoading(true);
     const userInfo = JSON.parse(window.localStorage.getItem("userInfo"));
@@ -309,6 +322,10 @@ export default {
             name: item.name,
           })
         );
+      }
+      const oldTime = moment(this.date + ` ${this.time}`)._d.getTime();
+      if (oldTime < Date.now() && type) {
+        this.isDisabled = true;
       }
     }
     this.changeLoading(false);

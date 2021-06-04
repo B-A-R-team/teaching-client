@@ -54,7 +54,7 @@ export async function fetchActiveListByType({ type, current_page, page_size }) {
       const obj = {};
       obj.id = item.id;
       obj.avatar = item.leader.avatar;
-      obj.action = item.start_time.substring(0,10) +`\xa0\xa0|\xa0\xa0`+ item.room.name;
+      obj.action = item.start_time.substring(0, 10) + `\xa0\xa0|\xa0\xa0` + item.room.name;
       obj.title = item.title;
       obj.subtitle = `<span class="text--primary">${item.leader.name}</span> &mdash; ${item.content}.`;
       arr.push(obj);
@@ -139,7 +139,7 @@ export function fetchActiveListToday(timestamp) {
   });
 }
 
-// 预发布活动
+// 保存为草稿活动
 export const fetchAdvancePublish = (data) =>
   request({
     url: '/active/createActive',
@@ -190,3 +190,9 @@ export function fetchActiveByRoomId(id) {
     },
   });
 }
+
+export const fetchLeaderActives = (data) => request({
+  url: '/active/leader',
+  method: 'get',
+  params: data
+});
