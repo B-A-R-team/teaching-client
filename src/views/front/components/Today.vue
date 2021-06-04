@@ -9,7 +9,7 @@
     <v-card-title>
       今日活动
     </v-card-title>
-    <v-list two-line>
+    <v-list two-line class="my-today-list">
       <v-list-item
         v-for="(item, index) in list"
         :key="index"
@@ -76,5 +76,8 @@ export default {
 .doing .v-list {
   overflow-y: scroll;
   height: 93px;
+}
+.my-today-list {
+  height: 137px!important;
 }
 </style>
